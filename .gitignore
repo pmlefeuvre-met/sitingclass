@@ -1,6 +1,12 @@
+# Rproject files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+# Output files
 .png
 .pdf
+
+# Output directory
+output/

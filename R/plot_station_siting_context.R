@@ -22,7 +22,7 @@ plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
   centre <- stn  %>% st_coordinates
 
   # To save files
-  path <- sprintf("station_location_files/output/%i",stn$id.stationid)
+  path <- sprintf("output/%i",stn$id.stationid)
   dir.create(path,recursive=T,showWarnings=F)
 
   # Construct box to extract WMS tile
