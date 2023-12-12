@@ -1,5 +1,24 @@
-# Load WMS data
-get_wms_tile <- function(box, layer = "CORINE_Land_Cover_2012", px = 500){
+#' Get Web Mapping Service data tiles
+#'
+#' Fetch map tiles from publicly available WMS released by Nibio
+#'
+#' @references \url{https://nibio.no/tjenester/wms-tjenester}
+#'
+#' @param box A SpatExtent defining the area to plot
+#' @param layer A name of a layer provided by WMS such as "ar5", "CORINE_Land_Cover_2012" (default) and "Urban_Atlas_Lu_Lc_2012"
+#' @param px A pixel number that defines the resolution of the image/tile, default is 500 px
+#'
+#' @return A map tile
+#'
+#' @examples
+#' tile <- get_wms_tile(box, layer = "ar5")
+#' tile <- get_wms_tile(box, layer = "CORINE_Land_Cover_2012" )
+#' tile <- get_wms_tile(box, layer = "Urban_Atlas_Lu_Lc_2012" )
+#'
+#' @export
+get_wms_tile <- function(box = NULL,
+                         layer = "CORINE_Land_Cover_2012",
+                         px = 500){
   # Libraries
   require(httr)
   require(terra)
@@ -13,10 +32,12 @@ get_wms_tile <- function(box, layer = "CORINE_Land_Cover_2012", px = 500){
     url     <- "https://wms.nibio.no/cgi-bin/ar5"
     version <- "VERSION=1.1.1"
     crs     <- "SRS=EPSG:25833"
+
   } else if ( layer == "CORINE_Land_Cover_2012"){
     url     <- "https://wms.nibio.no/cgi-bin/clc"
     version <- "VERSION=1.1.1"
     crs     <- "SRS=EPSG:25833"
+
   } else if ( layer == "Urban_Atlas_Lu_Lc_2012"){
     url     <- "https://wms.nibio.no/cgi-bin/urban_atlas"
     version <- "VERSION=1.3.0"

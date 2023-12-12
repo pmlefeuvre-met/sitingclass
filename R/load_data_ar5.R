@@ -1,5 +1,25 @@
-# Load FKB-AR5 (stored locally)
-load_data_ar5 <- function(box, f.wms = TRUE, layer = "Arealtype", px = 500){
+#' Load FKB-AR5 from vector files stored locally (restricted access to download)
+#'
+#' Load vector FKB-AR5 files to assess area type aka land cover, alternatively
+#' get WMS tile (deprecated, use \code{"get_wms_tile"})
+#'
+#' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-ar5/166382b4-82d6-4ea9-a68e-6fd0c87bf788}
+#'
+#' @param box A SpatExtent defining the area to plot
+#' @param f.wms A boolean to switch to WMS image tile instead of loading file, default TRUE (deprecated)
+#' @param layer A name of a layer provided by WMS. For "ar5", it is "Arealtype" as default
+#' @param px A pixel number that defines the resolution of the image/tile, default is 500 px
+#'
+#' @return A map tile
+#'
+#' @examples
+#' ar5 <- load_data_ar5(box,f.wms=F)
+#'
+#' @export
+load_data_ar5 <- function(box = NULL,
+                          f.wms = TRUE,
+                          layer = "Arealtype",
+                          px = 500){
   # Libraries
   require(sf)
   require(httr)
@@ -7,6 +27,7 @@ load_data_ar5 <- function(box, f.wms = TRUE, layer = "Arealtype", px = 500){
 
   # Convert to UTM 33 and clip vector to box
   if(!f.wms){
+
     # Path and filename
     path <- "station_location_files/fkb-ar5"
     fname <- "Basisdata_03_Oslo_25832_FKB-AR5_FGDB.gdb"

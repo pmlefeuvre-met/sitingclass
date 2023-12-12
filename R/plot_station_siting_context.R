@@ -15,6 +15,7 @@
 #' plot_station_siting_context(stationid=18700)
 #' plot_station_siting_context(stationid=18700,paramid=211,f.debug=T)
 plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
+
   # Get station coordinates and name
   stn <- get_latlon_frost(stationid,paramid)
   centre <- stn  %>% st_coordinates

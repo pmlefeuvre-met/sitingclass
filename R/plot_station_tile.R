@@ -1,5 +1,34 @@
-# Plot station location with background WMS data
-plot_station_tile <- function(stn,box,tile_name="osm",dsm=NULL,path=NULL){
+#' Plot station location with background WMS tiles
+#'
+#' Plots publicly-available maps, atlas, land cover or satellite imagery near
+#' a weather station based on maptiles and custom-made \code{"get_wms_tile"}
+#'
+#' @references \url{https://github.com/riatelab/maptiles}
+#'
+#' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
+#' @param box A SpatExtent defining the area to plot
+#' @param tile_name A string defining the type of tile to plot among "osm" (map, default), "esri" (satellite imagery), "ar5" (area type), "clc" (Corine land cover) and "urban" (urban atlas)
+#' @param dsm A SpatRaster of a digital surface model around the station, expected radius is 100 m
+#' @param path A string path that defines where to save the plot, if NULL (default) the plot is printed on-screen and not saved
+#'
+#' @return A ggplot object
+#'
+#' @examples
+#' g <- plot_station_tile(stn, box, tile_name = "esri")
+#' g
+#' plot_station_tile(stn,box,tile_name="esri", path=path)
+#' plot_station_tile(stn,box,tile_name="ar5", path=path)
+#' plot_station_tile(stn,box,tile_name="clc", path=path)
+#' plot_station_tile(stn,box,tile_name="urban", path=path)
+#' plot_station_tile(stn,box,tile_name="osm",dsm=dsm, path=path)
+#'
+#' @export
+plot_station_tile <- function(stn = NULL,
+                              box = NULL,
+                              tile_name = "osm",
+                              dsm = NULL,
+                              path = NULL){
+
   # Libraries
   require(stringr) # str_to_title()
   require(sf)
@@ -15,22 +44,27 @@ plot_station_tile <- function(stn,box,tile_name="osm",dsm=NULL,path=NULL){
   stn.title     <- sprintf("station: %s",stn.name)
   stn.subtitle  <- sprintf("id: %i - lat: %02.2f - long: %02.2f - elev:%1.0f",
                            stn$id.stationid, stn.latlon[1], stn.latlon[2], stn$elev)
+
   # Load tile
   if( tile_name == "osm" ) {
     tile <- get_tiles(box, crop = TRUE, provider="OpenStreetMap")
     credit <- "© OpenStreetMap"
+
   }else if( tile_name == "esri" ){
     tile <- get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
     credit <- "© ESRI WorldImagery"
+
   }else if( tile_name == "ar5" ){
     tile <- get_wms_tile(box, layer = "ar5")
     credit <- "FKB-AR5 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png"
-  }else if( tile_name == "clc" ){
+
+    }else if( tile_name == "clc" ){
     tile <- get_wms_tile(box, layer = "CORINE_Land_Cover_2012" )
     credit <- "CORINE LC 2012 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/clc?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&format=image/png"
-  }else if( tile_name == "urban" ){
+
+    }else if( tile_name == "urban" ){
     tile <- get_wms_tile(box, layer = "Urban_Atlas_Lu_Lc_2012" )
     credit <- "Urban Atlas 2012 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Urban_Atlas_Lu_Lc_2012&format=image/png"
@@ -73,5 +107,6 @@ plot_station_tile <- function(stn,box,tile_name="osm",dsm=NULL,path=NULL){
     fname <- sprintf("%s/%i_map_%s.png",path,stn$id.stationid,tile_name)
     ggsave(fname,bg="white", width = 7, height = 7)
   }
+
   return(g)
 }

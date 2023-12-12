@@ -1,5 +1,23 @@
-# Plot digital surface/elevation model in 3D with shadow rendering
-plot_dem_rayshader <- function(stn, dsm, path=NULL){
+#' Plot digital surface/elevation model in 3D with shadow rendering
+#'
+#' Use rayshader to plot surface elevation model near a weather station from
+#' four cardinal angles
+#'
+#' @references \url{https://www.rayshader.com/}
+#'
+#' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
+#' @param dsm A SpatRaster of a digital surface model around the station, expected radius is 100 m
+#' @param path A string path that defines where to save the plot, if NULL (default) the plot is printed on-screen and not saved
+#'
+#' @return A rendered image
+#'
+#' @examples
+#' plot_dem_rayshader(stn,dsm, path=path)
+#'
+#' @export
+plot_dem_rayshader <- function(stn = NULL,
+                               dsm = NULL,
+                               path = NULL){
 
   # Libraries
   require(stringr)
