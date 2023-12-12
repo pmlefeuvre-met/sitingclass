@@ -33,7 +33,7 @@ download_dem_kartverket <- function(stationid = NULL,
                                     centre = NULL,
                                     name = "dom",
                                     dx = 100,
-                                    resx = NULL,
+                                    resx = 1,
                                     path = "dem",
                                     f.overwrite = FALSE){
 
