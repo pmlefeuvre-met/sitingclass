@@ -47,9 +47,9 @@ plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
 
   # Load data
   f.ow <- FALSE
-  dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx,f.overwrite=f.ow)
-  dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx,f.overwrite=f.ow)
-  demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,20,f.overwrite=f.ow)
+  dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx=1,f.overwrite=f.ow)
+  dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx=1,f.overwrite=f.ow)
+  demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
   #ar5 <- load_data_ar5(box,f.wms=F)
 
   # Plot OpenStreetMap
