@@ -12,7 +12,7 @@
 #' @return A rendered image
 #'
 #' @examples
-#' plot_dem_rayshader(stn,dsm, path=path)
+#' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 #'
 #' @export
 plot_dem_rayshader <- function(stn = NULL,
@@ -20,7 +20,6 @@ plot_dem_rayshader <- function(stn = NULL,
                                path = NULL){
 
   # Libraries
-  require(stringr)
   require(rayshader)
 
   # Extract station name, latlon and level

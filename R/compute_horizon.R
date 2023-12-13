@@ -36,7 +36,7 @@ compute_horizon <- function(centre = NULL,
 
   # Set GRASS path
   grasslib <- try(system('grass --config', intern=TRUE))[4]
-  gisDbase <- '/home/pierreml/grassdata/'
+  gisDbase <- 'data/grassdata/'
 
   # Initialise GRASS and projection
   initGRASS(gisBase=grasslib, home=tempdir(), SG=dem, gisDbase=gisDbase,
@@ -60,8 +60,9 @@ compute_horizon <- function(centre = NULL,
     sapply(as.numeric) %>% t %>% data.frame
   colnames(df) <- horizon[[1]] %>% strsplit(",") %>% unlist
 
-  # Save file
-  path <- "station_location_files/horizon"
+  # Create directory and save file
+  path <- "data/horizon"
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
   file_horizon <- sprintf("%s/horizon_%s.csv",path,names(dem))
   write.csv(df,file_horizon,row.names=F)
 

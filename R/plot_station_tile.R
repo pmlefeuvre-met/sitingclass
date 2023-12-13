@@ -20,7 +20,7 @@
 #' plot_station_tile(stn,box,tile_name="ar5", path=path)
 #' plot_station_tile(stn,box,tile_name="clc", path=path)
 #' plot_station_tile(stn,box,tile_name="urban", path=path)
-#' plot_station_tile(stn,box,tile_name="osm",dsm=dsm, path=path)
+#' plot_station_tile(stn,box,tile_name="osm",dsm=dsm, path='plot/map')
 #'
 #' @export
 plot_station_tile <- function(stn = NULL,

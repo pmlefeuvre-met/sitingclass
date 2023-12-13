@@ -15,5 +15,5 @@ stationid_array <- c( 12960, 13390, 17150, 17850, 18700, 18703, 18730, 18920, 31
 
 # Station ID
 for (stationid in stationid_array){
-#  try(plot_station_siting_context(stationid,paramid=211,f.debug=F))
+  try(plot_station_siting_context(stationid,paramid=211,f.verbose=F,f.pdf=F))
 }

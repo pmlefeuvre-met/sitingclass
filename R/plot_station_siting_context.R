@@ -7,22 +7,25 @@
 #'
 #' @param stationid A station number as integer and defined by met.no
 #' @param paramid A parameter number as integer and defined by met.no
-#' @param f.verbose.debug A boolean string to print debug messages, default is TRUE
+#' @param f.verbose A boolean string to print debug messages, default is TRUE
 #'
 #' @return None
 #'
 #' @examples
 #' plot_station_siting_context(stationid=18700)
-#' plot_station_siting_context(stationid=18700,paramid=211,f.debug=T)
+#' plot_station_siting_context(stationid=18700,paramid=211,f.verbose=T)
 #' @export
-plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
+plot_station_siting_context <- function(stationid = 18700,
+                                        paramid = 211,
+                                        f.verbose = TRUE,
+                                        f.pdf = F){
 
   # Get station coordinates and name
   stn <- get_latlon_frost(stationid,paramid)
   centre <- stn  %>% st_coordinates
 
   # To save files
-  path <- sprintf("output/%i",stn$id.stationid)
+  path <- sprintf("plot/output/%i",stn$id.stationid)
   dir.create(path,recursive=T,showWarnings=F)
 
   # Construct box to extract WMS tile
@@ -33,7 +36,7 @@ plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
   st_crs(box) <- 25833 #32633 #to match tile projection
 
   # Print
-  if (f.verbose.debug){
+  if (f.verbose){
     print(stn$id.stationid)
     print(stn$station.name)
     print(centre)
@@ -56,7 +59,7 @@ plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
   g2 <- plot_station_tile(stn,box,tile_name="osm",dsm=dsm, path=path)
 
   # Print
-  if (f.verbose.debug){
+  if (f.verbose){
     print(dem)
     print(dsm)
   }
@@ -67,8 +70,10 @@ plot_station_siting_context <- function(stationid,paramid,f.verbose.debug=TRUE){
   g4 <- plot_dem_rayshader(stn,dsm, path=path)
 
   # Save pdf
-  fname <- sprintf("%s/%i_infos.pdf",path,stn$id.stationid)
-  pdf(fname)
-  invisible(lapply(list(g0,g2,g10,g3,g4,g11,g12), print))
-  dev.off()
+  if(f.pdf){
+    fname <- sprintf("%s/%i_infos.pdf",path,stn$id.stationid)
+    pdf(fname)
+    invisible(lapply(list(g0,g2,g10,g3,g4,g11,g12), print))
+    dev.off()
+  }
 }

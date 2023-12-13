@@ -23,7 +23,7 @@
 #' # Load data
 #' stationid <- 18700
 #' centre <- stn  %>% st_coordinates
-#' path   <- "station_location_files/dem"
+#' path   <- "data/dem"
 #' dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
 #' dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 #' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
@@ -34,7 +34,7 @@ download_dem_kartverket <- function(stationid = NULL,
                                     name = "dom",
                                     dx = 100,
                                     resx = dx/100,
-                                    path = "dem",
+                                    path = "data/dem",
                                     f.overwrite = FALSE){
 
   # Libraries
