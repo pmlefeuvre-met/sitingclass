@@ -38,8 +38,8 @@ plot_dem_rayshader <- function(stn = NULL,
 
   # Add station label
   render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2,
-               z = max(elmat,na.rm=TRUE)*1.15,text=NULL,
-               linecolor = "white", relativez = FALSE)
+               z = max(elmat,na.rm=TRUE)*1.15,text="",
+               linecolor = "white", relativez = FALSE,)
   # render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2, z = 200, zscale = 1,
   #            textcolor = "gray50", linecolor = "white", linewidth = 2,
   #            text = stn$id.stationid, relativez = FALSE, textsize = 2)
@@ -58,12 +58,6 @@ plot_dem_rayshader <- function(stn = NULL,
     for (cardinal in cardinal_array){
       fname <- sprintf("%s/%i_terrain3D_%s.png", path, stn$id.stationid, cardinal)
       title <- paste(stn.name,"-",cardinal)
-
-      print(cardinal)
-      print(stn.name)
-      print(fname)
-      print(title)
-      print(theta[cardinal])
 
       render_camera(theta = theta[cardinal])
       render_snapshot(fname, title_text = title,
