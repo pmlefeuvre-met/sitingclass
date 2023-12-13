@@ -33,7 +33,7 @@ download_dem_kartverket <- function(stationid = NULL,
                                     centre = NULL,
                                     name = "dom",
                                     dx = 100,
-                                    resx = 1,
+                                    resx = dx/100,
                                     path = "dem",
                                     f.overwrite = FALSE){
 
@@ -48,8 +48,8 @@ download_dem_kartverket <- function(stationid = NULL,
   # Compute bounding box
   box <- c(c(centre[1],centre[2])-dx,c(centre[1],centre[2])+dx) %>% round
 
-  # Set horizontal resolution if not defined
-  if(is.null(resx)){resx <- dx/100}
+  # # Set horizontal resolution if not defined
+  # if(is.null(resx)){resx <- dx/100}
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)

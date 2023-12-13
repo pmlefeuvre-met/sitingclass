@@ -9,7 +9,7 @@ download_dem_kartverket(
   centre = NULL,
   name = "dom",
   dx = 100,
-  resx = NULL,
+  resx = 1,
   path = "dem",
   f.overwrite = FALSE
 )
