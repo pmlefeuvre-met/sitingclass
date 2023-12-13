@@ -11,11 +11,11 @@
 #' @references \url{https://cran.r-project.org/web/packages/ows4R/vignettes/wcs.html}
 #'
 #' @param stationid A station ID used for the DEM file name
-#' @param centre A coordinate array (i.e. c(x, y)) of the station in UTM 33 (epsg:25833)
-#' @param name A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model
-#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default 100 metres
-#' @param resx A horizontal resolution in metre, default is dx/100 if greater than 1 metre
-#' @param f.overwrite A boolean whether the DEM file should be overwritten, default FALSE
+#' @param centre A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. `epsg:25833`)
+#' @param name A name of the DEM to download, either `"dtm"` a terrain model or the default `"dom"` a surface model
+#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
+#' @param resx A horizontal resolution in metre, default is `dx/100` if greater than `1` metre
+#' @param f.overwrite A boolean whether the DEM file should be overwritten, default `FALSE`
 #'
 #' @return A Digital Elevation Model
 #'

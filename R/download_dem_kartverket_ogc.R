@@ -1,4 +1,19 @@
-# Download DEM from Kartverket's NEWEST OGC API
+#' Download DEM from Kartverket's NEWEST OGC API
+#'
+#' @param stationid A station ID used for the DEM file name
+#' @param centre A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. `epsg:25833`)
+#' @param name A name of the DEM to download, either `"dtm"` a terrain model or the default `"dom"` a surface model
+#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
+#' @param resx A horizontal resolution in metre, default is `dx/100` if greater than `1` metre
+#' @param f.OGC A boolean default is `TRUE`
+#'
+#' @return A DEM
+#' @export
+#'
+#' @examples
+#' download_dem_kartverket_ogc()
+#'
+
 download_dem_kartverket_ogc <- function(stationid=18703, centre, name="dom", dx=100, resx=1, f.OGC=T){
   require(ows4R)
   # Define box limits

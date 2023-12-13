@@ -17,15 +17,15 @@ download_dem_kartverket(
 \arguments{
 \item{stationid}{A station ID used for the DEM file name}
 
-\item{centre}{A coordinate array (i.e. c(x, y)) of the station in UTM 33 (epsg:25833)}
+\item{centre}{A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. `epsg:25833`)}
 
-\item{name}{A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model}
+\item{name}{A name of the DEM to download, either `"dtm"` a terrain model or the default `"dom"` a surface model}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default 100 metres}
+\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
 
-\item{resx}{A horizontal resolution in metre, default is dx/100 if greater than 1 metre}
+\item{resx}{A horizontal resolution in metre, default is `dx/100` if greater than `1` metre}
 
-\item{f.overwrite}{A boolean whether the DEM file should be overwritten, default FALSE}
+\item{f.overwrite}{A boolean whether the DEM file should be overwritten, default `FALSE`}
 }
 \value{
 A Digital Elevation Model

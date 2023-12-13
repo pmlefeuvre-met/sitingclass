@@ -17,9 +17,9 @@ compute_horizon(
 
 \item{dem}{A SpatRaster of a digital elevation/surface model in UTM 33 (epsg:25833)}
 
-\item{level}{A height above the ground of the sensor in meters, if level is 0, its value is set to 2 m as default}
+\item{level}{A height above the ground of the sensor in metres, default level `0` is set to `2` metres}
 
-\item{step}{An interval in degrees at which the horizon will be computed, default is every 10 deg.}
+\item{step}{An interval in degrees at which the horizon will be computed, default is every `10` deg.}
 
 \item{f.plot.polygon}{A boolean setting boundary values to -20 deg to facilitate plotting as polygon}
 }

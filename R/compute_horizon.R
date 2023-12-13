@@ -6,8 +6,8 @@
 #'
 #' @param centre An array of two coordinates in UTM 33 (epsg:25833)
 #' @param dem A SpatRaster of a digital elevation/surface model in UTM 33 (epsg:25833)
-#' @param level A height above the ground of the sensor in meters, if level is 0, its value is set to 2 m as default
-#' @param step An interval in degrees at which the horizon will be computed, default is every 10 deg.
+#' @param level A height above the ground of the sensor in metres, default level `0` is set to `2` metres
+#' @param step An interval in degrees at which the horizon will be computed, default is every `10` deg.
 #' @param f.plot.polygon A boolean setting boundary values to -20 deg to facilitate plotting as polygon
 #'
 #' @return horizon_height in degrees and azimuth angle at which the horizon is computed in degrees
