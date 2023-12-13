@@ -9,4 +9,5 @@
 .pdf
 
 # Output directory
-output/
+plot/*
+data/*

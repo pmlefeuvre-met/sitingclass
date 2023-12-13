@@ -15,6 +15,7 @@
 #' @param name A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model
 #' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
 #' @param resx A horizontal resolution in metre, default is `dx/100` if greater than `1` metre
+#' @param path A directory path defining where will be saved the data, default path is "data/dem"
 #' @param f.overwrite A boolean whether the DEM file should be overwritten, default `FALSE`
 #'
 #' @return A Digital Elevation Model
@@ -34,7 +35,7 @@ download_dem_kartverket <- function(stationid = NULL,
                                     name = "dom",
                                     dx = 100,
                                     resx = dx/100,
-                                    path = NULL,
+                                    path = "data/dem",
                                     f.overwrite = FALSE){
 
   # Libraries

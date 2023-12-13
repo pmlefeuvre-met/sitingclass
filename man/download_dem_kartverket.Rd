@@ -10,7 +10,7 @@ download_dem_kartverket(
   name = "dom",
   dx = 100,
   resx = dx/100,
-  path = NULL,
+  path = "data/dem",
   f.overwrite = FALSE
 )
 }
@@ -24,6 +24,8 @@ download_dem_kartverket(
 \item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
 
 \item{resx}{A horizontal resolution in metre, default is `dx/100` if greater than `1` metre}
+
+\item{path}{A directory path defining where will be saved the data, default path is "data/dem"}
 
 \item{f.overwrite}{A boolean whether the DEM file should be overwritten, default `FALSE`}
 }
