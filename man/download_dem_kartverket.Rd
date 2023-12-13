@@ -9,8 +9,8 @@ download_dem_kartverket(
   centre = NULL,
   name = "dom",
   dx = 100,
-  resx = 1,
-  path = "dem",
+  resx = dx/100,
+  path = "data/dem",
   f.overwrite = FALSE
 )
 }
@@ -41,7 +41,7 @@ exists, it is loaded by default unless f.overwrite is set to TRUE
 # Load data
 stationid <- 18700
 centre <- stn  \%>\% st_coordinates
-path   <- "station_location_files/dem"
+path   <- "data/dem"
 dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
 dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)

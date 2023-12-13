@@ -21,7 +21,7 @@ Use rayshader to plot surface elevation model near a weather station from
 four cardinal angles
 }
 \examples{
-plot_dem_rayshader(stn,dsm, path=path)
+plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 
 }
 \references{
