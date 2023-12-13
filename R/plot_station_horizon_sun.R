@@ -20,8 +20,9 @@
 #' dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1)
 #' demkm <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20)
 #' path <- sprintf("station_location_files/output/%i",stn$id.stationid)
+#' # path <- 'plot/horizon'
 #' # Plot sun diagram
-#' plot_station_horizon_sun(stn, dem, dsm, demkm, path = 'plot/horizon')
+#' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
 #' @export
 plot_station_horizon_sun <- function(stn = NULL,

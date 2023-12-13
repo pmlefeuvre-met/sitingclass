@@ -10,16 +10,16 @@ download_dem_kartverket(
   name = "dom",
   dx = 100,
   resx = dx/100,
-  path = "data/dem",
+  path = NULL,
   f.overwrite = FALSE
 )
 }
 \arguments{
 \item{stationid}{A station ID used for the DEM file name}
 
-\item{centre}{A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. `epsg:25833`)}
+\item{centre}{A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. epsg:25833)}
 
-\item{name}{A name of the DEM to download, either `"dtm"` a terrain model or the default `"dom"` a surface model}
+\item{name}{A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model}
 
 \item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
 

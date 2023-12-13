@@ -4,7 +4,7 @@
 #'
 #' @references \url{https://github.com/OSGeo/grass-addons/blob/grass8/src/raster/r.skyview/r.skyview.py}
 #'
-#' @param horizon An array of horizon height in degrees
+#' @param horizon An array of horizon height in degrees from \code{"compute_horizon"}
 #'
 #' @return Estimated sky view factor, 1 defines an open sky view and 0 a totally obstructed sky view
 #'

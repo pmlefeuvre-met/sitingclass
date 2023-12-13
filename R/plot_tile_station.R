@@ -1,7 +1,7 @@
 #' Plot station location with background WMS tiles
 #'
 #' Plots publicly-available maps, atlas, land cover or satellite imagery near
-#' a weather station based on maptiles and custom-made \code{"get_wms_tile"}
+#' a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 #'
 #' @references \url{https://github.com/riatelab/maptiles}
 #'
@@ -14,16 +14,16 @@
 #' @return A ggplot object
 #'
 #' @examples
-#' g <- plot_station_tile(stn, box, tile_name = "esri")
+#' g <- plot_tile_station(stn, box, tile_name = "esri")
 #' g
-#' plot_station_tile(stn,box,tile_name="esri", path=path)
-#' plot_station_tile(stn,box,tile_name="ar5", path=path)
-#' plot_station_tile(stn,box,tile_name="clc", path=path)
-#' plot_station_tile(stn,box,tile_name="urban", path=path)
-#' plot_station_tile(stn,box,tile_name="osm",dsm=dsm, path=path)
+#' plot_tile_station(stn,box,tile_name="esri", path=path)
+#' plot_tile_station(stn,box,tile_name="ar5", path=path)
+#' plot_tile_station(stn,box,tile_name="clc", path=path)
+#' plot_tile_station(stn,box,tile_name="urban", path=path)
+#' plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
 #'
 #' @export
-plot_station_tile <- function(stn = NULL,
+plot_tile_station <- function(stn = NULL,
                               box = NULL,
                               tile_name = "osm",
                               dsm = NULL,
@@ -55,17 +55,17 @@ plot_station_tile <- function(stn = NULL,
     credit <- "© ESRI WorldImagery"
 
   }else if( tile_name == "ar5" ){
-    tile <- get_wms_tile(box, layer = "ar5")
+    tile <- get_tile_wms(box, layer = "ar5")
     credit <- "FKB-AR5 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png"
 
     }else if( tile_name == "clc" ){
-    tile <- get_wms_tile(box, layer = "CORINE_Land_Cover_2012" )
+    tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
     credit <- "CORINE LC 2012 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/clc?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&format=image/png"
 
     }else if( tile_name == "urban" ){
-    tile <- get_wms_tile(box, layer = "Urban_Atlas_Lu_Lc_2012" )
+    tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
     credit <- "Urban Atlas 2012 © Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Urban_Atlas_Lu_Lc_2012&format=image/png"
   }

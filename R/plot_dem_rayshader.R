@@ -46,11 +46,14 @@ plot_dem_rayshader <- function(stn = NULL,
 
   # Print terrain and/or save a png
   Sys.sleep(0.2)
+
   # Save plot
   if(is.null(path)){
     render_snapshot()
+
   }else{
     cardinal_array <- c("northward", "westward", "southward", "eastward")
+
     for (cardinal in cardinal_array){
       theta <- setNames( seq(0, 359 , by=90), cardinal_array)
       fname <- sprintf("%s/%i_terrain3D_%s.png", path, stn$id.stationid, cardinal)

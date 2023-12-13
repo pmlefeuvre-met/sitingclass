@@ -7,7 +7,7 @@
 compute_skyviewfactor(horizon = NULL)
 }
 \arguments{
-\item{horizon}{An array of horizon height in degrees}
+\item{horizon}{An array of horizon height in degrees from \code{"compute_horizon"}}
 }
 \value{
 Estimated sky view factor, 1 defines an open sky view and 0 a totally obstructed sky view

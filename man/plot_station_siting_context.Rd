@@ -4,14 +4,21 @@
 \alias{plot_station_siting_context}
 \title{Weather station context}
 \usage{
-plot_station_siting_context(stationid, paramid, f.verbose.debug = TRUE)
+plot_station_siting_context(
+  stationid = 18700,
+  paramid = 211,
+  f.verbose = TRUE,
+  f.pdf = FALSE
+)
 }
 \arguments{
 \item{stationid}{A station number as integer and defined by met.no}
 
 \item{paramid}{A parameter number as integer and defined by met.no}
 
-\item{f.verbose.debug}{A boolean string to print debug messages, default is TRUE}
+\item{f.verbose}{A boolean string to print debug messages, default is TRUE}
+
+\item{f.pdf}{A boolean string to combine all plots into a pdf file, default is FALSE}
 }
 \value{
 None
@@ -22,7 +29,7 @@ the exposure of a station and to compute its WMO/met.no siting classification
 }
 \examples{
 plot_station_siting_context(stationid=18700)
-plot_station_siting_context(stationid=18700,paramid=211,f.debug=T)
+plot_station_siting_context(stationid=18700,paramid=211,f.verbose=T)
 }
 \references{
 \url{https://community.wmo.int/en/activity-areas/imop/siting-classification#MembersTools}

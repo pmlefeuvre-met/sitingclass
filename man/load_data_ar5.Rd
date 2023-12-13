@@ -20,7 +20,7 @@ A map tile
 }
 \description{
 Load vector FKB-AR5 files to assess area type aka land cover, alternatively
-get WMS tile (deprecated, use \code{"get_wms_tile"})
+get WMS tile (deprecated, use \code{"get_tile_wms"})
 }
 \examples{
 ar5 <- load_data_ar5(box,f.wms=F)

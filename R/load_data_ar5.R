@@ -1,7 +1,7 @@
 #' Load FKB-AR5 from vector files stored locally (restricted access to download)
 #'
 #' Load vector FKB-AR5 files to assess area type aka land cover, alternatively
-#' get WMS tile (deprecated, use \code{"get_wms_tile"})
+#' get WMS tile (deprecated, use \code{"get_tile_wms"})
 #'
 #' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-ar5/166382b4-82d6-4ea9-a68e-6fd0c87bf788}
 #'

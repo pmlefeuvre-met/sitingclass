@@ -11,12 +11,12 @@
 #' @return A map tile
 #'
 #' @examples
-#' tile <- get_wms_tile(box, layer = "ar5")
-#' tile <- get_wms_tile(box, layer = "CORINE_Land_Cover_2012" )
-#' tile <- get_wms_tile(box, layer = "Urban_Atlas_Lu_Lc_2012" )
+#' tile <- get_tile_wms(box, layer = "ar5")
+#' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
+#' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
 #'
 #' @export
-get_wms_tile <- function(box = NULL,
+get_tile_wms <- function(box = NULL,
                          layer = "CORINE_Land_Cover_2012",
                          px = 500){
   # Libraries
