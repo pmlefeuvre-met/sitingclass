@@ -57,8 +57,15 @@ plot_dem_rayshader <- function(stn = NULL,
     for (cardinal in cardinal_array){
       theta <- setNames( seq(0, 359 , by=90), cardinal_array)
       fname <- sprintf("%s/%i_terrain3D_%s.png", path, stn$id.stationid, cardinal)
+      title <- paste(stn.name,"-",cardinal)
+
+      print(cardinal)
+      print(stn.name)
+      print(fname)
+      print(title)
+
       render_camera(theta = theta[cardinal])
-      render_snapshot(fname, title_text = paste(stn.name,"-",cardinal),
+      render_snapshot(fname, title_text = title,
                       instant_capture=F, width = 2100, height = 2100, title_size = 140)
       #render_highquality(fname, clear = TRUE, title_text = stn.name,
       #                   width = 400, height = 400)
