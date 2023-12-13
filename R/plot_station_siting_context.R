@@ -69,7 +69,7 @@ plot_station_siting_context <- function(stationid = 18700,
   g3 <- plot_station_horizon_sun(stn,dem,dsm,demkm, path=path)
 
   # Plot DEM with rayshader
-  g4 <- plot_dem_rayshader(stn, dsm, path=path)
+  g4 <- plot_dem_rayshader(stn, dsm, path=NULL)
 
   # Save pdf
   if(f.pdf){

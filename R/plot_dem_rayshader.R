@@ -53,9 +53,9 @@ plot_dem_rayshader <- function(stn = NULL,
 
   }else{
     cardinal_array <- c("northward", "westward", "southward", "eastward")
+    theta <- setNames( seq(0, 359 , by=90), cardinal_array)
 
     for (cardinal in cardinal_array){
-      theta <- setNames( seq(0, 359 , by=90), cardinal_array)
       fname <- sprintf("%s/%i_terrain3D_%s.png", path, stn$id.stationid, cardinal)
       title <- paste(stn.name,"-",cardinal)
 
@@ -63,6 +63,7 @@ plot_dem_rayshader <- function(stn = NULL,
       print(stn.name)
       print(fname)
       print(title)
+      print(theta[cardinal])
 
       render_camera(theta = theta[cardinal])
       render_snapshot(fname, title_text = title,
