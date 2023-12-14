@@ -29,7 +29,7 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Get station coordinates and name
   stn <- get_latlon_frost(stationid,paramid)
-  centre <- stn  %>% sf::st_coordinates
+  centre <- stn  %>% st_coordinates
 
   # To save files
   path <- sprintf("plot/output/%i",stn$id.stationid)
@@ -40,8 +40,8 @@ plot_station_siting_context <- function(stationid = 18700,
   box <- c(c(centre[1],centre[2])-dx,
            c(centre[1],centre[2])+dx) %>% round
   class(box) <- "bbox"
-  box <- sf::st_as_sfc(box)
-  sf::st_crs(box) <- 25833 #32633 #to match tile projection
+  box <- st_as_sfc(box)
+  st_crs(box) <- 25833 #32633 #to match tile projection
 
   # Print
   if (f.verbose){
