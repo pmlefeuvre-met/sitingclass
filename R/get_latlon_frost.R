@@ -72,9 +72,9 @@ get_latlon_frost <- function(stationid = 18700,
     stringsAsFactors = FALSE
   )
   colnames(stn_attrib) <- colnames
-  stn <- sf::st_as_sf(stn_attrib,coords=c("lon","lat"),
-                      crs=sf::st_crs(4326)) %>% sf::st_transform(25833) #32633
-  sf::st_crs(stn) <- 25833 # 32633 - WGS 84 / UTM zone 33N # 25833 ETRS89 / UTM zone 33N
+  stn <- st_as_sf(stn_attrib,coords=c("lon","lat"),
+                      crs=st_crs(4326)) %>% st_transform(25833) #32633
+  st_crs(stn) <- 25833 # 32633 - WGS 84 / UTM zone 33N # 25833 ETRS89 / UTM zone 33N
   return(stn)
 
   ## Extra help
