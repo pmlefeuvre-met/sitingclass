@@ -22,11 +22,11 @@
 #' plot_tile_station(stn,box,tile_name="urban", path=path)
 #' plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
 #'
+#' @import sf
+#' @import ggplot2
 #' @importFrom stringr str_to_title
-#' @importFrom sf st_transform st_coordinates
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour
-#' @import ggplot2
 #'
 #' @export
 
