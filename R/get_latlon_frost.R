@@ -28,11 +28,11 @@ get_latlon_frost <- function(stationid = 18700,
   url <- sprintf("%sincobs=false&stationids=%i&",url,stationid)
   if(!is.null(paramid)){url <- sprintf("%sparameterids=%i&",url,paramid)}
   url <- sprintf("%sbasicoutput=false&time=latest",url)
-  auth <- httr::authenticate("ea623856-933a-4bcd-ac39-80b1d30ab6f8","ca0050c5-1112-45db-8114-52caee6967bb")
+  auth <- authenticate("ea623856-933a-4bcd-ac39-80b1d30ab6f8","ca0050c5-1112-45db-8114-52caee6967bb")
   # Query URL
-  res     <- httr:GET(url,auth)
+  res     <- GET(url,auth)
   # Format response content as a data.frame
-  content     <- httr::content(res,)#     str(content)
+  content     <- content(res,)#     str(content)
   if(length(grep("error",content))>0){print(content); stop()}
   n.paramid <- length(content$data$tseries)
   df <- content$data$tseries[[1]] %>% unlist %>% as.matrix %>% as.data.frame
