@@ -10,14 +10,13 @@
 #' @return A DEM
 #' @export
 #'
-#' @import ows4R
 #'
 #' @examples
 #' download_dem_kartverket_ogc()
 #'
 
 download_dem_kartverket_ogc <- function(stationid=18703, centre, name="dom", dx=100, resx=1, f.OGC=T){
-  require(ows4R)
+
   # Define box limits
   box <- c(c(centre[1],centre[2])-dx,c(centre[1],centre[2])+dx) %>% round
   if(name=="dom"){name="dsm"}

@@ -22,10 +22,10 @@
 #' plot_tile_station(stn,box,tile_name="urban", path=path)
 #' plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
 #'
-#' @import stringr
-#' @import sf
-#' @import maptiles
-#' @import tidyterra
+#' @importFrom stringr str_to_title
+#' @importFrom sf st_transform st_coordinates
+#' @importFrom maptiles get_tiles
+#' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour
 #' @import ggplot2
 #'
 #' @export
@@ -36,16 +36,9 @@ plot_tile_station <- function(stn = NULL,
                               dsm = NULL,
                               path = NULL){
 
-  # Libraries
-  require(stringr) # str_to_title()
-  require(sf)
-  require(maptiles) #get_tiles()
-  require(tidyterra) # geom_spatraster_rgb() geom_spatraster_contour()
-  require(ggplot2)
-
   # Extract station name and latlon
-  stn.name    <- str_to_title(stn$station.name)
-  stn.latlon  <- stn %>% st_transform(4326) %>% st_coordinates
+  stn.name    <- stringr::str_to_title(stn$station.name)
+  stn.latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates
 
   # Reformat name for title in annotate
   stn.title     <- sprintf("station: %s",stn.name)
@@ -54,11 +47,11 @@ plot_tile_station <- function(stn = NULL,
 
   # Load tile
   if( tile_name == "osm" ) {
-    tile <- get_tiles(box, crop = TRUE, provider="OpenStreetMap")
+    tile <- maptiles::get_tiles(box, crop = TRUE, provider="OpenStreetMap")
     credit <- "© OpenStreetMap"
 
   }else if( tile_name == "esri" ){
-    tile <- get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
+    tile <- maptiles::get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
     credit <- "© ESRI WorldImagery"
 
   }else if( tile_name == "ar5" ){
@@ -82,13 +75,13 @@ plot_tile_station <- function(stn = NULL,
 
   # Plot tile and station location
   g <- g +
-    geom_spatraster_rgb(data = tile) +
-    geom_sf(data = stn, fill = NA, color='red')
+    tidyterra::geom_spatraster_rgb(data = tile) +
+    geom_sf(data = stn, fill = NA, color = 'red')
 
   # Add contour plot from Digital Surface Model
   if(!is.null(dsm)){
     g <- g +
-      geom_spatraster_contour(data = dsm, binwidth = 2,alpha=.3)
+      tidyterra::geom_spatraster_contour(data = dsm, binwidth = 2, alpha = .3)
   }
 
   # Add coordinate system
@@ -111,7 +104,7 @@ plot_tile_station <- function(stn = NULL,
 
   # Save plot
   if(!is.null(path)){
-    fname <- sprintf("%s/%i_map_%s.png",path,stn$id.stationid,tile_name)
+    fname <- sprintf("%s/%i_map_%s.png",path, stn$id.stationid, tile_name)
     ggsave(fname,bg="white", width = 7, height = 7)
   }
 

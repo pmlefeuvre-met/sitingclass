@@ -30,7 +30,7 @@
 #' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
 #'
 #' @import ows4R
-#' @import terra
+#' @importFrom terra rast setMinMax
 #'
 #' @export
 
@@ -44,14 +44,14 @@ download_dem_kartverket <- function(stationid = NULL,
 
   # Libraries
   require(ows4R) # WCSClient$new() getCapabilities()
-  require(terra) # rast() setMinMax()
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",
                 stationid, centre[1], centre[2], name, dx, resx, path))
 
   # Compute bounding box
-  box <- c(c(centre[1],centre[2])-dx,c(centre[1],centre[2])+dx) %>% round
+  box <- c(c(centre[1],centre[2])-dx,
+           c(centre[1],centre[2])+dx) %>% round
 
   # # Set horizontal resolution if not defined
   # if(is.null(resx)){resx <- dx/100}
@@ -71,7 +71,7 @@ download_dem_kartverket <- function(stationid = NULL,
     print(sprintf("Load existing file: %s",fname_out))
     return(dem)
 
-    }
+  }
 
   # Get WCS info from an URL request with the layer name (i.e. DEM name)
   url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",name)
