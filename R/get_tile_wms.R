@@ -15,8 +15,8 @@
 #' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
 #'
+#' @import terra
 #' @importFrom httr GET content
-#' @importFrom terra ext vect rast crs
 #' @importFrom magrittr %>%
 #'
 #' @export
