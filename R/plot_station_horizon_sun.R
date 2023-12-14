@@ -43,7 +43,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   stn.id      <- stn$id.stationid
   stn.wmoid   <- stn$station.alternateids.id
   stn.level   <- stn$id.level
-  stn.centre  <- stn  %>% st_coordinates
+  stn.centre  <- stn %>% st_coordinates
   stn.latlon  <- stn %>% st_transform(4326) %>% st_coordinates
   stn.param   <- stn$id.parameterid
   stn.expos   <- stn$timeseries.quality.exposure.value
@@ -82,7 +82,6 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Plot horizon polygon
   g <- g +
     geom_polygon(data=horizon_max,mapping=aes(x=azimuth,y=horizon_height),alpha=0.5,fill="gray")
-  # + geom_polygon(data=horizon_dsm  ,mapping=aes(x=azimuth,y=horizon_height),alpha=0.5,fill="gray")
 
   # Plot horizon lines
   g <- g +
@@ -109,8 +108,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   xmax <- 360
   g <- g +
     scale_x_continuous(breaks = seq(xmin, xmax, by = 30), expand = c(0, 0)) +
-    scale_y_continuous(breaks = seq(0, 55 , by = 5 ), expand = c(0, 0)) +
-    coord_cartesian(xlim=c(xmin,xmax),ylim=c(0,70),expand=T)
+    scale_y_continuous(breaks = seq(0, 65 , by = 5 ), expand = c(0, 0)) +
+    coord_cartesian(xlim=c(xmin,xmax),ylim=c(0,80),expand=T)
 
   # Add annotation with infos
   label <- sprintf("Norwegian Met. Off.\n")
@@ -122,7 +121,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   label <- sprintf("%sstation_id: %i - level: %i\n",label, stn.id, stn.level)
   label <- sprintf("%swmo_id: %s\n%s",label,stn.wmoid, stn.name)
   g <- g +
-    annotate("label", x = 10, y = 50, size = 3,hjust = 0,
+    annotate("label", x = 10, y = 60, size = 3,hjust = 0,
              label= label)
 
   # Save plot

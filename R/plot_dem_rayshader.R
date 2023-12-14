@@ -14,7 +14,8 @@
 #' @examples
 #' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 #'
-#' @import rayshader
+#' @importFrom stringr str_to_title
+#' @importFrom rayshader raster_to_matrix sphere_shade add_shadow plot_3d render_label render_camera render_snapshot render_highquality render_depth
 #'
 #' @export
 
