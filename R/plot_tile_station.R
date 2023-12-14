@@ -22,7 +22,14 @@
 #' plot_tile_station(stn,box,tile_name="urban", path=path)
 #' plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
 #'
+#' @import stringr
+#' @import sf
+#' @import maptiles
+#' @import tidyterra
+#' @import ggplot2
+#'
 #' @export
+
 plot_tile_station <- function(stn = NULL,
                               box = NULL,
                               tile_name = "osm",

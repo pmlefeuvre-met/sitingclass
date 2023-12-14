@@ -14,7 +14,10 @@
 #' @examples
 #' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 #'
+#' @import rayshader
+#'
 #' @export
+
 plot_dem_rayshader <- function(stn = NULL,
                                dsm = NULL,
                                path = NULL){

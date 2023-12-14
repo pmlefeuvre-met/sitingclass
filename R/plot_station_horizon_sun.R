@@ -24,7 +24,13 @@
 #' # Plot sun diagram
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
+#' @import stringr
+#' @import sf
+#' @import ggplot2
+#' @import ggfun
+#'
 #' @export
+
 plot_station_horizon_sun <- function(stn = NULL,
                                      dem = NULL,
                                      dsm = NULL,

@@ -17,20 +17,30 @@ compute_horizon(
 
 \item{dem}{A SpatRaster of a digital elevation/surface model in UTM 33 (epsg:25833)}
 
-\item{level}{A height above the ground of the sensor in metres, default level `0` is set to `2` metres}
+\item{level}{A height above the ground of the sensor in metres, level 0 is set to 2 metres}
 
-\item{step}{An interval in degrees at which the horizon will be computed, default is every `10` deg.}
+\item{step}{An interval in degrees at which the horizon will be computed, default is every 10 deg.}
 
 \item{f.plot.polygon}{A boolean setting boundary values to -20 deg to facilitate plotting as polygon}
 }
 \value{
-horizon_height in degrees and azimuth angle at which the horizon is computed in degrees
+A dataframe with `horizon_height` in degrees and `azimuth` angle in degrees at which the horizon is computed in degrees
 }
 \description{
 Compute horizon height in degrees from a station location in UTM 33
 }
 \examples{
-compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
+# Load the station metadata including location and level
+stn <- get_latlon_frost(stationid,paramid)
+stn.id      <- stn$id.stationid
+stn.centre  <- stn  \%>\% st_coordinates
+stn.level   <- stn$id.level
+
+# Load a digital elevation model
+dsm   <- download_dem_kartverket(stn.id,stn.centre,name="dom",dx=100,resx=1)
+
+# Compute the horizon
+compute_horizon(stn.centre,dem)
 compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
 
 }

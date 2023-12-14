@@ -15,7 +15,11 @@
 #' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
 #'
+#' @import httr
+#' @import terra
+#'
 #' @export
+
 get_tile_wms <- function(box = NULL,
                          layer = "CORINE_Land_Cover_2012",
                          px = 500){

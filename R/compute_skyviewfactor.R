@@ -12,6 +12,7 @@
 #' compute_skyviewfactor(horizon)
 #'
 #' @export
+
 compute_skyviewfactor <- function(horizon = NULL){
 
   # Load function

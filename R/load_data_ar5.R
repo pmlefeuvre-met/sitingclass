@@ -15,7 +15,12 @@
 #' @examples
 #' ar5 <- load_data_ar5(box,f.wms=F)
 #'
+#' @import sf
+#' @import httr
+#' @import terra
+#'
 #' @export
+
 load_data_ar5 <- function(box = NULL,
                           f.wms = TRUE,
                           layer = "Arealtype",

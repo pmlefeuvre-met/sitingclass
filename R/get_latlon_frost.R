@@ -14,7 +14,11 @@
 #' get_latlon_frost(stationid=18700)
 #' get_latlon_frost(stationid=18700,paramid=211)
 #'
+#' @import sf
+#' @import httr
+#'
 #' @export
+
 get_latlon_frost <- function(stationid = 18700,
                              paramid = NULL){ #stationid=18920,paramid=211
   # Libraries

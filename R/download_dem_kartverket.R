@@ -29,7 +29,11 @@
 #' dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 #' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
 #'
+#' @import osw4R
+#' @import terra
+#'
 #' @export
+
 download_dem_kartverket <- function(stationid = NULL,
                                     centre = NULL,
                                     name = "dom",

@@ -13,7 +13,11 @@
 #' compute_sun_position(stn, f.hour = TRUE)
 #' compute_sun_position(stn, f.hour = FALSE)
 #'
+#' @import suntools
+#' @import sf
+#'
 #' @export
+
 compute_sun_position <- function(stn = NULL,
                                  f.hour = F){
   # Libraries
