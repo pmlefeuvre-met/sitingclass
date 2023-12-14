@@ -13,6 +13,8 @@
 #' compute_sun_position(stn, f.hour = TRUE)
 #' compute_sun_position(stn, f.hour = FALSE)
 #'
+#' @importFrom sf st_transform st_coordinates
+#' @importFrom suntools solarpos
 #'
 #' @export
 

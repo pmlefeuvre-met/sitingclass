@@ -26,6 +26,9 @@
 #' compute_horizon(stn.centre,dem)
 #' compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
 #'
+#' @importFrom terra cellFromXY
+#' @importFrom rgrass initGRASS write_RAST execGRASS unlink_.gislock remove_GISRC
+#'
 #' @export
 
 compute_horizon <- function(centre = NULL,
@@ -91,8 +94,8 @@ compute_horizon <- function(centre = NULL,
   }
 
   # Clean up
-  unlink_.gislock()
-  remove_GISRC()
+  rgrass::unlink_.gislock()
+  rgrass::remove_GISRC()
   unlink(gisDbase, recursive = TRUE)
 
   # Return output
