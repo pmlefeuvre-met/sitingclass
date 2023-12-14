@@ -26,7 +26,7 @@
 #' @import ggplot2
 #' @importFrom stringr str_to_title
 #' @importFrom maptiles get_tiles
-#' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour
+#' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
 #'
 #' @export
 
