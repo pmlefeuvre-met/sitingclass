@@ -10,7 +10,7 @@
 #' @return A DEM
 #' @export
 #'
-#' @import osw4R
+#' @import ows4R
 #'
 #' @examples
 #' download_dem_kartverket_ogc()
