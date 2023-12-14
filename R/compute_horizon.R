@@ -26,9 +26,6 @@
 #' compute_horizon(stn.centre,dem)
 #' compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
 #'
-#' @import rgrass
-#' @import terra
-#'
 #' @export
 
 compute_horizon <- function(centre = NULL,
@@ -36,42 +33,48 @@ compute_horizon <- function(centre = NULL,
                             level = 2,
                             step = 10,
                             f.plot.polygon = F){
-  # Libraries
-  require(rgrass)
-  require(terra) # cellFromXY()
 
   # Adjust ground level to match real sensor height
-  #r.stn.level <- rast(ext(dem), resolution=res(dem), crs=crs(dem))
-  #r.stn.level[100,100] <- 2
-  #dem <- dem + buffer(r.stn.level,2)
-  #j <-  adjacent(dem, cellFromXY(dem, centre), 4, include=T)
-  j <-  cellFromXY(dem, centre)
-  dem[c(j)] <- dem[c(j)] + ifelse(level==0,2,level)
+  level <- ifelse(level==0, 2, level)
+  loc <-  terra::cellFromXY(dem, centre)
+  dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
   grasslib <- try(system('grass --config', intern=TRUE))[4]
   gisDbase <- 'data/grassdata/'
 
   # Initialise GRASS and projection
-  initGRASS(gisBase=grasslib, home=tempdir(), SG=dem, gisDbase=gisDbase,
-            mapset="PERMANENT",override=TRUE,remove_GISRC=TRUE)
-  #execGRASS("g.proj", flags = "c", epsg = 25833)
-  #execGRASS("g.region", flags = "p")
+  rgrass::initGRASS(gisBase = grasslib,
+                    home = tempdir(),
+                    SG = dem,
+                    gisDbase = gisDbase,
+                    mapset = "PERMANENT",
+                    override = TRUE,
+                    remove_GISRC = TRUE)
 
   # Load DEM
-  write_RAST(dem, "elev", flags="o")
-  #execGRASS("r.info", map="elev")
+  rgrass::write_RAST(dem, "elev", flags="o")
 
   # Compute horizon
-  horizon <- execGRASS("r.horizon",flags=c('d','c','overwrite'),
-                       parameters =list(elevation='elev', coordinates=round(centre[1:2],2),
-                                        direction=90, distance=0.5,
-                                        step=step, start=0, end=360),
-                       intern = T) # DEBUG: echoCmd = T,
+  horizon <- rgrass::execGRASS("r.horizon",
+                               flags=c('d','c','overwrite'),
+                               parameters = list(elevation='elev',
+                                                 coordinates=round(centre[1:2],2),
+                                                 direction=90,
+                                                 distance=0.5,
+                                                 step=step,
+                                                 start=0,
+                                                 end=360),
+                               intern = T)
 
-  # Construct Dataframe from GRASS output
-  df <- horizon[2:length(horizon)] %>% strsplit(",") %>%
-    sapply(as.numeric) %>% t %>% data.frame
+  # Construct data frame from GRASS output
+  df <- horizon[2:length(horizon)] %>%
+    strsplit(",") %>%
+    sapply(as.numeric) %>%
+    t %>%
+    data.frame
+
+  # Name columns
   colnames(df) <- horizon[[1]] %>% strsplit(",") %>% unlist
 
   # Create directory and save file
@@ -90,6 +93,8 @@ compute_horizon <- function(centre = NULL,
   # Clean up
   unlink_.gislock()
   remove_GISRC()
-  unlink(gisDbase)
+  unlink(gisDbase, recursive = TRUE)
+
+  # Return output
   return(df)
 }
