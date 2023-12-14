@@ -24,10 +24,10 @@
 #' # Plot sun diagram
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
-#' @import stringr
-#' @import sf
+#' @importFrom stringr str_to_title
+#' @importFrom sf st_transform st_coordinates
 #' @import ggplot2
-#' @import ggfun
+#' @importFrom ggfun element_roundrect
 #'
 #' @export
 
@@ -36,12 +36,6 @@ plot_station_horizon_sun <- function(stn = NULL,
                                      dsm = NULL,
                                      demkm = NULL,
                                      path = NULL){
-
-  # Libraries
-  require(stringr)
-  require(sf)
-  require(ggplot2)
-  require(ggfun) # element_roundrect()
 
   # Extract station name, latlon and level
   tz <- Sys.timezone()

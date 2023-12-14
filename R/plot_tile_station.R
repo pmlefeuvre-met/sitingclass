@@ -37,8 +37,8 @@ plot_tile_station <- function(stn = NULL,
                               path = NULL){
 
   # Extract station name and latlon
-  stn.name    <- stringr::str_to_title(stn$station.name)
-  stn.latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates
+  stn.name    <- str_to_title(stn$station.name)
+  stn.latlon  <- stn %>% st_transform(4326) %>% st_coordinates
 
   # Reformat name for title in annotate
   stn.title     <- sprintf("station: %s",stn.name)
@@ -47,11 +47,11 @@ plot_tile_station <- function(stn = NULL,
 
   # Load tile
   if( tile_name == "osm" ) {
-    tile <- maptiles::get_tiles(box, crop = TRUE, provider="OpenStreetMap")
+    tile <- get_tiles(box, crop = TRUE, provider="OpenStreetMap")
     credit <- "© OpenStreetMap"
 
   }else if( tile_name == "esri" ){
-    tile <- maptiles::get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
+    tile <- get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
     credit <- "© ESRI WorldImagery"
 
   }else if( tile_name == "ar5" ){
@@ -75,13 +75,13 @@ plot_tile_station <- function(stn = NULL,
 
   # Plot tile and station location
   g <- g +
-    tidyterra::geom_spatraster_rgb(data = tile) +
+    geom_spatraster_rgb(data = tile) +
     geom_sf(data = stn, fill = NA, color = 'red')
 
   # Add contour plot from Digital Surface Model
   if(!is.null(dsm)){
     g <- g +
-      tidyterra::geom_spatraster_contour(data = dsm, binwidth = 2, alpha = .3)
+      geom_spatraster_contour(data = dsm, binwidth = 2, alpha = .3)
   }
 
   # Add coordinate system
