@@ -16,7 +16,8 @@
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
 #'
 #' @importFrom httr GET content
-#' @importFrom terra vect ext rast crs
+#' @importFrom terra ext vect rast crs
+#' @importFrom magrittr %>%
 #'
 #' @export
 
