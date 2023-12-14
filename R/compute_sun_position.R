@@ -22,7 +22,7 @@ compute_sun_position <- function(stn = NULL,
                                  f.hour = F){
 
   # Convert back to latlon
-  latlon <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates
+  latlon <- stn %>% st_transform(4326) %>% st_coordinates
   # Extract timezone from System
   tz <- Sys.timezone()
 
@@ -40,7 +40,7 @@ compute_sun_position <- function(stn = NULL,
     sun_hours <- do.call("c", lapply(seq_hour, seq_month_hour) )
 
     # Compute sun position
-    sun_year_hour <- suntools::solarpos(matrix(latlon[1:2], nrow = 1), sun_hours)
+    sun_year_hour <- solarpos(matrix(latlon[1:2], nrow = 1), sun_hours)
 
     # Convert output to dataframe
     df  <- data.frame(azimuth = sun_year_hour[,1],
@@ -62,7 +62,7 @@ compute_sun_position <- function(stn = NULL,
     sun_days <- do.call("c", lapply(seq_month, seq_day) )
 
     # Compute sun position
-    sun_year <- suntools::solarpos(matrix(latlon[1:2], nrow = 1), sun_days)
+    sun_year <- solarpos(matrix(latlon[1:2], nrow = 1), sun_days)
 
     # Convert output to dataframe
     df  <- data.frame(azimuth = sun_year[,1],

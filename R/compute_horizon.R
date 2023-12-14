@@ -39,7 +39,7 @@ compute_horizon <- function(centre = NULL,
 
   # Adjust ground level to match real sensor height
   level <- ifelse(level==0, 2, level)
-  loc <-  terra::cellFromXY(dem, centre)
+  loc <-  cellFromXY(dem, centre)
   dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
@@ -47,7 +47,7 @@ compute_horizon <- function(centre = NULL,
   gisDbase <- 'data/grassdata/'
 
   # Initialise GRASS and projection
-  rgrass::initGRASS(gisBase = grasslib,
+  initGRASS(gisBase = grasslib,
                     home = tempdir(),
                     SG = dem,
                     gisDbase = gisDbase,
@@ -56,10 +56,10 @@ compute_horizon <- function(centre = NULL,
                     remove_GISRC = TRUE)
 
   # Load DEM
-  rgrass::write_RAST(dem, "elev", flags="o")
+  write_RAST(dem, "elev", flags="o")
 
   # Compute horizon
-  horizon <- rgrass::execGRASS("r.horizon",
+  horizon <- execGRASS("r.horizon",
                                flags=c('d','c','overwrite'),
                                parameters = list(elevation='elev',
                                                  coordinates=round(centre[1:2],2),
@@ -94,8 +94,8 @@ compute_horizon <- function(centre = NULL,
   }
 
   # Clean up
-  rgrass::unlink_.gislock()
-  rgrass::remove_GISRC()
+  unlink_.gislock()
+  remove_GISRC()
   unlink(gisDbase, recursive = TRUE)
 
   # Return output
