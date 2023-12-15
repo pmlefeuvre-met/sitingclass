@@ -6,8 +6,20 @@ Author: Pierre-Marie Lefeuvre
 Maintainer: Pierre-Marie Lefeuvre <pierre.marie.lefeuvre@met.no>
 Description: The package sitingclass evaluates the exposure of weather stations for specific sensors from digital elevation models. The package is currently designed for Met usage only, due to data restrictions.
 License: GPL3
-Depends: 
-    R (>= 3.6.0)
+Depends: R (>= 3.6.0)
+Imports: ggfun,
+         ggplot2,
+         httr,
+         magrittr,
+         maptiles,
+         ows4R,
+         rayshader,
+         rgrass,
+         sf,
+         stringr,
+         suntools,
+         terra,
+         tidyterra
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
