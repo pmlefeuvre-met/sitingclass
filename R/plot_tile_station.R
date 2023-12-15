@@ -24,7 +24,6 @@
 #'
 #' @import sf
 #' @import ggplot2
-#' @import tidyterra
 #' @importFrom stringr str_to_title
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
