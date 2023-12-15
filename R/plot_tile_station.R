@@ -48,25 +48,25 @@ plot_tile_station <- function(stn = NULL,
   # Load tile
   if( tile_name == "osm" ) {
     tile <- get_tiles(box, crop = TRUE, provider="OpenStreetMap")
-    credit <- "© OpenStreetMap"
+    credit <- "\uA9 OpenStreetMap"
 
   }else if( tile_name == "esri" ){
     tile <- get_tiles(box, crop = TRUE, provider="Esri.WorldImagery" )
-    credit <- "© ESRI WorldImagery"
+    credit <- "\uA9 ESRI WorldImagery"
 
   }else if( tile_name == "ar5" ){
     tile <- get_tile_wms(box, layer = "ar5")
-    credit <- "FKB-AR5 © Nibio"
+    credit <- "FKB-AR5 \uA9 Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png"
 
     }else if( tile_name == "clc" ){
     tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
-    credit <- "CORINE LC 2012 © Nibio"
+    credit <- "CORINE LC 2012 \uA9 Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/clc?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&format=image/png"
 
     }else if( tile_name == "urban" ){
     tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
-    credit <- "Urban Atlas 2012 © Nibio"
+    credit <- "Urban Atlas 2012 \uA9 Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Urban_Atlas_Lu_Lc_2012&format=image/png"
   }
 
