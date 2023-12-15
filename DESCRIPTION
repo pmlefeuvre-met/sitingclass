@@ -8,15 +8,6 @@ Description: The package sitingclass evaluates the exposure of weather stations 
 License: GPL3
 Depends: 
     R (>= 3.6.0)
-Imports: sf,
-         terra,
-         tidyterra,
-         rgrass,
-         rayshader,
-         ows4R,
-         httr,
-         stringr,
-         ggplot2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
