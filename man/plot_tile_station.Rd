@@ -31,13 +31,31 @@ Plots publicly-available maps, atlas, land cover or satellite imagery near
 a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 }
 \examples{
+require(sf)
+
+# Get station coordinates and name
+stationid <-  18700
+stn    <- get_latlon_frost(stationid)
+centre <- stn  \%>\% st_coordinates()
+
+# Construct box to extract WMS tile
+dx <- 100
+box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) \%>\% round()
+class(box) <- "bbox"
+box <- st_as_sfc(box)
+st_crs(box) <- 25833 # UTM33
+
+# Plot maps using plot_tile_station()
 g <- plot_tile_station(stn, box, tile_name = "esri")
 g
-plot_tile_station(stn,box,tile_name="esri", path=path)
-plot_tile_station(stn,box,tile_name="ar5", path=path)
-plot_tile_station(stn,box,tile_name="clc", path=path)
-plot_tile_station(stn,box,tile_name="urban", path=path)
-plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
+plot_tile_station(stn, box, tile_name="esri")
+plot_tile_station(stn, box, tile_name="ar5")
+plot_tile_station(stn, box, tile_name="clc")
+plot_tile_station(stn, box, tile_name="urban")
+
+# Include Digital Elevation Model as contour
+dsm   <- download_dem_kartverket(stationid, centre, name="dom", dx, resx=1)
+plot_tile_station(stn, box, tile_name="osm", dsm=dsm, path="plot/map")
 
 }
 \references{

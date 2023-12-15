@@ -14,14 +14,20 @@
 #' @return Sun diagram with station metadata
 #'
 #' @examples
-#' # Load data
-#' stn <- get_latlon_frost(stationid=18700)
-#' dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1)
-#' dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1)
-#' demkm <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20)
-#' path <- sprintf("station_location_files/output/%i",stn$id.stationid)
-#' # path <- 'plot/horizon'
-#' # Plot sun diagram
+#' require(sf)
+#'
+#' # Load the station metadata and location
+#' stn <- get_latlon_frost(stationid=18700, paramid=211)
+#' stn.id      <- stn$id.stationid
+#' stn.centre  <- stn  %>% st_coordinates()
+#'
+#' # Load DEM data
+#' dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=100,resx=1)
+#' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom",dx=100,resx=1)
+#' demkm <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=20e3,resx=20)
+#'
+#' # Plot sun diagram and save
+#' path <- 'plot/horizon'
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
 #' @importFrom stringr str_to_title
@@ -37,14 +43,17 @@ plot_station_horizon_sun <- function(stn = NULL,
                                      demkm = NULL,
                                      path = NULL){
 
-  # Extract station name, latlon and level
+  # Extract timezone from System and assign variables
   tz <- Sys.timezone()
-  stn.name    <- str_to_title(stn$station.name)
+  azimuth <- day <- horizon_height <- hour <- inclination <- NULL
+
+  # Extract station name, latlon and level
+  stn.name    <- stringr::str_to_title(stn$station.name)
   stn.id      <- stn$id.stationid
   stn.wmoid   <- stn$station.alternateids.id
   stn.level   <- stn$id.level
-  stn.centre  <- stn %>% st_coordinates
-  stn.latlon  <- stn %>% st_transform(4326) %>% st_coordinates
+  stn.centre  <- stn %>% sf::st_coordinates()
+  stn.latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates()
   stn.param   <- stn$id.parameterid
   stn.expos   <- stn$timeseries.quality.exposure.value
   stn.perf    <- stn$timeseries.quality.performance.value
@@ -58,12 +67,12 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Compute sun position from station location
   sun       <- compute_sun_position(stn)
-  sun_hour  <- compute_sun_position(stn,f.hour=T)
+  sun_hour  <- compute_sun_position(stn, f.hour = TRUE)
 
   # Compute horizon view from location
-  horizon_dem   <- compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
-  horizon_dsm   <- compute_horizon(stn.centre,dsm,level=stn.level,step=.01,f.plot.polygon=T)
-  horizon_demkm <- compute_horizon(stn.centre,demkm,level=stn.level,step=.01,f.plot.polygon=T)
+  horizon_dem   <- compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=TRUE)
+  horizon_dsm   <- compute_horizon(stn.centre,dsm,level=stn.level,step=.01,f.plot.polygon=TRUE)
+  horizon_demkm <- compute_horizon(stn.centre,demkm,level=stn.level,step=.01,f.plot.polygon=TRUE)
   horizon_max   <- data.frame(azimuth=horizon_dem[,1],
                               horizon_height=apply(cbind(horizon_dem[,2],
                                                          horizon_dsm[,2],
@@ -109,7 +118,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   g <- g +
     scale_x_continuous(breaks = seq(xmin, xmax, by = 30), expand = c(0, 0)) +
     scale_y_continuous(breaks = seq(0, 65 , by = 5 ), expand = c(0, 0)) +
-    coord_cartesian(xlim=c(xmin,xmax),ylim=c(0,80),expand=T)
+    coord_cartesian(xlim=c(xmin,xmax),ylim=c(0,80),expand=TRUE)
 
   # Add annotation with infos
   label <- sprintf("Norwegian Met. Off.\n")
@@ -126,6 +135,7 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Save plot
   if(!is.null(path)){
+    dir.create(path, showWarnings = FALSE, recursive = TRUE)
     fname <- sprintf("%s/%i_sun_diagram_auto.png",path,stn$id.stationid)
     ggsave(fname,bg="white", width = 7, height = 7)
   }

@@ -12,8 +12,8 @@
 #'
 #' @return A map tile
 #'
-#' @examples
-#' ar5 <- load_data_ar5(box,f.wms=F)
+# #' @examples
+# #' ar5 <- load_data_ar5(box,f.wms=FALSE)
 #'
 # #' @import sf
 # #' @import httr
@@ -23,10 +23,6 @@ load_data_ar5 <- function(box = NULL,
                           f.wms = TRUE,
                           layer = "Arealtype",
                           px = 500){
-  # Libraries
-  require(sf)
-  require(httr)
-  require(terra)
 
   # Convert to UTM 33 and clip vector to box
   if(!f.wms){
@@ -41,11 +37,11 @@ load_data_ar5 <- function(box = NULL,
 
     # Load file
     ar5 <- sf::st_read(sprintf("%s/%s",path,fname),layer="fkb_ar5_omrade")
-    ar5 <- ar5["arealtype"] %>% st_transform(25833) %>% st_intersection(box)
-    ar5 <- vect(ar5) #SpatVector
+    ar5 <- ar5["arealtype"] %>% sf::st_transform(25833) %>% sf::st_intersection(box)
+    ar5 <- terra::vect(ar5) #SpatVector
 
   }else{
-    bbox <- ext(vect(box))
+    bbox <- terra::ext(terra::vect(box))
     con <- paste("https://wms.nibio.no/cgi-bin/ar5",
                  paste(
                    "SERVICE=WMS",
@@ -59,10 +55,10 @@ load_data_ar5 <- function(box = NULL,
                    sprintf("HEIGHT=%i", px),
                    sep = "&"),
                  sep = "?")
-    ar5 <- GET(con) %>% content %>% "*"(255) %>% rast
+    ar5 <- httr::GET(con) %>% httr::content %>% "*"(255) %>% terra::rast
     names(ar5) <- c("red", "green", "blue")
-    ext(ar5) <- ext(vect(box))
-    crs(ar5) <- "epsg:25833"
+    terra::ext(ar5) <- bbox
+    terra::crs(ar5) <- "epsg:25833"
   }
   # https://wms.nibio.no/cgi-bin/ar5?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&WIDTH=500&HEIGHT=500&LAYERS=Arealtype&SRS=EPSG:25833&BBOX=261750,6606750,262000,6607000
   # http://mesonet.agron.iastate.edu/cgi-bin/mapserv/mapserv?map=/mesonet/www/apps/iemwebsite/data/wms/goes/conus_ir.map&SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&WIDTH=256&HEIGHT=256&FORMAT=image/png&TRANSPARENT=TRUE&BBOX=24,-126,50,-66&LAYERS=conus_ir_4km_900913,conus_ir_4km&CRS=EPSG:4326&STYLES&

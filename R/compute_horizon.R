@@ -12,22 +12,26 @@
 #'
 #' @return A dataframe with `horizon_height` in degrees and `azimuth` angle in degrees at which the horizon is computed in degrees
 #'
+#' @importFrom terra cellFromXY
+#' @importFrom rgrass initGRASS write_RAST execGRASS unlink_.gislock remove_GISRC
+#' @importFrom magrittr %>%
+#' @importFrom utils write.csv
+#'
 #' @examples
+#' require(sf)
+#'
 #' # Load the station metadata including location and level
-#' stn <- get_latlon_frost(stationid,paramid)
+#' stn <- get_latlon_frost(stationid=18700, paramid=211)
 #' stn.id      <- stn$id.stationid
-#' stn.centre  <- stn  %>% st_coordinates
+#' stn.centre  <- stn  %>% st_coordinates()
 #' stn.level   <- stn$id.level
 #'
 #' # Load a digital elevation model
-#' dsm   <- download_dem_kartverket(stn.id,stn.centre,name="dom",dx=100,resx=1)
+#' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx=100, resx=1)
 #'
 #' # Compute the horizon
-#' compute_horizon(stn.centre,dem)
-#' compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
-#'
-#' @importFrom terra cellFromXY
-#' @importFrom rgrass initGRASS write_RAST execGRASS unlink_.gislock remove_GISRC
+#' compute_horizon(stn.centre, dsm)
+#' compute_horizon(stn.centre, dsm, level=stn.level, step=1, f.plot.polygon=TRUE)
 #'
 #' @export
 
@@ -83,14 +87,14 @@ compute_horizon <- function(centre = NULL,
   # Create directory and save file
   path <- "data/horizon"
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
-  file_horizon <- sprintf("%s/horizon_%s.csv",path,names(dem))
-  write.csv(df,file_horizon,row.names=F)
+  file_horizon <- sprintf("%s/horizon_%s.csv", path, names(dem))
+  write.csv(df, file_horizon, row.names = FALSE)
 
   # Reformat start point and add end point to plot as polygon
   if(f.plot.polygon){
     ymin_polygon <- -20
     df[1,] <- c(360, ymin_polygon)
-    df     <- rbind(df,c(0,ymin_polygon))
+    df     <- rbind(df, c(0, ymin_polygon))
   }
 
   # Clean up

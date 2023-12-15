@@ -40,10 +40,15 @@ extent. The downloaded DEM is a SpatRaster object. If the DEM file already
 exists, it is loaded by default unless f.overwrite is set to TRUE
 }
 \examples{
-# Load data
+require(sf)
+
+# Define parameters
 stationid <- 18700
-centre <- stn  \%>\% st_coordinates
+stn <- get_latlon_frost(stationid)
+centre <- stn  \%>\% st_coordinates()
 path   <- "data/dem"
+
+# Load data using ows4R ## WCSClient$new() getCapabilities()
 dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
 dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)

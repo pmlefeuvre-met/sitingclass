@@ -15,9 +15,10 @@
 #' @examples
 #' # Plot sun diagram and map infos for a weather station
 #' plot_station_siting_context(stationid=18700)
-#' plot_station_siting_context(stationid=18700,paramid=211,f.verbose=T)
+#' plot_station_siting_context(stationid=18700, paramid=211, f.verbose=TRUE)
 #'
 #' @importFrom sf st_coordinates st_as_sfc st_crs
+#' @importFrom grDevices dev.off pdf
 #'
 #' @export
 
@@ -32,7 +33,7 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # To save files
   path <- sprintf("plot/output/%i",stn$id.stationid)
-  dir.create(path,recursive=T,showWarnings=F)
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
   dx <- 100

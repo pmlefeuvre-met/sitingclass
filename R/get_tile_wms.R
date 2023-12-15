@@ -11,6 +11,20 @@
 #' @return A map tile
 #'
 #' @examples
+#' require(sf)
+#'
+#' # Get station coordinates and name
+#' stn    <- get_latlon_frost(18700)
+#' centre <- stn  %>% st_coordinates()
+#'
+#' # Construct box to extract WMS tile
+#' dx <- 100
+#' box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) %>% round()
+#' class(box) <- "bbox"
+#' box <- st_as_sfc(box)
+#' st_crs(box) <- 25833 # UTM33
+#'
+#' # Load tiles
 #' tile <- get_tile_wms(box, layer = "ar5")
 #' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
@@ -26,7 +40,7 @@ get_tile_wms <- function(box = NULL,
                          px = 500){
 
   # Extract bounding box
-  bbox <- ext(vect(box))
+  bbox <- terra::ext(terra::vect(box))
 
   # Set URL options to get data
   if( layer == "ar5"){
@@ -75,14 +89,10 @@ get_tile_wms <- function(box = NULL,
                sep = "?")
 
   # Load WMS and convert to SpatRaster
-  wms <- GET(con) %>% content %>% "*"(255) %>% rast
+  wms <- httr::GET(con) %>% httr::content() %>% "*"(255) %>% terra::rast()
   names(wms) <- c("red", "green", "blue")
-  print(wms)
-  print(bbox)
-  plot(wms)
-  plot(bbox)
-  ext(wms) <- bbox
-  crs(wms) <- "epsg:25833"
+  terra::ext(wms) <- bbox
+  terra::crs(wms) <- "epsg:25833"
 
   return(wms)
 }

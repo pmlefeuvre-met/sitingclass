@@ -14,13 +14,31 @@
 #' @return A ggplot object
 #'
 #' @examples
+#' require(sf)
+#'
+#' # Get station coordinates and name
+#' stationid <-  18700
+#' stn    <- get_latlon_frost(stationid)
+#' centre <- stn  %>% st_coordinates()
+#'
+#' # Construct box to extract WMS tile
+#' dx <- 100
+#' box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) %>% round()
+#' class(box) <- "bbox"
+#' box <- st_as_sfc(box)
+#' st_crs(box) <- 25833 # UTM33
+#'
+#' # Plot maps using plot_tile_station()
 #' g <- plot_tile_station(stn, box, tile_name = "esri")
 #' g
-#' plot_tile_station(stn,box,tile_name="esri", path=path)
-#' plot_tile_station(stn,box,tile_name="ar5", path=path)
-#' plot_tile_station(stn,box,tile_name="clc", path=path)
-#' plot_tile_station(stn,box,tile_name="urban", path=path)
-#' plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path="plot/map")
+#' plot_tile_station(stn, box, tile_name="esri")
+#' plot_tile_station(stn, box, tile_name="ar5")
+#' plot_tile_station(stn, box, tile_name="clc")
+#' plot_tile_station(stn, box, tile_name="urban")
+#'
+#' # Include Digital Elevation Model as contour
+#' dsm   <- download_dem_kartverket(stationid, centre, name="dom", dx, resx=1)
+#' plot_tile_station(stn, box, tile_name="osm", dsm=dsm, path="plot/map")
 #'
 #' @import ggplot2
 #' @import sf
@@ -99,11 +117,12 @@ plot_tile_station <- function(stn = NULL,
   g <- g +
     xlab("Easting (metre)") +
     ylab("Northing (metre)") +
-    annotate("text", x = Inf, y = -Inf, size = 3,hjust = 1, vjust=0,
+    annotate("text", x = Inf, y = -Inf, size = 3, hjust = 1, vjust=0,
              label=sprintf("%s - ETRS89/UTM33" ,credit) )
 
   # Save plot
   if(!is.null(path)){
+    dir.create(path, showWarnings = FALSE, recursive = TRUE)
     fname <- sprintf("%s/%i_map_%s.png",path, stn$id.stationid, tile_name)
     ggsave(fname,bg="white", width = 7, height = 7)
   }

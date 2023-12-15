@@ -9,6 +9,10 @@
 #' @return Estimated sky view factor, 1 defines an open sky view and 0 a totally obstructed sky view
 #'
 #' @examples
+#'# Synthetic example of horizon, see \code{"compute_horizon"}
+#'horizon <- data.frame(azimuth=seq(0,330,30),
+#'                      horizon_height=c(7.9 , 17.5, 3.8, 7.8, 10.9, 20.1,
+#'                                       23.8, 13.7, 7.0, 7.4, 21.2, 16.2) )
 #' compute_skyviewfactor(horizon)
 #'
 #' @export

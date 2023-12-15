@@ -21,10 +21,15 @@
 #' @return A Digital Elevation Model
 #'
 #' @examples
-#' # Load data
+#' require(sf)
+#'
+#' # Define parameters
 #' stationid <- 18700
-#' centre <- stn  %>% st_coordinates
+#' stn <- get_latlon_frost(stationid)
+#' centre <- stn  %>% st_coordinates()
 #' path   <- "data/dem"
+#'
+#' # Load data using ows4R ## WCSClient$new() getCapabilities()
 #' dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
 #' dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 #' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
@@ -41,9 +46,6 @@ download_dem_kartverket <- function(stationid = NULL,
                                     resx = dx/100,
                                     path = "data/dem",
                                     f.overwrite = FALSE){
-
-  # Libraries
-  require(ows4R) # WCSClient$new() getCapabilities()
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",
@@ -77,7 +79,7 @@ download_dem_kartverket <- function(stationid = NULL,
   url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",name)
   WCS  <- WCSClient$new(url,serviceVersion = "1.0.0", logger = "INFO")
   caps <- WCS$getCapabilities()
-  chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833",name), exact = T)
+  chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833",name), exact = TRUE)
 
   # Send URL request to download the DEM data.
   dem <- chla$getCoverage(crs = "EPSG:25833",RESX = resx, RESY = resx,

@@ -20,6 +20,20 @@ A map tile
 Fetch map tiles from publicly available WMS released by Nibio
 }
 \examples{
+require(sf)
+
+# Get station coordinates and name
+stn    <- get_latlon_frost(18700)
+centre <- stn  \%>\% st_coordinates()
+
+# Construct box to extract WMS tile
+dx <- 100
+box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) \%>\% round()
+class(box) <- "bbox"
+box <- st_as_sfc(box)
+st_crs(box) <- 25833 # UTM33
+
+# Load tiles
 tile <- get_tile_wms(box, layer = "ar5")
 tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )

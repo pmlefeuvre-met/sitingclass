@@ -18,6 +18,14 @@ dataframe with inclination of the sun position in the sky in degrees, azimuth in
 Compute sun position in the sky from a station location in UTM 33
 }
 \examples{
+# Set parameters
+stationid <- 18700
+paramid <- 211
+
+# Load the station metadata including location and level
+stn <- get_latlon_frost(stationid,paramid)
+
+# Compute sun position in the sky
 compute_sun_position(stn, f.hour = TRUE)
 compute_sun_position(stn, f.hour = FALSE)
 

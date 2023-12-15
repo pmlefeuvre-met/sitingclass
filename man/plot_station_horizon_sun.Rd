@@ -31,14 +31,20 @@ Fetch station metadata based on station number and parameter id from Frost v1.
 The function gets station name, location and sensor details such as level, exposure and performance
 }
 \examples{
-# Load data
-stn <- get_latlon_frost(stationid=18700)
-dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1)
-dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1)
-demkm <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20)
-path <- sprintf("station_location_files/output/\%i",stn$id.stationid)
-# path <- 'plot/horizon'
-# Plot sun diagram
+require(sf)
+
+# Load the station metadata and location
+stn <- get_latlon_frost(stationid=18700, paramid=211)
+stn.id      <- stn$id.stationid
+stn.centre  <- stn  \%>\% st_coordinates()
+
+# Load DEM data
+dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=100,resx=1)
+dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom",dx=100,resx=1)
+demkm <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=20e3,resx=20)
+
+# Plot sun diagram and save
+path <- 'plot/horizon'
 plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 
 }

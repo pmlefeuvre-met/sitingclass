@@ -30,7 +30,7 @@ the exposure of a station and to compute its WMO/met.no siting classification
 \examples{
 # Plot sun diagram and map infos for a weather station
 plot_station_siting_context(stationid=18700)
-plot_station_siting_context(stationid=18700,paramid=211,f.verbose=T)
+plot_station_siting_context(stationid=18700, paramid=211, f.verbose=TRUE)
 
 }
 \references{

@@ -11,10 +11,9 @@
 #'
 #'
 #' @examples
-#' download_dem_kartverket_ogc()
-#'
+#' # To do
 
-download_dem_kartverket_ogc <- function(stationid=18703, centre, name="dom", dx=100, resx=1, f.OGC=T){
+download_dem_kartverket_ogc <- function(stationid=18703, centre, name="dom", dx=100, resx=1, f.OGC=TRUE){
 
   # Define box limits
   box <- c(c(centre[1],centre[2])-dx,c(centre[1],centre[2])+dx) %>% round

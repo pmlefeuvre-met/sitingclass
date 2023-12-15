@@ -10,7 +10,7 @@ download_dem_kartverket_ogc(
   name = "dom",
   dx = 100,
   resx = 1,
-  f.OGC = T
+  f.OGC = TRUE
 )
 }
 \arguments{
@@ -33,6 +33,5 @@ A DEM
 Download DEM from Kartverket's NEWEST OGC API
 }
 \examples{
-download_dem_kartverket_ogc()
-
+# To do
 }

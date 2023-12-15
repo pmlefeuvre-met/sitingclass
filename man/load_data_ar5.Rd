@@ -22,10 +22,6 @@ A map tile
 Load vector FKB-AR5 files to assess area type aka land cover, alternatively
 get WMS tile (deprecated, use \code{"get_tile_wms"})
 }
-\examples{
-ar5 <- load_data_ar5(box,f.wms=F)
-
-}
 \references{
 \url{https://kartkatalog.geonorge.no/metadata/fkb-ar5/166382b4-82d6-4ea9-a68e-6fd0c87bf788}
 }

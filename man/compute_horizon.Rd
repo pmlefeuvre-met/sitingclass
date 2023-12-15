@@ -30,18 +30,20 @@ A dataframe with `horizon_height` in degrees and `azimuth` angle in degrees at w
 Compute horizon height in degrees from a station location in UTM 33
 }
 \examples{
+require(sf)
+
 # Load the station metadata including location and level
-stn <- get_latlon_frost(stationid,paramid)
+stn <- get_latlon_frost(stationid=18700, paramid=211)
 stn.id      <- stn$id.stationid
-stn.centre  <- stn  \%>\% st_coordinates
+stn.centre  <- stn  \%>\% st_coordinates()
 stn.level   <- stn$id.level
 
 # Load a digital elevation model
-dsm   <- download_dem_kartverket(stn.id,stn.centre,name="dom",dx=100,resx=1)
+dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx=100, resx=1)
 
 # Compute the horizon
-compute_horizon(stn.centre,dem)
-compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=T)
+compute_horizon(stn.centre, dsm)
+compute_horizon(stn.centre, dsm, level=stn.level, step=1, f.plot.polygon=TRUE)
 
 }
 \references{

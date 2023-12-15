@@ -16,6 +16,7 @@
 #'
 #' @import sf
 #' @importFrom httr authenticate GET content
+#' @importFrom utils type.convert
 #'
 #' @export
 

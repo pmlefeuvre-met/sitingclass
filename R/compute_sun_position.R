@@ -10,6 +10,14 @@
 #' @return dataframe with inclination of the sun position in the sky in degrees, azimuth in degrees and timestamp as factor
 #'
 #' @examples
+#' # Set parameters
+#' stationid <- 18700
+#' paramid <- 211
+#'
+#' # Load the station metadata including location and level
+#' stn <- get_latlon_frost(stationid,paramid)
+#'
+#' # Compute sun position in the sky
 #' compute_sun_position(stn, f.hour = TRUE)
 #' compute_sun_position(stn, f.hour = FALSE)
 #'
@@ -21,10 +29,11 @@
 compute_sun_position <- function(stn = NULL,
                                  f.hour = F){
 
-  # Convert back to latlon
-  latlon <- stn %>% st_transform(4326) %>% st_coordinates
   # Extract timezone from System
   tz <- Sys.timezone()
+
+  # Convert back to latlon
+  latlon <- stn %>% st_transform(4326) %>% st_coordinates
 
   if(f.hour){
     # Function to get sun position at the same hour over six months, on each 21st of the month
@@ -40,7 +49,7 @@ compute_sun_position <- function(stn = NULL,
     sun_hours <- do.call("c", lapply(seq_hour, seq_month_hour) )
 
     # Compute sun position
-    sun_year_hour <- solarpos(matrix(latlon[1:2], nrow = 1), sun_hours)
+    sun_year_hour <- suntools::solarpos(matrix(latlon[1:2], nrow = 1), sun_hours)
 
     # Convert output to dataframe
     df  <- data.frame(azimuth = sun_year_hour[,1],
@@ -62,7 +71,7 @@ compute_sun_position <- function(stn = NULL,
     sun_days <- do.call("c", lapply(seq_month, seq_day) )
 
     # Compute sun position
-    sun_year <- solarpos(matrix(latlon[1:2], nrow = 1), sun_days)
+    sun_year <- suntools::solarpos(matrix(latlon[1:2], nrow = 1), sun_days)
 
     # Convert output to dataframe
     df  <- data.frame(azimuth = sun_year[,1],

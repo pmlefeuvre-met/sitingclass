@@ -12,10 +12,24 @@
 #' @return A rendered image
 #'
 #' @examples
+#' require(sf)
+#'
+#' # Load the station metadata and location
+#' stn <- get_latlon_frost(stationid=18700, paramid=211)
+#' stn.id      <- stn$id.stationid
+#' stn.centre  <- stn  %>% st_coordinates()
+#'
+#' # Load a digital elevation model
+#' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx=100, resx=1)
+#'
+#' # Plot 3D DEM with rayshader
 #' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 #'
 #' @importFrom stringr str_to_title
-#' @importFrom rayshader raster_to_matrix sphere_shade add_shadow plot_3d render_label render_camera render_snapshot render_highquality render_depth
+#' @importFrom rayshader raster_to_matrix sphere_shade ray_shade  render_camera
+#' @importFrom rayshader add_shadow ambient_shade plot_3d render_label
+#' @importFrom rayshader render_snapshot render_highquality render_depth
+#' @importFrom stats setNames
 #'
 #' @export
 
@@ -23,27 +37,24 @@ plot_dem_rayshader <- function(stn = NULL,
                                dsm = NULL,
                                path = NULL){
 
-  # Libraries
-  require(rayshader)
-
   # Extract station name, latlon and level
-  stn.name    <- str_to_title(stn$station.name)
+  stn.name    <- stringr::str_to_title(stn$station.name)
 
   # Convert DEM to a matrix:
-  elmat = raster_to_matrix(dsm)
+  elmat = rayshader::raster_to_matrix(dsm)
 
   # Compute rayshader's built-in textures and plot
   elmat %>%
-    sphere_shade(zscale = 10, texture = "imhof1") %>%
-    add_shadow(ray_shade(elmat, zscale = 3), 0.5) %>%
-    add_shadow(ambient_shade(elmat), 0) %>%
-    plot_3d(elmat, zscale = 1, fov = 70, theta = -45, zoom = 0.75, phi = 45,
-            windowsize = c(1000, 800), baseshape = "circle")
+    rayshader::sphere_shade(zscale = 10, texture = "imhof1") %>%
+    rayshader::add_shadow(rayshader::ray_shade(elmat, zscale = 3), 0.5) %>%
+    rayshader::add_shadow(rayshader::ambient_shade(elmat), 0) %>%
+    rayshader::plot_3d(elmat, zscale = 1, fov = 70, theta = -45, zoom = 0.75, phi = 45,
+                       windowsize = c(1000, 800), baseshape = "circle")
 
   # Add station label
-  render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2,
-               z = max(elmat,na.rm=TRUE)*1.15,text="",
-               linecolor = "white", relativez = FALSE,)
+  rayshader::render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2,
+                          z = max(elmat, na.rm = TRUE)*1.15, text="",
+                          linecolor = "white", relativez = FALSE)
   # render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2, z = 200, zscale = 1,
   #            textcolor = "gray50", linecolor = "white", linewidth = 2,
   #            text = stn$id.stationid, relativez = FALSE, textsize = 2)
@@ -53,20 +64,22 @@ plot_dem_rayshader <- function(stn = NULL,
 
   # Save plot
   if(is.null(path)){
-    render_snapshot()
+    #rayshader::render_snapshot()
 
   }else{
     cardinal_array <- c("northward", "westward", "southward", "eastward")
-    theta <- setNames( seq(0, 359 , by=90), cardinal_array)
+    theta <- stats::setNames( seq(0, 359 , by=90), cardinal_array)
 
     for (cardinal in cardinal_array){
+      dir.create(path, showWarnings = FALSE, recursive = TRUE)
       fname <- sprintf("%s/%i_terrain3D_%s.png", path, stn$id.stationid, cardinal)
       title <- paste(stn.name,"-",cardinal)
 
-      render_camera(theta = theta[cardinal])
-      render_snapshot(fname, title_text = title,
-                      instant_capture=F, width = 2100, height = 2100, title_size = 140)
-      #render_highquality(fname, clear = TRUE, title_text = stn.name,
+      rayshader::render_camera(theta = theta[cardinal])
+      # rayshader::render_snapshot(fname, title_text = title,
+      #                            instant_capture=F, width = 2100,
+      #                            height = 2100, title_size = 140)
+      # #render_highquality(fname, clear = TRUE, title_text = stn.name,
       #                   width = 400, height = 400)
     }
   }
