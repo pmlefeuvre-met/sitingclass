@@ -34,7 +34,7 @@
 #' dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
 #' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
 #'
-#' @import ows4R
+#' @importFrom ows4R WCSClient
 #' @importFrom terra rast setMinMax
 #'
 #' @export
@@ -77,13 +77,13 @@ download_dem_kartverket <- function(stationid = NULL,
 
   # Get WCS info from an URL request with the layer name (i.e. DEM name)
   url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",name)
-  WCS  <- WCSClient$new(url,serviceVersion = "1.0.0", logger = "INFO")
+  WCS  <- ows4R::WCSClient$new(url, serviceVersion = "1.0.0", logger = "INFO")
   caps <- WCS$getCapabilities()
   chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833",name), exact = TRUE)
 
   # Send URL request to download the DEM data.
   dem <- chla$getCoverage(crs = "EPSG:25833",RESX = resx, RESY = resx,
-                          bbox=OWSUtils$toBBOX(box[1],box[3],box[2],box[4]),
+                          bbox=ows4R::OWSUtils$toBBOX(box[1],box[3],box[2],box[4]),
                           filename = fname_out)
 
   # Assign Not-A-Number values and compute MinMax of the DEM

@@ -7,7 +7,7 @@
 plot_station_siting_context(
   stationid = 18700,
   paramid = 211,
-  f.verbose = TRUE,
+  f.verbose = FALSE,
   f.pdf = FALSE
 )
 }

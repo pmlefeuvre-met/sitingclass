@@ -24,12 +24,12 @@
 
 plot_station_siting_context <- function(stationid = 18700,
                                         paramid = 211,
-                                        f.verbose = TRUE,
+                                        f.verbose = FALSE,
                                         f.pdf = FALSE){
 
   # Get station coordinates and name
   stn <- get_latlon_frost(stationid,paramid)
-  centre <- stn  %>% st_coordinates
+  centre <- stn %>% sf::st_coordinates()
 
   # To save files
   path <- sprintf("plot/output/%i",stn$id.stationid)
@@ -38,10 +38,10 @@ plot_station_siting_context <- function(stationid = 18700,
   # Construct box to extract WMS tile
   dx <- 100
   box <- c(c(centre[1],centre[2])-dx,
-           c(centre[1],centre[2])+dx) %>% round
+           c(centre[1],centre[2])+dx) %>% round()
   class(box) <- "bbox"
-  box <- st_as_sfc(box)
-  st_crs(box) <- 25833 #32633 #to match tile projection
+  box <- sf::st_as_sfc(box)
+  sf::st_crs(box) <- 25833 #32633 #to match tile projection
 
   # Print
   if (f.verbose){

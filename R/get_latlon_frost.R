@@ -14,7 +14,7 @@
 #' get_latlon_frost(stationid=18700)
 #' get_latlon_frost(stationid=18700,paramid=211)
 #'
-#' @import sf
+#' @importFrom sf st_as_sf st_crs st_transform
 #' @importFrom httr authenticate GET content
 #' @importFrom utils type.convert
 #'
@@ -29,17 +29,22 @@ get_latlon_frost <- function(stationid = 18700,
   if(!is.null(paramid)){url <- sprintf("%sparameterids=%i&",url,paramid)}
   url <- sprintf("%sbasicoutput=false&time=latest",url)
   auth <- authenticate("ea623856-933a-4bcd-ac39-80b1d30ab6f8","ca0050c5-1112-45db-8114-52caee6967bb")
+
   # Query URL
   res     <- GET(url,auth)
+
   # Format response content as a data.frame
   content     <- content(res,)#     str(content)
   if(length(grep("error",content))>0){print(content); stop()}
   n.paramid <- length(content$data$tseries)
-  df <- content$data$tseries[[1]] %>% unlist %>% as.matrix %>% as.data.frame
-  rownames(df) <- rownames(df) %>% { sub('.*extra.','',.) } %>% { sub('.*header.','',.) }
+  df <- content$data$tseries[[1]] %>% unlist() %>% as.matrix() %>% as.data.frame()
+  rownames(df) <- sub('.*extra.' , '', rownames(df))
+  rownames(df) <- sub('.*header.', '', rownames(df))
   # unlist %>% tail(-1) %>% as.matrix
+
   # Print station id
   cat(sprintf("station: %s \t %s\n",df["id.stationid",],df["station.name",]))
+
   # Extract parameter ids
   param <- sapply(1:n.paramid,
                   function(x){unlist(content$data$tseries[[x]]$header$id)})[c("parameterid","sensor","level"),]
@@ -56,6 +61,7 @@ get_latlon_frost <- function(stationid = 18700,
   # Extract latest coordinates
   l_loc <- length(content$data$tseries[[1]]$header$extra$station$location)
   stn_coord <- as.numeric(unlist(content$data$tseries[[1]]$header$extra$station$location[[l_loc]]$value))
+
   # # Transform from lat lon to utm
   # stn <- stn_coord[c(2:1,3)] %>% st_point() %>% st_sfc(crs=st_crs(4326)) %>% st_transform(25833) #32633
   rows <- c(grep("id.*", rownames(df)),
@@ -68,13 +74,13 @@ get_latlon_frost <- function(stationid = 18700,
                                                  elev=stn_coord[3])
   colnames <- colnames(stn_attrib)
   stn_attrib <- data.frame(
-    lapply(split(stn_attrib, col(stn_attrib)), type.convert, as.is = TRUE),
-    stringsAsFactors = FALSE
-  )
+    lapply(split(stn_attrib, col(stn_attrib)), utils::type.convert, as.is = TRUE),
+    stringsAsFactors = FALSE )
   colnames(stn_attrib) <- colnames
-  stn <- st_as_sf(stn_attrib,coords=c("lon","lat"),
-                      crs=st_crs(4326)) %>% st_transform(25833) #32633
-  st_crs(stn) <- 25833 # 32633 - WGS 84 / UTM zone 33N # 25833 ETRS89 / UTM zone 33N
+  stn <- sf::st_as_sf(stn_attrib, coords=c("lon","lat"),
+                      crs=sf::st_crs(4326)) %>% sf::st_transform(25833) #32633
+  sf::st_crs(stn) <- 25833 # 32633 - WGS 84 / UTM zone 33N # 25833 ETRS89 / UTM zone 33N
+
   return(stn)
 
   ## Extra help
