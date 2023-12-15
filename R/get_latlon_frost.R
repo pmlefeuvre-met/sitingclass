@@ -15,7 +15,6 @@
 #' get_latlon_frost(stationid=18700,paramid=211)
 #'
 #' @import sf
-#' @importFrom magrittr %>%
 #' @importFrom httr authenticate GET content
 #'
 #' @export

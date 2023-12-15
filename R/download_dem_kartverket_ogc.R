@@ -8,7 +8,6 @@
 #' @param f.OGC A boolean default is `TRUE`
 #'
 #' @return A DEM
-#' @export
 #'
 #'
 #' @examples

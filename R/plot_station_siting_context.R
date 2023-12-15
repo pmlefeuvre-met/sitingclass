@@ -17,7 +17,6 @@
 #' plot_station_siting_context(stationid=18700)
 #' plot_station_siting_context(stationid=18700,paramid=211,f.verbose=T)
 #'
-#' @importFrom magrittr %>%
 #' @importFrom sf st_coordinates st_as_sfc st_crs
 #'
 #' @export

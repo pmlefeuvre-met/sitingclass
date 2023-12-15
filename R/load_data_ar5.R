@@ -15,16 +15,18 @@
 #' @examples
 #' ar5 <- load_data_ar5(box,f.wms=F)
 #'
-#' @importFrom sf st_read st_transform st_intersection
-#' @importFrom httr GET content
-#' @importFrom terra vect ext rast crs
-#'
-#' @export
+#' @import sf
+#' @import httr
+#' @import terra
 
 load_data_ar5 <- function(box = NULL,
                           f.wms = TRUE,
                           layer = "Arealtype",
                           px = 500){
+  # Libraries
+  require(sf)
+  require(httr)
+  require(terra)
 
   # Convert to UTM 33 and clip vector to box
   if(!f.wms){
@@ -38,7 +40,7 @@ load_data_ar5 <- function(box = NULL,
     #st_layers(sprintf("%s/%s",path,fname))
 
     # Load file
-    ar5 <- st_read(sprintf("%s/%s",path,fname),layer="fkb_ar5_omrade")
+    ar5 <- sf::st_read(sprintf("%s/%s",path,fname),layer="fkb_ar5_omrade")
     ar5 <- ar5["arealtype"] %>% st_transform(25833) %>% st_intersection(box)
     ar5 <- vect(ar5) #SpatVector
 
