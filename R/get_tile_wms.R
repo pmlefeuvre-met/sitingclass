@@ -76,8 +76,9 @@ get_tile_wms <- function(box = NULL,
 
   # Load WMS and convert to SpatRaster
   wms <- GET(con) %>% content %>% "*"(255) %>% rast
+  print(wms)
   names(wms) <- c("red", "green", "blue")
-  ext(wms) <- ext(vect(box))
+  ext(wms) <- bbox
   crs(wms) <- "epsg:25833"
 
   return(wms)
