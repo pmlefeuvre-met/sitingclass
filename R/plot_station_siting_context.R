@@ -36,7 +36,7 @@ plot_station_siting_context <- function(stationid = 18700,
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
-  dx <- 100
+  dx <- 200
   box <- c(c(centre[1],centre[2])-dx,
            c(centre[1],centre[2])+dx) %>% round()
   class(box) <- "bbox"
