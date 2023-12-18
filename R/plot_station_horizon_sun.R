@@ -30,10 +30,10 @@
 #' path <- 'plot/horizon'
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
+#' @importFrom magrittr %>%
 #' @importFrom stringr str_to_title
 #' @importFrom sf st_transform st_coordinates
 #' @import ggplot2
-#' @importFrom ggfun element_roundrect
 #'
 #' @export
 
@@ -46,6 +46,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Extract timezone from System and assign variables
   tz <- Sys.timezone()
   azimuth <- day <- horizon_height <- hour <- inclination <- NULL
+  ymax <- 80
 
   # Extract station name, latlon and level
   stn.name    <- stringr::str_to_title(stn$station.name)
@@ -60,9 +61,9 @@ plot_station_horizon_sun <- function(stn = NULL,
   if(stn.expos == "unknown"){stn.expos <- NA}
   if(stn.perf  == "unknown"){stn.perf  <- NA}
 
-  # Set cardinals
-  cardinals <- data.frame(azimuth=c(0,90,180,260,360),
-                          inclination=rep(70,5),
+  # Set cardinals (North position is edited to be visible on the plot)
+  cardinals <- data.frame(azimuth=c(0+15,90,180,260,360-15),
+                          inclination=rep((ymax-0.05*ymax),5),
                           labels=c("North","East","South","West","North"))
 
   # Compute sun position from station location
@@ -77,7 +78,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                               horizon_height=apply(cbind(horizon_dem[,2],
                                                          horizon_dsm[,2],
                                                          horizon_demkm[,2]),
-                                                   1,max) )
+                                                   1, max) )
   skyviewfactor <- compute_skyviewfactor(horizon_max)
 
   # Plot init
@@ -85,32 +86,43 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Plot background
   g <- g +
-    geom_hline(yintercept = c(0,7,20),linewidth=0.2,color="coral") +
+    geom_hline(yintercept = c(0,7,20),linewidth=.2,color="coral") +
     geom_text(data=cardinals,mapping=aes(x=azimuth,y=inclination,label=labels))
 
   # Plot horizon polygon
   g <- g +
-    geom_polygon(data=horizon_max,mapping=aes(x=azimuth,y=horizon_height),alpha=0.5,fill="gray")
+    geom_polygon(data=horizon_max,mapping=aes(x=azimuth,y=horizon_height),alpha=.6,fill="gray")
 
   # Plot horizon lines
   g <- g +
-    geom_line(data=horizon_dsm,mapping=aes(x=azimuth,y=horizon_height),linetype="dashed",colour="gray") +
-    geom_line(data=horizon_dem,mapping=aes(x=azimuth,y=horizon_height),colour="gray",alpha=0.7) +
-    geom_line(data=horizon_demkm,mapping=aes(x=azimuth,y=horizon_height))
+    geom_line(data=horizon_max,mapping=aes(x=azimuth,y=horizon_height),linewidth=.6,colour="gray50") +
+    geom_line(data=horizon_dem,mapping=aes(x=azimuth,y=horizon_height),colour="gray",alpha=.7) +
+    geom_line(data=horizon_dsm,  mapping=aes(x=azimuth,y=horizon_height,linetype="surface"),linewidth=.25) +
+    geom_line(data=horizon_demkm,mapping=aes(x=azimuth,y=horizon_height,linetype="horizon"))
 
   # Plot sun position from the station location
   g <- g +
     geom_path(data=sun_hour, aes(x=azimuth, y=inclination, group=hour), linewidth=.2, color="coral") +
-    geom_line(data=sun,      aes(x=azimuth, y=inclination, color=day)) +
-    scale_color_viridis_d()
+    geom_line(data=sun,      aes(x=azimuth, y=inclination, color=day))
+  # +  scale_color_viridis_d()
 
   # Set theme and legend
   g <- g +
     theme_minimal() +
-    theme(legend.position = c(0.9, 0.65),
-          legend.background = element_roundrect(fill = "white"),
-          legend.key.size = unit(.75, "lines")) +
-    labs(color=NULL)
+    theme(legend.position = c(0.9, (ymax-0.1*ymax)/ymax),
+          legend.justification = c("center", "top"),
+          legend.background = element_rect(fill = "white",  linewidth = .2),
+          legend.key.size = unit(1.2, "lines"),
+          legend.key.height = unit(.8, "lines"),
+          legend.margin = margin(.5,2,2,3),
+          legend.spacing.y = unit(0, "lines"),
+          legend.text=element_text(size=8)) +
+    scale_color_manual(values=viridisLite::viridis(7),
+                       labels=c("21 jun.","21 jul.","21 aug.","21 sep.","21 oct.","21 nov.","21 dec.")) +
+    scale_linetype_manual(values = c("horizon"="dashed", "surface"="solid")) +
+    labs(color=NULL,linetype=NULL) +
+    xlab(label = "Azimuth (degrees)") +
+    ylab(label = "Horizon height (degrees)")
 
   # Set axis breaks, limits and labels
   xmin <- 0
@@ -118,11 +130,11 @@ plot_station_horizon_sun <- function(stn = NULL,
   g <- g +
     scale_x_continuous(breaks = seq(xmin, xmax, by = 30), expand = c(0, 0)) +
     scale_y_continuous(breaks = seq(0, 65 , by = 5 ), expand = c(0, 0)) +
-    coord_cartesian(xlim=c(xmin,xmax),ylim=c(0,80),expand=TRUE)
+    coord_cartesian(xlim = c(xmin,xmax), ylim = c(0,ymax), expand = TRUE)
 
   # Add annotation with infos
-  label <- sprintf("Norwegian Met. Off.\n")
-  label <- sprintf("%slat: %02.2f - long: %02.2f - elev: %1.0f\n",
+  label <- sprintf("Norwegian Meteorological Institute\n")
+  label <- sprintf("%slat: %02.2f - long: %02.2f - elev: %1.0f m\n",
                    label,stn.latlon[1], stn.latlon[2],stn$elev)
   label <- sprintf("%sparamid: %i - exp.: %i - perf.: %i\n",
                    label, stn.param, stn.expos, stn.perf)
@@ -130,8 +142,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   label <- sprintf("%sstation_id: %i - level: %i\n",label, stn.id, stn.level)
   label <- sprintf("%swmo_id: %s\n%s",label,stn.wmoid, stn.name)
   g <- g +
-    annotate("label", x = 10, y = 60, size = 3,hjust = 0,
-             label= label)
+    annotate("label", x = 10, y = (ymax-0.1*ymax), size = 3, hjust = 0, vjust=1,
+             label = label, label.r = unit(0, "pt"))
 
   # Save plot
   if(!is.null(path)){
