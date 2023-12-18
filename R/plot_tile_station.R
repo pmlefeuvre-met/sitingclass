@@ -42,7 +42,6 @@
 #'
 #' @import ggplot2
 #' @importFrom sf st_transform st_coordinates
-#' @importFrom stringr str_to_title
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
 #'

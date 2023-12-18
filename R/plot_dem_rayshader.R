@@ -25,7 +25,6 @@
 #' # Plot 3D DEM with rayshader
 #' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
 #'
-#' @importFrom stringr str_to_title
 #' @importFrom rayshader raster_to_matrix sphere_shade ray_shade  render_camera
 #' @importFrom rayshader add_shadow ambient_shade plot_3d render_label
 #' @importFrom rayshader render_snapshot render_highquality render_depth

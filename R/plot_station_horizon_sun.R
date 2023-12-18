@@ -31,7 +31,6 @@
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
 #'
 #' @importFrom magrittr %>%
-#' @importFrom stringr str_to_title
 #' @importFrom sf st_transform st_coordinates
 #' @import ggplot2
 #'
@@ -103,8 +102,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Plot sun position from the station location
   g <- g +
     geom_path(data=sun_hour, aes(x=azimuth, y=inclination, group=hour), linewidth=.2, color="coral") +
-    geom_line(data=sun,      aes(x=azimuth, y=inclination, color=day))
-  # +  scale_color_viridis_d()
+    geom_line(data=sun,      aes(x=azimuth, y=inclination, color=day))+
+    scale_color_viridis_d(labels=c("21 jun.","21 jul.","21 aug.","21 sep.","21 oct.","21 nov.","21 dec."))
 
   # Set theme and legend
   g <- g +
@@ -117,8 +116,6 @@ plot_station_horizon_sun <- function(stn = NULL,
           legend.margin = margin(.5,2,2,3),
           legend.spacing.y = unit(0, "lines"),
           legend.text=element_text(size=8)) +
-    scale_color_manual(values=viridisLite::viridis(7),
-                       labels=c("21 jun.","21 jul.","21 aug.","21 sep.","21 oct.","21 nov.","21 dec.")) +
     scale_linetype_manual(values = c("horizon"="dashed", "surface"="solid")) +
     labs(color=NULL,linetype=NULL) +
     xlab(label = "Azimuth (degrees)") +
