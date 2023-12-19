@@ -1,10 +1,10 @@
 ---
-title: "Sun diagram and shadow effect on weather stations"
+title: "Sun diagram"
 author: "Pierre-Marie Lefeuvre"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Sun diagram}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,51 +15,83 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+# `sitingclass`
+This vignette demonstrates how `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (aka Met). 
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Startup
+### Installation
+The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Downloading the package requires an id and token that I deliver on-demand. See [Authentication] on how to make your id and token accessible to your R environment.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r, eval=FALSE, echo = FALSE}
+remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
+.rs.restartR()
+library(sitingclass)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+### Authentication
+We use Met's Frost API to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_ID` and `YOUR_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
+```{bash, eval=FALSE}
+cd $HOME
+cat > .Renviron
+GIT_ID=YOUR_GIT_ID
+GIT_TOKEN=YOUR_GIT_TOKEN
+FROST_ID=YOUR_FROST_ID
+FROST_KEY=YOUR_FROST_KEY
+```
+The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set `authenticate()` for the URL request.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+### Dependencies
+`sitingclass` depends on a few packages:
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+* Data and metadata retrieval:
+  + [httr](https://httr.r-lib.org/)/[httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost)
+  + [maptiles](https://github.com/riatelab/maptiles): to get tiles from available map provides
+  + [ows4R](https://github.com/eblondel/ows4R): to download DEMs using **WCS getCoverage** (Web Coverage Service)
+* Geospatial processing:
+  + [sf](https://github.com/rspatial/sf): vector processing and conversion
+  + [terra](https://github.com/rspatial/terra): SpatRaster and SpatVector processing and conversion
+* Computing horizon and sun position:
+  + [rgrass](https://rsbivand.github.io/rgrass/): to compute horizon from GRASS
+  + [suntools](https://github.com/adokter/suntools/): to compute sun position in the sky
+* Plotting:
+  + [ggplot2](https://ggplot2.tidyverse.org/): plotting functions
+  + [rayshader](https://www.rayshader.com/): to plot DEMs with shaded relief and in 3D
+  + [tidyterra](https://dieghernan.github.io/tidyterra/): to plot raster images and contour
+* Utils:
+  + [magrittr](https://magrittr.tidyverse.org/): pipping (i.e. `%>%`)
+  
+### Data and metadata 
+`sitingclass` aims to be portable retrieving most of the needed data sets from public web services, including:
 
-## More Examples
+- [Frost](https://frost-beta.met.no/docs/codeexamples): station metadata
+- [Kartverket](https://www.kartverket.no/geodataarbeid/nasjonal-detaljert-hoydemodell)/[Geonorge](https://kartkatalog.geonorge.no/metadata?text=25833+WCS+h%C3%B8ydemodell): digital terrain model and digital surface model in UTM 33 (epsg:25833)
+- [Nibio](https://nibio.no/tjenester/wms-tjenester/wms-tjenester-ar5): WMS (Web Map Services) Land cover maps
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+## 
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r, eval=FALSE, echo = FALSE}
+library(sitingclass)
+# Get station coordinates and name
+stn <- get_latlon_frost(stationid,paramid)
+centre <- stn %>% sf::st_coordinates()
 ```
 
-Also a quote using `>`:
+```{r, eval=FALSE, echo = FALSE}
+# Get station coordinates and name
+stn <- get_latlon_frost(stationid,paramid)
+centre <- stn %>% sf::st_coordinates()
+```
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+
+
+```{r, eval=FALSE, echo = FALSE}
+# Set timezone to avoid time shift between winter and summer time
+Sys.setenv(TZ="UTC") # "Europe/Oslo"
+
+# The main function plotting sun diagram and context for a weather station 
+plot_station_siting_context(stationid=18700, paramid=211, f.verbose=F, f.pdf=F)
+
+```
+
+
