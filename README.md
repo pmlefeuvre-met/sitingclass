@@ -3,7 +3,7 @@ The `sitingclass` package computes the exposure of a weather station. Currently,
 
 ## Startup
 ### Installation
-The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Downloading the package requires an id and token that I deliver on-demand. See [Authentication](#Authentication) on how to make your id and token accessible to your R environment.
+The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Send an access request to [pierre.marie.lefeuvre@met.no](mailto:pierre.marie.lefeuvre@met.no) to get `YOUR_GIT_ID` and `YOUR_GIT_TOKEN`. See [Authentication](#Authentication) on how to make your id and token accessible to your R environment.
 
 ```R
 # manually adding your token
