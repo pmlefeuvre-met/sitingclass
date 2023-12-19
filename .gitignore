@@ -13,3 +13,5 @@ plot/*
 data/*
 vignettes/plot/*
 vignettes/data/*
+/doc/
+/Meta/
