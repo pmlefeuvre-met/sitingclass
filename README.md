@@ -6,13 +6,16 @@ The `sitingclass` package computes the exposure of a weather station. Currently,
 The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Downloading the package requires an id and token that I deliver on-demand. See [Authentication](#Authentication) on how to make your id and token accessible to your R environment.
 
 ```R
+# manually adding your token
 remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
+
+# If you have set your token in .Renviron, use:
+remotes::install_git(paste0("https://",Sys.getenv('GIT_ID'),":",Sys.getenv('GIT_TOKEN'),"@gitlab.met.no/pierreml/sitingclass.git"),force=T)
+
 .rs.restartR()
 library(sitingclass)
 ```
-```R
-remotes::install_git("https://test:glpat-zmrdDc-DMPVk_ZaakWFB@gitlab.met.no/pierreml/sitingclass.git",force=T)
-```
+
 ### Authentication
 Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_ID` and `YOUR_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
 ```bash

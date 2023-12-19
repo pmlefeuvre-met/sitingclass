@@ -28,7 +28,7 @@ get_latlon_frost <- function(stationid = 18700,
   url <- sprintf("%sincobs=false&stationids=%i&",url,stationid)
   if(!is.null(paramid)){url <- sprintf("%sparameterids=%i&",url,paramid)}
   url <- sprintf("%sbasicoutput=false&time=latest",url)
-  auth <- authenticate("ea623856-933a-4bcd-ac39-80b1d30ab6f8","ca0050c5-1112-45db-8114-52caee6967bb")
+  auth <- authenticate(Sys.getenv('FROST_ID'),Sys.getenv('FROST_KEY'))
 
   # Query URL
   res     <- GET(url,auth)
