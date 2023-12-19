@@ -23,13 +23,18 @@ The `sitingclass` package computes the exposure of a weather station. Currently,
 The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Send an access request to [pierre.marie.lefeuvre@met.no](mailto:pierre.marie.lefeuvre@met.no) to get `YOUR_GIT_ID` and `YOUR_GIT_TOKEN`. See [Authentication](#Authentication) on how to make your id and token accessible to your R environment.
 
 ```{r, eval=FALSE}
+# manually adding your token
 remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
+
+# If you have set your token in .Renviron, use:
+remotes::install_git(paste0("https://",Sys.getenv('GIT_ID'),":",Sys.getenv('GIT_TOKEN'),"@gitlab.met.no/pierreml/sitingclass.git"),force=T)
+
 .rs.restartR()
 library(sitingclass)
 ```
 
 ### Authentication
-We use Met's Frost API to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_ID` and `YOUR_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
+Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_FROST_ID` and `YOUR_FROST_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
 ```{bash, eval=FALSE}
 cd $HOME
 cat > .Renviron
@@ -103,18 +108,23 @@ plot_tile_station(stn, box, tile_name="esri")
 ```
 
 ### Download the DEMs
-```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model."}
+```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model.", results = 'hide'}
 f.ow  <- FALSE
 dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx=1,f.overwrite=f.ow)
 dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx=1,f.overwrite=f.ow)
 demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
 
-# Plot DEM
+# Plot 100-m Digital Surface Model and 20-km Digital Terrain Model
 library(rayshader)
-elmat = raster_to_matrix(dsm)
+elmat   = raster_to_matrix(dsm)
+elmatkm = raster_to_matrix(demkm)
 
 #We use another one of rayshader's built-in textures:
 elmat %>%
+  sphere_shade(texture = "desert") %>%
+  plot_map()
+
+elmatkm %>%
   sphere_shade(texture = "desert") %>%
   plot_map()
 ```

@@ -17,7 +17,7 @@ library(sitingclass)
 ```
 
 ### Authentication
-Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_ID` and `YOUR_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
+Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_FROST_ID` and `YOUR_FROST_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
 ```bash
 cd $HOME
 cat > .Renviron
