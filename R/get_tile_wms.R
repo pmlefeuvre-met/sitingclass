@@ -66,7 +66,7 @@ get_tile_wms <- function(box = NULL,
     ref     <- "https://kartkatalog.geonorge.no/metadata/toporaster-4-wms/430b65ec-8543-4387-bf45-dbb5ce4bf4c8"
 
   } else if ( layer == "ortofoto" ){
-    url     <- "https://wms.geonorge.no/skwms1/wms.nib?service=WMS&request=GetCapabilities"
+    url     <- "https://wms.geonorge.no/skwms1/wms.nib"
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/norge-i-bilder-wms-ortofoto/dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f"
