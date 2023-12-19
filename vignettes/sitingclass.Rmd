@@ -1,11 +1,11 @@
 ---
-title: "Sun diagram"
+title: "sitingclass"
 author: "Pierre-Marie Lefeuvre"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sun diagram}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{sitingclass}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 # `sitingclass`
-This vignette demonstrates how `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (aka Met). 
+The `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (aka Met). 
 
 ## Startup
 ### Installation
@@ -41,7 +41,7 @@ FROST_KEY=YOUR_FROST_KEY
 The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set `authenticate()` for the URL request.
 
 ### Dependencies
-`sitingclass` depends on a few packages:
+`sitingclass` depends on the following packages:
 
 * Data and metadata retrieval:
   + [httr](https://httr.r-lib.org/)/[httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost)
@@ -67,25 +67,66 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set
 - [Kartverket](https://www.kartverket.no/geodataarbeid/nasjonal-detaljert-hoydemodell)/[Geonorge](https://kartkatalog.geonorge.no/metadata?text=25833+WCS+h%C3%B8ydemodell): digital terrain model and digital surface model in UTM 33 (epsg:25833)
 - [Nibio](https://nibio.no/tjenester/wms-tjenester/wms-tjenester-ar5): WMS (Web Map Services) Land cover maps
 
-## 
+## Usage
 
-```{r, eval=FALSE, echo = FALSE}
+### Get the station's metadata
+
+```{r}
 library(sitingclass)
-# Get station coordinates and name
-stn <- get_latlon_frost(stationid,paramid)
-centre <- stn %>% sf::st_coordinates()
+
+# Define station id
+stationid <- 18700
+
+# Get station metadata
+stn <- get_latlon_frost(stationid)
+stn
+```
+### Construct the coordinate box
+```{r}
+# Get coordinates
+centre <- sf::st_coordinates(stn)
+centre
+
+# Construct box to extract WMS tile
+dx <- 100
+box <- round( c(c(centre[1],centre[2])-dx,
+                c(centre[1],centre[2])+dx) )
+class(box) <- "bbox"
+box <- sf::st_as_sfc(box)
+sf::st_crs(box) <- 25833 #32633 #to match tile projection
+
 ```
 
-```{r, eval=FALSE, echo = FALSE}
-# Get station coordinates and name
-stn <- get_latlon_frost(stationid,paramid)
-centre <- stn %>% sf::st_coordinates()
+```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
+# Plot ESRI imagery
+plot_tile_station(stn, box, tile_name="esri")
 ```
 
+### Download the DEMs
+```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model."}
+f.ow  <- FALSE
+dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx=1,f.overwrite=f.ow)
+dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx=1,f.overwrite=f.ow)
+demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
 
+# Plot DEM
+library(rayshader)
+elmat = raster_to_matrix(dsm)
 
+#We use another one of rayshader's built-in textures:
+elmat %>%
+  sphere_shade(texture = "desert") %>%
+  plot_map()
+```
+### Compute and plot the horizon and sun diagram
+```{r,fig.dim = c(8, 6), out.width="80%", fig.cap=paste("Horizon and sun diagram for the station ",stationid)}
+plot_station_horizon_sun(stn, dem, dsm, demkm)
+```
 
-```{r, eval=FALSE, echo = FALSE}
+## `plot_station_siting_context()`
+The function `plot_station_siting_context()` will compute all the code chunks from [Usage] such as:
+
+```{r}
 # Set timezone to avoid time shift between winter and summer time
 Sys.setenv(TZ="UTC") # "Europe/Oslo"
 

@@ -1,9 +1,9 @@
 # R package `sitingclass`
-This vignette demonstrates how `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (aka Met). 
+The `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (aka Met). 
 
 ## Startup
 ### Installation
-The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Downloading the package requires an id and token that I deliver on-demand. See [Authentication] on how to make your id and token accessible to your R environment.
+The package `sitingclass` is available on Met's Gitlab and can be installed using `remotes::install_git()`. Downloading the package requires an id and token that I deliver on-demand. See [Authentication](#Authentication) on how to make your id and token accessible to your R environment.
 
 ```R
 remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
@@ -26,7 +26,7 @@ FROST_KEY=YOUR_FROST_KEY
 The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set `authenticate()` for the URL request.
 
 ### Dependencies
-`sitingclass` depends on a few packages:
+`sitingclass` depends on the following packages:
 
 * Data and metadata retrieval:
   + [httr](https://httr.r-lib.org/)/[httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost)

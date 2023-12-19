@@ -11,3 +11,5 @@
 # Output directory
 plot/*
 data/*
+vignettes/plot/*
+vignettes/data/*
