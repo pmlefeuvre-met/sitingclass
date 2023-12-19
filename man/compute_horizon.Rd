@@ -35,7 +35,7 @@ require(sf)
 # Load the station metadata including location and level
 stn <- get_latlon_frost(stationid=18700, paramid=211)
 stn.id      <- stn$id.stationid
-stn.centre  <- stn  \%>\% st_coordinates()
+stn.centre  <- sf::st_coordinates(stn)
 stn.level   <- stn$id.level
 
 # Load a digital elevation model

@@ -19,7 +19,7 @@
 #' # Load the station metadata and location
 #' stn <- get_latlon_frost(stationid=18700, paramid=211)
 #' stn.id      <- stn$id.stationid
-#' stn.centre  <- stn  %>% st_coordinates()
+#' stn.centre  <- sf::st_coordinates(stn)
 #'
 #' # Load DEM data
 #' dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=100,resx=1)
@@ -48,11 +48,11 @@ plot_station_horizon_sun <- function(stn = NULL,
   ymax <- 80
 
   # Extract station name, latlon and level
-  stn.name    <- stringr::str_to_title(stn$station.name)
+  stn.name    <- str_to_title(stn$station.name)
   stn.id      <- stn$id.stationid
   stn.wmoid   <- stn$station.alternateids.id
   stn.level   <- stn$id.level
-  stn.centre  <- stn %>% sf::st_coordinates()
+  stn.centre  <- sf::st_coordinates(stn)
   stn.latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates()
   stn.param   <- stn$id.parameterid
   stn.expos   <- stn$timeseries.quality.exposure.value

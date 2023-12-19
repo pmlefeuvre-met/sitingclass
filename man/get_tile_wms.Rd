@@ -24,7 +24,7 @@ require(sf)
 
 # Get station coordinates and name
 stn    <- get_latlon_frost(18700)
-centre <- stn  \%>\% st_coordinates()
+centre <- sf::st_coordinates(stn)
 
 # Construct box to extract WMS tile
 dx <- 100

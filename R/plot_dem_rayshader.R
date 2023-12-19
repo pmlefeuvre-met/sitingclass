@@ -17,7 +17,7 @@
 #' # Load the station metadata and location
 #' stn <- get_latlon_frost(stationid=18700, paramid=211)
 #' stn.id      <- stn$id.stationid
-#' stn.centre  <- stn  %>% st_coordinates()
+#' stn.centre  <- sf::st_coordinates(stn)
 #'
 #' # Load a digital elevation model
 #' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx=100, resx=1)
@@ -37,7 +37,7 @@ plot_dem_rayshader <- function(stn = NULL,
                                path = NULL){
 
   # Extract station name, latlon and level
-  stn.name    <- stringr::str_to_title(stn$station.name)
+  stn.name    <- str_to_title(stn$station.name)
 
   # Convert DEM to a matrix:
   elmat = rayshader::raster_to_matrix(dsm)

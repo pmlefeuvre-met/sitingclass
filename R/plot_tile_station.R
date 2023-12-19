@@ -19,7 +19,7 @@
 #' # Get station coordinates and name
 #' stationid <-  18700
 #' stn    <- get_latlon_frost(stationid)
-#' centre <- stn  %>% st_coordinates()
+#' centre <- sf::st_coordinates(stn)
 #'
 #' # Construct box to extract WMS tile
 #' dx <- 100
@@ -54,7 +54,7 @@ plot_tile_station <- function(stn = NULL,
                               path = NULL){
 
   # Extract station name and latlon
-  stn.name    <- stringr::str_to_title(stn$station.name)
+  stn.name    <- str_to_title(stn$station.name)
   stn.latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates()
 
   # Reformat name for title in annotate

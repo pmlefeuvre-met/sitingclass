@@ -45,7 +45,7 @@ require(sf)
 # Define parameters
 stationid <- 18700
 stn <- get_latlon_frost(stationid)
-centre <- stn  \%>\% st_coordinates()
+centre <- sf::st_coordinates(stn)
 path   <- "data/dem"
 
 # Load data using ows4R ## WCSClient$new() getCapabilities()

@@ -33,7 +33,7 @@ compute_sun_position <- function(stn = NULL,
   tz <- Sys.timezone()
 
   # Convert back to latlon
-  latlon <- stn %>% st_transform(4326) %>% st_coordinates
+  latlon <- stn %>% st_transform(4326) %>% st_coordinates()
 
   if(f.hour){
     # Function to get sun position at the same hour over six months, on each 21st of the month

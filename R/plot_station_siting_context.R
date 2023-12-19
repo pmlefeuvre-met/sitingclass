@@ -29,7 +29,7 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Get station coordinates and name
   stn <- get_latlon_frost(stationid,paramid)
-  centre <- stn %>% sf::st_coordinates()
+  centre <- sf::st_coordinates(stn)
 
   # To save files
   path <- sprintf("plot/output/%i",stn$id.stationid)
