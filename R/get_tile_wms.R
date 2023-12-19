@@ -90,7 +90,11 @@ get_tile_wms <- function(box = NULL,
 
   # Load WMS and convert to SpatRaster
   wms <- httr::GET(con) %>% httr::content() %>% "*"(255) %>% terra::rast()
-  names(wms) <- c("red", "green", "blue")
+  if (dim(wms)[3] == 3) {
+    names(wms) <- c("red", "green", "blue")
+  }else if(dim(wms)[3] == 4){
+    names(wms) <- c("red", "green", "blue", "alpha")
+  }
   terra::ext(wms) <- bbox
   terra::crs(wms) <- "epsg:25833"
 
