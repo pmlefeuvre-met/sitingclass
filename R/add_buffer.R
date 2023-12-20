@@ -6,7 +6,7 @@
 #' @param box A boundary box object to get the box extent and centre point
 #' @param buf1 A distance in metre representing the inner buffer radius
 #' @param buf2 A distance in metre representing the outer buffer radius
-#' @param nx A number defining the grid interval in x and y
+#' @param nx A number defining the grid interval in metre for x and y
 #' @param n A number to set the border of the grid from the edge of the plot
 #'
 #' @return A ggplot2 object
@@ -38,7 +38,7 @@ add_buffer <- function(g,
                        buf1,
                        buf2,
                        nx,
-                       n){
+                       n=2){
 
   # Convert box to SpatExtent and centre to SpatVector
   bbox <- terra::ext(terra::vect(box))

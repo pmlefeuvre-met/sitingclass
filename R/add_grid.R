@@ -4,7 +4,7 @@
 #'
 #' @param g A ggplot objects on which to add the grid
 #' @param box A boundary box object to get the box extent
-#' @param nx A number defining the grid interval in x and y
+#' @param nx A number defining the grid interval in metre for x and y
 #' @param n A number to set the border of the grid from the edge of the plot
 #'
 #' @return A ggplot2 object
@@ -33,7 +33,7 @@
 add_grid <- function(g,
                      box,
                      nx,
-                     n){
+                     n=2){
 
   # Define box boundary
   bbox <- terra::ext(terra::vect(box))
@@ -60,6 +60,10 @@ add_grid <- function(g,
   g <- g +
     geom_segment(data=dfx, aes(x=x, y=y, xend=xend, yend=yend), linewidth=.5, color='gray90') +
     geom_segment(data=dfy, aes(x=x, y=y, xend=xend, yend=yend), linewidth=.5, color='gray90')
+
+  # Add label as scale
+  g <- g +
+    geom_label(aes(label=sprintf("%i m",nx), x=bbox[2]-border-nx/2, y=bbox[3]+border-nx/2), size=2)
 
   return(g)
 }
