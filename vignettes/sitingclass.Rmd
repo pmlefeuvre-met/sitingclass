@@ -112,9 +112,10 @@ plot_tile_station(stn, box, tile_name="esri")
 plot_station_grid(stn, tile_name="ortofoto")
 ```
 
-### Download the DEMs
+### Download Digital Elevation Models
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model.", results = 'hide'}
-f.ow  <- FALSE
+# Load Karverket's DEMs
+f.ow  <- FALSE #TRUE to overwrite files
 dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx  ,resx=1 ,f.overwrite=f.ow)
 dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx  ,resx=1 ,f.overwrite=f.ow)
 demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
@@ -124,11 +125,12 @@ library(rayshader)
 elmat   <- raster_to_matrix(dsm)
 elmatkm <- raster_to_matrix(demkm)
 
-#We use another one of rayshader's built-in textures:
+# Shaded relief for the 100-m Digital Surface Model 
 elmat %>%
   sphere_shade(texture = "desert") %>%
   plot_map()
 
+# Shaded relief for the 20-km Digital Terrain Model
 elmatkm %>%
   sphere_shade(texture = "desert") %>%
   plot_map()
