@@ -69,7 +69,7 @@ get_latlon_frost <- function(stationid = 18700,
             grep("organisation.*", rownames(df)),
             grep("level.*", rownames(df)),
             grep("quality.*", rownames(df)))
-  stn_attrib <- df[rows,,drop=F] %>% t %>% cbind(lat=stn_coord[1],
+  stn_attrib <- df[rows,,drop=FALSE] %>% t %>% cbind(lat=stn_coord[1],
                                                  lon=stn_coord[2],
                                                  elev=stn_coord[3])
   colnames <- colnames(stn_attrib)

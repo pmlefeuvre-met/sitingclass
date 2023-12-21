@@ -107,17 +107,22 @@ sf::st_crs(box) <- 25833 #32633 #to match tile projection
 plot_tile_station(stn, box, tile_name="esri")
 ```
 
+```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
+# Plot ESRI imagery
+plot_station_grid(stn, tile_name="ortofoto")
+```
+
 ### Download the DEMs
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model.", results = 'hide'}
 f.ow  <- FALSE
-dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx=1,f.overwrite=f.ow)
-dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx=1,f.overwrite=f.ow)
+dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx  ,resx=1 ,f.overwrite=f.ow)
+dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx  ,resx=1 ,f.overwrite=f.ow)
 demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
 
 # Plot 100-m Digital Surface Model and 20-km Digital Terrain Model
 library(rayshader)
-elmat   = raster_to_matrix(dsm)
-elmatkm = raster_to_matrix(demkm)
+elmat   <- raster_to_matrix(dsm)
+elmatkm <- raster_to_matrix(demkm)
 
 #We use another one of rayshader's built-in textures:
 elmat %>%

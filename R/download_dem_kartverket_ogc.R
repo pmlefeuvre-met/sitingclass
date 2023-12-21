@@ -17,7 +17,8 @@ download_dem_kartverket_ogc <- function(stationid=18703, centre, name="dom", dx=
 
   # Define box limits
   box <- c(c(centre[1],centre[2])-dx,c(centre[1],centre[2])+dx) %>% round
-  if(name=="dom"){name="dsm"}
+  if(name=="dom"){name <- "dsm"}
+
   # Download URL
   url <- sprintf("https://ogcapitest.kartverket.no/geoe3/dem/collections/%s/coverage",name)
   # ?bbox=9.588317,61.0190519,9.716720,61.046985&f=GTiff

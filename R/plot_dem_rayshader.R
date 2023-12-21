@@ -40,7 +40,7 @@ plot_dem_rayshader <- function(stn = NULL,
   stn.name    <- str_to_title(stn$station.name)
 
   # Convert DEM to a matrix:
-  elmat = rayshader::raster_to_matrix(dsm)
+  elmat <- rayshader::raster_to_matrix(dsm)
 
   # Compute rayshader's built-in textures and plot
   elmat %>%

@@ -139,8 +139,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   label <- sprintf("%sstation_id: %i - level: %i\n",label, stn.id, stn.level)
   label <- sprintf("%swmo_id: %s\n%s",label,stn.wmoid, stn.name)
   g <- g +
-    annotate("label", x = 10, y = (ymax-0.1*ymax), size = 3, hjust = 0, vjust=1,
-             label = label, label.r = unit(0, "pt"))
+    annotate("label", x = 10, y = (ymax-0.1*ymax), size = 3,
+             hjust = 0, vjust=1, label = label, label.r = unit(0, "pt"))
 
   # Save plot
   if(!is.null(path)){

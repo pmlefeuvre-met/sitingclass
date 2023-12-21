@@ -27,7 +27,7 @@
 #' @export
 
 compute_sun_position <- function(stn = NULL,
-                                 f.hour = F){
+                                 f.hour = FALSE){
 
   # Extract timezone from System
   tz <- Sys.timezone()

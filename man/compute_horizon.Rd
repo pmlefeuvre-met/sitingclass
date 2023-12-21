@@ -9,7 +9,7 @@ compute_horizon(
   dem = NULL,
   level = 2,
   step = 10,
-  f.plot.polygon = F
+  f.plot.polygon = FALSE
 )
 }
 \arguments{

@@ -5,6 +5,8 @@
 #' Four different scales are plotted: 10 m, 30 m, 100 m and 1000 m.
 #'
 #' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
+#' @param tile_name A string naming a tile to pass to \code{"get_tile_wms"}
+#' @param path A directory path defining where will be saved the plots, if path is NULL the plots are printed to the console
 #'
 #' @return A ggplot2 object
 #'
@@ -16,10 +18,11 @@
 #' plot_station_grid(stn, path="plot/map")
 #'
 #' @importFrom sf st_coordinates
+#' @importFrom tidyterra pull_crs
 #'
 #' @export
 
-plot_tile_station <- function(stn = NULL,
+plot_station_grid <- function(stn = NULL,
                               tile_name="ortofoto",
                               path = NULL){
 
@@ -29,62 +32,68 @@ plot_tile_station <- function(stn = NULL,
   # Directory to save plots
   if(!is.null(path)){
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0f.png",path, stn$id.stationid, tilename)
   }
 
   # First sale: 1000 metres
   #-----------------------------
   dx <- 1600 # metre
   box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name="ortofoto")
+  g <- plot_tile_station(stn, box, tile_name)
 
   # Add grid and buffer
   nx <- 200
   g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, 300, 1000, nx)
+  g <- add_buffer(g, box, buf1=300, buf2=1000, nx)
+  # Fix coordinate system caused by SpatVector conversion
+  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0f.png",path, stn$id.stationid, tilename, dx)
+    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+                     stn$id.stationid, tile_name, dx)
     ggsave(fname, bg="white", width = 7, height = 7)
   }else{g}
 
   #-----------------------------
   dx <- 160 # metre
   box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name="ortofoto")
+  g <- plot_tile_station(stn, box, tile_name)
 
   # Add grid and buffer
   nx <- 20 # metre
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=30, buf2=100, nx)
+  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0f.png",path, stn$id.stationid, tilename, dx)
+    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+                     stn$id.stationid, tile_name, dx)
     ggsave(fname, bg="white", width = 7, height = 7)
   }else{g}
 
   #-----------------------------
   dx <- 50 # metre
   box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name="ortofoto")
+  g <- plot_tile_station(stn, box, tile_name)
 
   # Add grid and buffer
   nx <- 5 # metre
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=10, buf2=30, nx)
+  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0f.png",path, stn$id.stationid, tilename, dx)
+    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+                     stn$id.stationid, tile_name, dx)
     ggsave(fname, bg="white", width = 7, height = 7)
   }else{g}
 
   #-----------------------------
   dx <- 16 # metre
   box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name="ortofoto")
+  g <- plot_tile_station(stn, box, tile_name)
 
   # Add grid and buffer
   nx <- 2 # metre
@@ -92,7 +101,8 @@ plot_tile_station <- function(stn = NULL,
   g <- add_buffer(g, box, buf1=3, buf2=10, nx)
   # Save plot
   if(!is.null(path)){
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0f.png",path, stn$id.stationid, tilename, dx)
+    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+                     stn$id.stationid, tile_name, dx)
     ggsave(fname, bg="white", width = 7, height = 7)
   }else{g}
 

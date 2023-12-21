@@ -39,11 +39,11 @@ compute_horizon <- function(centre = NULL,
                             dem = NULL,
                             level = 2,
                             step = 10,
-                            f.plot.polygon = F){
+                            f.plot.polygon = FALSE){
 
   # Adjust ground level to match real sensor height
   level <- ifelse(level==0, 2, level)
-  loc <-  cellFromXY(dem, centre)
+  loc <-  terra::cellFromXY(dem, centre)
   dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
@@ -72,17 +72,17 @@ compute_horizon <- function(centre = NULL,
                                                  step=step,
                                                  start=0,
                                                  end=360),
-                               intern = T)
+                               intern = TRUE)
 
   # Construct data frame from GRASS output
   df <- horizon[2:length(horizon)] %>%
     strsplit(",") %>%
-    sapply(as.numeric) %>%
+    vapply(as.numeric,numeric(2)) %>%
     t %>%
     data.frame
 
   # Name columns
-  colnames(df) <- horizon[[1]] %>% strsplit(",") %>% unlist
+  colnames(df) <- unlist( strsplit(horizon[[1]], ",") )
 
   # Create directory and save file
   path <- "data/horizon"

@@ -30,10 +30,13 @@
 #' @importFrom terra ext vect
 #'
 #' @export
-add_grid <- function(g,
-                     box,
-                     nx,
+add_grid <- function(g = NULL,
+                     box = NULL,
+                     nx = NULL,
                      n=2){
+
+  # Bind variables to function
+  xend <- yend <- NULL
 
   # Define box boundary
   bbox <- terra::ext(terra::vect(box))

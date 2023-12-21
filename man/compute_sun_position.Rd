@@ -4,7 +4,7 @@
 \alias{compute_sun_position}
 \title{Sun position in the sky}
 \usage{
-compute_sun_position(stn = NULL, f.hour = F)
+compute_sun_position(stn = NULL, f.hour = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
