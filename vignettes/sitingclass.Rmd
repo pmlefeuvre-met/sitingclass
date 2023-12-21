@@ -107,7 +107,7 @@ sf::st_crs(box) <- 25833 #32633 #to match tile projection
 plot_tile_station(stn, box, tile_name="esri")
 ```
 
-```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
+```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Grid and buffer with 'Norge i bilder' imagery."}
 # Plot ESRI imagery
 plot_station_grid(stn, tile_name="ortofoto")
 ```

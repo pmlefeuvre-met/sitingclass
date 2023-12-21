@@ -18,7 +18,6 @@
 #' plot_station_grid(stn, path="plot/map")
 #'
 #' @importFrom sf st_coordinates
-#' @importFrom tidyterra pull_crs
 #'
 #' @export
 
@@ -44,8 +43,6 @@ plot_station_grid <- function(stn = NULL,
   nx <- 200
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=300, buf2=1000, nx)
-  # Fix coordinate system caused by SpatVector conversion
-  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
@@ -63,7 +60,6 @@ plot_station_grid <- function(stn = NULL,
   nx <- 20 # metre
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=30, buf2=100, nx)
-  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
@@ -81,7 +77,6 @@ plot_station_grid <- function(stn = NULL,
   nx <- 5 # metre
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=10, buf2=30, nx)
-  g <- g + coord_sf(datum = tidyterra::pull_crs(stn))
 
   # Save plot
   if(!is.null(path)){
@@ -99,6 +94,7 @@ plot_station_grid <- function(stn = NULL,
   nx <- 2 # metre
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1=3, buf2=10, nx)
+
   # Save plot
   if(!is.null(path)){
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,

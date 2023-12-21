@@ -30,6 +30,7 @@
 #' g
 #'
 #' @importFrom terra ext vect buffer
+#' @importFrom tidyterra pull_crs
 #'
 #' @export
 add_buffer <- function(g = NULL,
@@ -65,6 +66,9 @@ add_buffer <- function(g = NULL,
   g <- g +
     geom_label(aes(label=sprintf("%i m",buf1), x=centre[1]-buf1/2, y=ybuf2), size=2) +
     geom_label(aes(label=sprintf("%i m",buf2), x=centre[1]+buf2/2, y=ybuf2), size=2)
+
+  # Fix coordinate system caused by SpatVector conversion
+  g <- g + coord_sf(datum = tidyterra::pull_crs(box))
 
   return(g)
 }
