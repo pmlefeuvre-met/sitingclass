@@ -36,7 +36,9 @@
 #' @export
 
 get_tile_wms <- function(box = NULL,
-                         layer = "CORINE_Land_Cover_2012",
+                         layer = c("ar5","CORINE_Land_Cover_2012",
+                                   "Urban_Atlas_Lu_Lc_2012","toporaster",
+                                   "ortofoto","fkb_arealdekke"),
                          px = 500){
 
   # Extract bounding box
@@ -70,8 +72,14 @@ get_tile_wms <- function(box = NULL,
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/norge-i-bilder-wms-ortofoto/dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f"
+  } else if ( any(layer %in% c("ar5","fkb_arealdekke","fkb_vann","vann_omrade",
+                               "veg","fkb_bygning","bygning","fkb_naturinfo",
+                               "naturinfo")) ){
+    url     <- "https://openwms.statkart.no/skwms1/wms.fkb"
+    version <- "VERSION=1.3.0"
+    crs     <- "CRS=EPSG:25833"
+    ref     <- "https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a"
   }
-
 
   # Set WMS connection
   con <- paste(url,

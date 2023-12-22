@@ -72,7 +72,7 @@ plot_tile_station <- function(stn = NULL,
     credit <- "\uA9 ESRI WorldImagery"
 
   }else if( tile_name == "ar5" ){
-    tile <- get_tile_wms(box, layer = "ar5")
+    tile <- get_tile_wms(box, layer = tile_name)
     credit <- "FKB-AR5 \uA9 Nibio"
     legend <- "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png"
 
@@ -87,12 +87,18 @@ plot_tile_station <- function(stn = NULL,
     legend <- "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Urban_Atlas_Lu_Lc_2012&format=image/png"
 
   } else if ( tile_name == "toporaster" ){
-    tile <- get_tile_wms(box, layer = "toporaster" )
+    tile <- get_tile_wms(box, layer = tile_name )
     credit <- "Toporaster4 \uA9 Kartverket"
 
   } else if ( tile_name == "ortofoto" ){
-    tile <- get_tile_wms(box, layer = "ortofoto" )
+    tile <- get_tile_wms(box, layer = tile_name )
     credit <- "Ortophoto \uA9 Kartverket"
+
+  }else if( any(tile_name %in% c("ar5","fkb_arealdekke","fkb_vann",
+                                 "vann_omrade","veg","fkb_bygning","bygning",
+                                 "fkb_naturinfo","naturinfo")) ){
+    tile <- get_tile_wms(box, layer = tile_name)
+    credit <- "FKB-AR5 \uA9 Kartverket"
   }
   # Init ggplot
   g <- ggplot()
