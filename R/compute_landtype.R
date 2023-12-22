@@ -1,4 +1,4 @@
-#' Compute landcover types
+#' Compute land cover types
 #'
 #' Compute land cover types around a station based on retrieved topographic data
 #' (buildings, roads, water) and digital terrain/surface models (to compute
@@ -8,7 +8,7 @@
 #'
 #' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
 #' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
-#' @param f.plot A boolean whether to plot the landcover types
+#' @param f.plot A boolean whether to plot the land cover types
 #'
 #' @return A SpatVector of land cover types
 #'
@@ -17,7 +17,7 @@
 #' stn <- get_latlon_frost(stationid=18700)
 #'
 #'# Compute land cover
-#' compute_landcover(stn, dx=100)
+#' compute_landtype(stn, dx=100)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask
@@ -26,7 +26,7 @@
 #'
 #' @export
 
-compute_landcover <- function(stn=NULL,
+compute_landtype <- function(stn=NULL,
                               dx=100,
                               f.plot=FALSE){
 
@@ -55,10 +55,10 @@ compute_landcover <- function(stn=NULL,
   v_building <- raster_to_vector(building,id="building",mask_thr=255)
   v_water    <- raster_to_vector(water   ,id="water"   ,mask_thr=255)
   v_road     <- raster_to_vector(road    ,id="road"    ,mask_thr=255)
-  v_all <-  terra::vect(c(v_building,v_water,v_road))
+  landtype <-  terra::vect(c(v_building,v_water,v_road))
 
   # Mask already identified land cover
-  dh_mask <- terra::mask(dh,v_all,inverse=T)
+  dh_mask <- terra::mask(dh,landtype,inverse=T)
 
   # Classify vegetation based on dh thresholds
   v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = F)
@@ -66,15 +66,15 @@ compute_landcover <- function(stn=NULL,
   v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = F)
 
   # Merge all landcover vectors
-  v_all <- terra::vect(c(v_all,v_grass,v_bush,v_tree))
+  landtype <- terra::vect(c(landtype,v_grass,v_bush,v_tree))
 
   # Convert landcover type values as factors
   levels <-  c("building", "road", "water", "grass", "bush", "tree")
-  v_all$landtype <- factor(v_all$value, levels = levels)
+  landtype$landtype <- factor(landtype$value, levels = levels)
 
   # Plot vector result with fill specific to each factor
   if(f.plot){
-    g <- ggplot(data=v_all) +
+    g <- ggplot(data=landtype) +
       tidyterra::geom_spatvector(aes(fill=landtype ),
                                  linewidth=0) +
       scale_fill_manual(values = c("building"="skyblue3",
@@ -90,5 +90,5 @@ compute_landcover <- function(stn=NULL,
   }
 
     # Return merged landcover types as vector
-    return(v_all)
+    return(landtype)
 }
