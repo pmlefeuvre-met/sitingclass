@@ -60,7 +60,7 @@ download_dem_kartverket <- function(stationid = NULL,
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
-  fname_out <- sprintf("%s/%i_%s_25833_d%05.0fm_%im.tif",path,stationid,name,dx,resx)
+  fname_out <- sprintf("%s/%i_%s_25833_d%05.0fm_%02.1fm.tif",path,stationid,name,dx,resx)
 
   # Verify if file exists
   if(file.exists(fname_out) && !f.overwrite){
