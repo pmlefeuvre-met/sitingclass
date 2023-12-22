@@ -95,8 +95,9 @@ plot_tile_station <- function(stn = NULL,
     credit <- "Ortophoto \uA9 Kartverket"
 
   }else if( any(tile_name %in% c("ar5","fkb_arealdekke","fkb_vann",
-                                 "vann_omrade","veg","fkb_bygning","bygning",
-                                 "fkb_naturinfo","naturinfo")) ){
+                                 "vann_omrade","fkb_samferdsel","veg",
+                                 "fkb_bygning","bygning","fkb_naturinfo",
+                                 "naturinfo")) ){
     tile <- get_tile_wms(box, layer = tile_name)
     credit <- "FKB-AR5 \uA9 Kartverket"
   }

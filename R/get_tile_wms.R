@@ -5,7 +5,10 @@
 #' @references \url{https://nibio.no/tjenester/wms-tjenester}
 #'
 #' @param box A SpatExtent defining the area to plot
-#' @param layer A name of a layer provided by WMS such as "ar5", "CORINE_Land_Cover_2012", "Urban_Atlas_Lu_Lc_2012", "toporaster", "ortofoto","fkb_arealdekke"
+#' @param layer A name of a layer provided by WMS such as "ar5",
+#' "CORINE_Land_Cover_2012", "Urban_Atlas_Lu_Lc_2012", "toporaster",
+#' "ortofoto", "fkb_arealdekke", "fkb_arealdekke","fkb_vann","vann_omrade",
+#' "fkb_samferdsel", "veg","fkb_bygning","bygning","fkb_naturinfo", "naturinfo"
 #' @param px A pixel number that defines the resolution of the image/tile, default is 500 px
 #'
 #' @return A map tile
@@ -71,8 +74,8 @@ get_tile_wms <- function(box = NULL,
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/norge-i-bilder-wms-ortofoto/dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f"
   } else if ( any(layer %in% c("ar5","fkb_arealdekke","fkb_vann","vann_omrade",
-                               "veg","fkb_bygning","bygning","fkb_naturinfo",
-                               "naturinfo")) ){
+                               "fkb_samferdsel","veg","fkb_bygning","bygning",
+                               "fkb_naturinfo","naturinfo")) ){
     url     <- "https://openwms.statkart.no/skwms1/wms.fkb"
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
