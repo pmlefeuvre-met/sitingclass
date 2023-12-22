@@ -21,7 +21,7 @@
 #' box <- make_bbox(centre, dx=200)
 #'
 #' # Load a tile
-#' building  <- get_tile_wms(box, layer = "bygning", px = px)
+#' building  <- get_tile_wms(box, layer = "bygning", px = 400)
 #'
 #' # Convert raster tile to vector landcover
 #' v_building <- raster_to_vector(building,id="building",mask_thr=255)

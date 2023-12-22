@@ -8,6 +8,7 @@
 #'
 #' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
 #' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
+#' @param f.plot A boolean whether to plot the landcover types
 #'
 #' @return A SpatVector of land cover types
 #'
@@ -26,7 +27,11 @@
 #' @export
 
 compute_landcover <- function(stn=NULL,
-                              dx=100){
+                              dx=100,
+                              f.plot=FALSE){
+
+# Bind variable to function
+  landtype <- NULL
 
   # Extract stationID and centre point of the station
   stationid <- stn$id.stationid

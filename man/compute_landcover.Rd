@@ -4,12 +4,14 @@
 \alias{compute_landcover}
 \title{Compute landcover types}
 \usage{
-compute_landcover(stn = NULL, dx = 100)
+compute_landcover(stn = NULL, dx = 100, f.plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
 
 \item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
+
+\item{f.plot}{A boolean whether to plot the landcover types}
 }
 \value{
 A SpatVector of land cover types
