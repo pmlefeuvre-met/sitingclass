@@ -4,12 +4,15 @@
 \alias{get_tile_wms}
 \title{Get Web Mapping Service data tiles}
 \usage{
-get_tile_wms(box = NULL, layer = "CORINE_Land_Cover_2012", px = 500)
+get_tile_wms(box = NULL, layer = "ar5", px = 500)
 }
 \arguments{
 \item{box}{A SpatExtent defining the area to plot}
 
-\item{layer}{A name of a layer provided by WMS such as "ar5", "CORINE_Land_Cover_2012" (default) and "Urban_Atlas_Lu_Lc_2012"}
+\item{layer}{A name of a layer provided by WMS such as "ar5", "toporaster",
+"CORINE_Land_Cover_2012", "Urban_Atlas_Lu_Lc_2012","ortofoto",
+"fkb_arealdekke", "fkb_arealdekke","fkb_vann","vann_omrade","fkb_samferdsel",
+"veg","fkb_bygning","bygning","fkb_naturinfo", "naturinfo"}
 
 \item{px}{A pixel number that defines the resolution of the image/tile, default is 500 px}
 }
