@@ -5,7 +5,7 @@
 #' @references \url{https://nibio.no/tjenester/wms-tjenester}
 #'
 #' @param box A SpatExtent defining the area to plot
-#' @param layer A name of a layer provided by WMS such as "ar5", "CORINE_Land_Cover_2012" (default) and "Urban_Atlas_Lu_Lc_2012"
+#' @param layer A name of a layer provided by WMS such as "ar5", "CORINE_Land_Cover_2012", "Urban_Atlas_Lu_Lc_2012", "toporaster", "ortofoto","fkb_arealdekke"
 #' @param px A pixel number that defines the resolution of the image/tile, default is 500 px
 #'
 #' @return A map tile
@@ -36,9 +36,7 @@
 #' @export
 
 get_tile_wms <- function(box = NULL,
-                         layer = c("ar5","CORINE_Land_Cover_2012",
-                                   "Urban_Atlas_Lu_Lc_2012","toporaster",
-                                   "ortofoto","fkb_arealdekke"),
+                         layer = "ar5",
                          px = 500){
 
   # Extract bounding box
