@@ -46,11 +46,6 @@ compute_landtype_distance <- function(stn=NULL,
   # Compute distance from station
   r <- terra::rast(dem)
   dist_stn <- terra::distance(r, stn)
-  dist_stn03  <- terra::mask(dist_stn,(dist_stn<=3  ),maskvalues=F)
-  dist_stn05  <- terra::mask(dist_stn,(dist_stn<=5  ),maskvalues=F)
-  dist_stn10  <- terra::mask(dist_stn,(dist_stn<=10 ),maskvalues=F)
-  dist_stn30  <- terra::mask(dist_stn,(dist_stn<=30 ),maskvalues=F)
-  dist_stn100 <- terra::mask(dist_stn,(dist_stn<=100),maskvalues=F)
 
   # Plot station distance in relation to land cover types
   if(f.plot){
@@ -69,9 +64,10 @@ compute_landtype_distance <- function(stn=NULL,
   }
 
   # Assign empty array to store area/distance distribution
-  h_all=array(0,length(h$counts))
+  distance_breaks <- seq(0,dx*1.5,2)
+  h_all <- array(0,distance_breaks))
 
-  # Extract land types
+  # Set land types as factors to facilitate extraction
   type_array <- levels(landtype$landtype)
 
   # Loop through land types
@@ -82,10 +78,10 @@ compute_landtype_distance <- function(stn=NULL,
     distance <- terra::crop(dist_stn,landtype[landtype$landtype==type,],mask=T)
 
     # Compute histogram
-    h <- terra::hist(distance, plot=F, breaks=seq(0,dx*1.5,2))
+    h <- terra::hist(distance, plot=F, breaks=distance_breaks)
 
-    # Convert count to area
-    h$counts <- h$counts*prod(terra::res(r)) # from count to area in square meter
+    # Convert count to area in square metre
+    h$counts <- h$counts*prod(terra::res(r))
 
     # Merge distributions
     h_all <- cbind(h_all,h$counts)
@@ -102,6 +98,7 @@ compute_landtype_distance <- function(stn=NULL,
   # Clean, remove empty first column and set column names
   h_all <- h_all[,-1]
   colnames(h_all) <- type_array
+  rownames(h_all) <- distance_breaks
 
   return(h_all)
 }
