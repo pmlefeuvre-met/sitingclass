@@ -22,15 +22,15 @@
 #' compute_landtype(stn, dx=100, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
-#' @importFrom terra vect mask intersect values aggregate
+#' @importFrom terra vect mask erase
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
 #' @export
 
 compute_landtype <- function(stn=NULL,
-                              dx=100,
-                              f.plot=FALSE){
+                             dx=100,
+                             f.plot=FALSE){
 
   # Bind variable to function
   landtype <- NULL
@@ -50,14 +50,14 @@ compute_landtype <- function(stn=NULL,
   # Load FKB-AR5 tiles
   px    <- dim(dh)[1]
   building  <- get_tile_wms(box, layer = "bygning", px = px)
-  water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
   road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
+  water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
 
   # Convert raster tile to vector landcover
   v_building <- raster_to_vector(building,id="building",mask_thr=255)
-  v_water    <- raster_to_vector(water   ,id="water"   ,mask_thr=255)
   v_road     <- raster_to_vector(road    ,id="road"    ,mask_thr=255)
-  landtype <-  terra::vect(c(v_building,v_water,v_road))
+  v_water    <- raster_to_vector(water   ,id="water"   ,mask_thr=255)
+  landtype <-  terra::vect(c(v_building,v_road,v_water))
 
   # Mask already identified land cover
   dh_mask <- terra::mask(dh,landtype,inverse=T)
@@ -70,24 +70,14 @@ compute_landtype <- function(stn=NULL,
   # Merge all landcover vectors
   landtype <- terra::vect(c(landtype,v_grass,v_bush,v_tree))
 
-  # Convert landcover type values as factors
+  # Convert landcover type values to factors
   levels <-  c("building", "road", "water", "grass", "bush", "tree")
   landtype$landtype <- factor(landtype$value, levels = levels)
   landtype <- landtype[,2]
 
-  # Intersect/union/cover? overlapping vectors
-  #landtype <- union(landtype)
-  landtype <- terra::intersect(landtype0,landtype0)
-  # Aggregate results with hierarchy defined by the order of levels
-  for (level in levels){
-    landtype_val <- terra::values(landtype)
-    landtype[(landtype_val[,1] == level & landtype_val[,2] != level), 2] <- NA
-    landtype <- tidyterra::drop_na(landtype)
-  }
-  landtype <- terra::aggregate(landtype,by="landtype", count=FALSE)
-  #landtype <- cover(landtype,landtype)
-
-
+  # Erase overlapping vectors with hierarchy defined by the order of levels
+  landtype <- terra::erase(landtype[order(landtype$landtype,decreasing = TRUE),],
+                     sequential=TRUE)
 
   # Plot vector result with fill specific to each factor
   if(f.plot){
@@ -105,10 +95,8 @@ compute_landtype <- function(stn=NULL,
       theme(legend.position = "bottom")
 
     print(g)
-    plot(landtype[2,])
-    plot(landtype[3,])
   }
 
-    # Return merged landcover types as vector
-    return(landtype)
+  # Return merged landcover types as vector
+  return(landtype)
 }

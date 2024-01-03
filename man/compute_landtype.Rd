@@ -19,14 +19,16 @@ A SpatVector of land cover types
 \description{
 Compute land cover types around a station based on retrieved topographic data
 (buildings, roads, water) and digital terrain/surface models (to compute
-vegetation height and classify: grass, bush, tree) from Kartverket
+vegetation height and classify: grass, bush, tree) from Kartverket. The
+horizontal resolution of the digital elevation models defines the resolution
+of the tile of the topographic data.
 }
 \examples{
 # Get station metadata
 stn <- get_latlon_frost(stationid=18700)
 
 # Compute land cover
-compute_landtype(stn, dx=100)
+compute_landtype(stn, dx=100, f.plot=TRUE)
 
 }
 \references{

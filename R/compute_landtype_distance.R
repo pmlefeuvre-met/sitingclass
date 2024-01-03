@@ -22,6 +22,11 @@
 #' # Compute land type distance to station
 #' landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 #'
+#' # Compare theoretical Area and from the output (Raster rounding error <5%)
+#' plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
+#' round((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
+#'
+#'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
@@ -64,7 +69,7 @@ compute_landtype_distance <- function(stn=NULL,
       theme(legend.position = "bottom")
     print(g1)
 
-
+    # Plot with ortophoto
     tile <- get_tile_wms(box, layer = "ortofoto")
     # Init ggplot
     g2 <- ggplot() +
@@ -95,10 +100,11 @@ compute_landtype_distance <- function(stn=NULL,
     print(type)
 
     # Crop distance raster using polygons for a specific land type
-    distance <- terra::crop(dist_stn,landtype[landtype$landtype==type,],mask=T)
+    distance <- terra::crop(dist_stn,landtype[landtype$landtype==type,],
+                            mask=TRUE, touches=FALSE)
 
     # Compute histogram
-    h <- terra::hist(distance, plot=F, breaks=distance_breaks)
+    h <- terra::hist(distance, plot=FALSE, breaks=distance_breaks)
 
     # Convert count to area in square metre
     h$counts <- h$counts*prod(terra::res(r))
@@ -115,11 +121,15 @@ compute_landtype_distance <- function(stn=NULL,
     }
   }
 
-  # Clean, remove empty first column and set column names
+  # Compute total area from output and cumulative sums
+  h_all <- cbind(rowSums(h_all[,-1]),h_all)
   h_all <- apply(h_all, 2, cumsum)
-  colnames(h_all) <- c("total_area",type_array)
+
+  # Set column and row names
+  colnames(h_all) <- c("tot_area_data","total_area_radius",type_array)
   rownames(h_all) <- distance_breaks[-1]
 
 
   return(h_all)
 }
+
