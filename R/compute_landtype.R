@@ -17,7 +17,7 @@
 #' stn <- get_latlon_frost(stationid=18700)
 #'
 #'# Compute land cover
-#' compute_landtype(stn, dx=100)
+#' compute_landtype(stn, dx=100, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask

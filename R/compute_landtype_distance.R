@@ -17,10 +17,10 @@
 #' stn <- get_latlon_frost(stationid=18700)
 #'
 #'# Compute land type
-#' landtype <- compute_landtype(stn, dx=100)
+#' landtype <- compute_landtype(stn, dx=100, f.plot=TRUE)
 #'
 #' # Compute land type distance to station
-#' compute_landtype_distance(stn, landtype)
+#' compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask
@@ -49,7 +49,7 @@ compute_landtype_distance <- function(stn=NULL,
 
   # Plot station distance in relation to land cover types
   if(f.plot){
-    ggplot()+
+    g1 <- ggplot() +
       tidyterra::geom_spatraster(data=dist_stn) +
       scale_fill_gradient(low = "grey50", high = "white") +
       tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
@@ -61,14 +61,32 @@ compute_landtype_distance <- function(stn=NULL,
                                     "tree"="chartreuse4")) +
       theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
       theme(legend.position = "bottom")
+    print(g1)
+
+
+    tile <- get_tile_wms(box, layer = "ortofoto")
+    # Init ggplot
+    g2 <- ggplot() +
+      tidyterra::geom_spatraster_rgb(data = tile) +
+      geom_sf(data = stn, fill = NA, color = 'red') +
+      tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
+      scale_color_manual(values = c("building"="skyblue3",
+                                    "road"="azure3",
+                                    "water"="cadetblue2",
+                                    "grass"="darkolivegreen1",
+                                    "bush"="darkolivegreen3",
+                                    "tree"="chartreuse4")) +
+      theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
+      theme(legend.position = "bottom")
+    print(g2)
   }
+
+  # Extract land type factors
+  type_array <- levels(landtype$landtype)
 
   # Assign empty array to store area/distance distribution
   distance_breaks <- seq(0,dx*1.5,2)
   h_all <- array(0,distance_breaks)
-
-  # Set land types as factors to facilitate extraction
-  type_array <- levels(landtype$landtype)
 
   # Loop through land types
   for (type in type_array){
@@ -96,9 +114,8 @@ compute_landtype_distance <- function(stn=NULL,
   }
 
   # Clean, remove empty first column and set column names
-  h_all <- h_all[,-1]
   colnames(h_all) <- type_array
-  rownames(h_all) <- distance_breaks
+  rownames(h_all) <- distance_breaks[-1]
 
   return(h_all)
 }
