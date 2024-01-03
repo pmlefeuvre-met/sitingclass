@@ -65,7 +65,7 @@ compute_landtype_distance <- function(stn=NULL,
 
   # Assign empty array to store area/distance distribution
   distance_breaks <- seq(0,dx*1.5,2)
-  h_all <- array(0,distance_breaks))
+  h_all <- array(0,distance_breaks)
 
   # Set land types as factors to facilitate extraction
   type_array <- levels(landtype$landtype)
