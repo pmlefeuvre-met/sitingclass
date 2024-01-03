@@ -4,7 +4,12 @@
 \alias{compute_landtype_distance}
 \title{Compute distance distribution of landcover types}
 \usage{
-compute_landtype_distance(stn = NULL, landtype = NULL, dx = 200, f.pdf = FALSE)
+compute_landtype_distance(
+  stn = NULL,
+  landtype = NULL,
+  dx = 200,
+  f.plot = FALSE
+)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}

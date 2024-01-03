@@ -31,7 +31,7 @@
 compute_landtype_distance <- function(stn=NULL,
                                       landtype=NULL,
                                       dx=200,
-                                      f.pdf=FALSE){
+                                      f.plot=FALSE){
 
   # Extract stationID and centre point of the station
   stationid <- stn$id.stationid

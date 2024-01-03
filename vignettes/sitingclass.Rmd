@@ -34,7 +34,7 @@ library(sitingclass)
 ```
 
 ### Authentication
-Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_FROST_ID` and `YOUR_FROST_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (more info [here](https://rstats.wtf/r-startup.html)), such as:
+Met's Frost API is used to retrieve the necessary station metadata including coordinates and station name. First [Register as a user](https://frost-beta.met.no/docs/starthere) to obtain `YOUR_FROST_ID` and `YOUR_FROST_KEY`. To make them accessible to your R environment, save them in a `.Renviron` file (as documented in [rstats/R-startup](https://rstats.wtf/r-startup.html)), such as:
 ```{bash, eval=FALSE}
 cd $HOME
 cat > .Renviron
@@ -43,7 +43,7 @@ GIT_TOKEN=YOUR_GIT_TOKEN
 FROST_ID=YOUR_FROST_ID
 FROST_KEY=YOUR_FROST_KEY
 ```
-The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set `authenticate()` for the URL request.
+The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` then setting `authenticate()` for the URL request.
 
 ### Dependencies
 `sitingclass` depends on the following packages:
@@ -69,10 +69,14 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` to set
 `sitingclass` aims to be portable retrieving most of the needed data sets from public web services, including:
 
 - [Frost](https://frost-beta.met.no/docs/codeexamples): station metadata
-- [Kartverket](https://www.kartverket.no/geodataarbeid/nasjonal-detaljert-hoydemodell)/[Geonorge](https://kartkatalog.geonorge.no/metadata?text=25833+WCS+h%C3%B8ydemodell): digital terrain model and digital surface model in UTM 33 (epsg:25833)
+- [Kartverket](https://www.kartverket.no/geodataarbeid/nasjonal-detaljert-hoydemodell)/[Geonorge](https://kartkatalog.geonorge.no/metadata?text=25833+WCS+h%C3%B8ydemodell): digital terrain model, digital surface model and National map database [FKB](https://kartkatalog.geonorge.no/metadata/geovekst/felles-kartdatabase-fkb/0e90ca71-6a02-4036-bd94-f219fe64645f) in UTM 33 (epsg:25833)
 - [Nibio](https://nibio.no/tjenester/wms-tjenester/wms-tjenester-ar5): WMS (Web Map Services) Land cover maps
 
 ## Usage
+The following examples are also accessible from the vignette `sitingclass`. From R, load the library and run: 
+```{r, eval=FALSE}
+vignette("sitingclass", package = "sitingclass")
+```
 
 ### Get the station's metadata
 
@@ -103,12 +107,12 @@ sf::st_crs(box) <- 25833 #32633 #to match tile projection
 ```
 
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
-# Plot ESRI imagery
+# Plot ESRI imagery tile
 plot_tile_station(stn, box, tile_name="esri")
 ```
 
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Grid and buffer with 'Norge i bilder' imagery."}
-# Plot ESRI imagery
+# Plot tile with grid and proximity circles
 #plot_station_grid(stn, tile_name="ortofoto")
 ```
 
