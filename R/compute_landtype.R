@@ -2,7 +2,9 @@
 #'
 #' Compute land cover types around a station based on retrieved topographic data
 #' (buildings, roads, water) and digital terrain/surface models (to compute
-#' vegetation height and classify: grass, bush, tree) from Kartverket
+#' vegetation height and classify: grass, bush, tree) from Kartverket. The
+#' horizontal resolution of the digital elevation models defines the resolution
+#' of the tile of the topographic data.
 #'
 #' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
 #'
@@ -20,7 +22,7 @@
 #' compute_landtype(stn, dx=100, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
-#' @importFrom terra vect mask
+#' @importFrom terra vect mask intersect values aggregate
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
@@ -30,7 +32,7 @@ compute_landtype <- function(stn=NULL,
                               dx=100,
                               f.plot=FALSE){
 
-# Bind variable to function
+  # Bind variable to function
   landtype <- NULL
 
   # Extract stationID and centre point of the station
@@ -71,6 +73,21 @@ compute_landtype <- function(stn=NULL,
   # Convert landcover type values as factors
   levels <-  c("building", "road", "water", "grass", "bush", "tree")
   landtype$landtype <- factor(landtype$value, levels = levels)
+  landtype <- landtype[,2]
+
+  # Intersect/union/cover? overlapping vectors
+  #landtype <- union(landtype)
+  landtype <- terra::intersect(landtype0,landtype0)
+  # Aggregate results with hierarchy defined by the order of levels
+  for (level in levels){
+    landtype_val <- terra::values(landtype)
+    landtype[(landtype_val[,1] == level & landtype_val[,2] != level), 2] <- NA
+    landtype <- tidyterra::drop_na(landtype)
+  }
+  landtype <- terra::aggregate(landtype,by="landtype", count=FALSE)
+  #landtype <- cover(landtype,landtype)
+
+
 
   # Plot vector result with fill specific to each factor
   if(f.plot){
@@ -84,9 +101,12 @@ compute_landtype <- function(stn=NULL,
                                    "bush"="darkolivegreen3",
                                    "tree"="chartreuse4")) +
       coord_sf(datum = tidyterra::pull_crs(box)) +
-      theme_minimal()
+      theme_minimal()+
+      theme(legend.position = "bottom")
 
     print(g)
+    plot(landtype[2,])
+    plot(landtype[3,])
   }
 
     # Return merged landcover types as vector

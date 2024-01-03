@@ -20,7 +20,7 @@
 #' landtype <- compute_landtype(stn, dx=100, f.plot=TRUE)
 #'
 #' # Compute land type distance to station
-#' compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
+#' landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask
@@ -51,6 +51,7 @@ compute_landtype_distance <- function(stn=NULL,
   if(f.plot){
     g1 <- ggplot() +
       tidyterra::geom_spatraster(data=dist_stn) +
+      geom_sf(data = stn, fill = NA, color = 'red') +
       scale_fill_gradient(low = "grey50", high = "white") +
       tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
       scale_color_manual(values = c("building"="skyblue3",
@@ -84,9 +85,10 @@ compute_landtype_distance <- function(stn=NULL,
   # Extract land type factors
   type_array <- levels(landtype$landtype)
 
-  # Assign empty array to store area/distance distribution
+  # Assign array with total area to store area/distance distribution per land type
   distance_breaks <- seq(0,dx*1.5,2)
-  h_all <- array(0,distance_breaks)
+  h <- terra::hist(dist_stn, plot=F, breaks=distance_breaks)
+  h_all <- h$counts*prod(terra::res(r)) #array(0,distance_breaks)
 
   # Loop through land types
   for (type in type_array){
@@ -114,8 +116,10 @@ compute_landtype_distance <- function(stn=NULL,
   }
 
   # Clean, remove empty first column and set column names
-  colnames(h_all) <- type_array
+  h_all <- apply(h_all, 2, cumsum)
+  colnames(h_all) <- c("total_area",type_array)
   rownames(h_all) <- distance_breaks[-1]
+
 
   return(h_all)
 }

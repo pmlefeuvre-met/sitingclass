@@ -26,7 +26,7 @@
 #' # Convert raster tile to vector landcover
 #' v_building <- raster_to_vector(building,id="building",mask_thr=255)
 #'
-#' @importFrom terra as.polygons aggregate setValues
+#' @importFrom terra as.polygons setValues buffer aggregate
 #' @importFrom ggplot2 ggplot
 #' @importFrom tidyterra geom_spatvector
 #'
@@ -44,11 +44,14 @@ raster_to_vector <- function(raster,
   # Remove background: white background (255) or mask (FALSE)
   vector <- vector[!(vector[[1]]==mask_thr)]
 
-  # Aggregates single vectors
-  vector <- terra::aggregate(vector, by=names(vector))
-
   # Set vector ids
   vector <- terra::setValues(vector,id)
+
+  # Buffer to fill gaps
+  vector <- terra::buffer(vector, width=mean(res(raster))/2)
+
+  # Aggregates single vectors
+  vector <- terra::aggregate(vector, by=names(vector), count=FALSE)
 
   # Plot
   if(f.plot){
