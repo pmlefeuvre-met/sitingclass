@@ -60,7 +60,7 @@ compute_landtype <- function(stn=NULL,
   landtype <-  terra::vect(c(v_building,v_road,v_water))
 
   # Mask already identified land cover
-  dh_mask <- terra::mask(dh,landtype,inverse=T)
+  dh_mask <- terra::mask(dh, landtype, inverse=T, touches=FALSE)
 
   # Classify vegetation based on dh thresholds
   v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = F)
