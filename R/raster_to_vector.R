@@ -39,7 +39,7 @@ raster_to_vector <- function(raster,
                              f.plot=FALSE){
 
   # Convert raster to vector (i.e. polygons)
-  vector <- terra::as.polygons(raster)
+  vector <- terra::as.polygons(raster, round=FALSE, aggregate=TRUE)
 
   # Remove background: white background (255) or mask (FALSE)
   vector <- vector[!(vector[[1]]==mask_thr)]

@@ -60,12 +60,12 @@ compute_landtype <- function(stn=NULL,
   landtype <-  terra::vect(c(v_building,v_road,v_water))
 
   # Mask already identified land cover
-  dh_mask <- terra::mask(dh, landtype, inverse=T, touches=FALSE)
+  dh_mask <- terra::mask(dh, landtype, inverse=TRUE, touches=FALSE)
 
   # Classify vegetation based on dh thresholds
-  v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = F)
-  v_bush  <- raster_to_vector((dh_mask>.2 & dh_mask<3),id="bush" ,mask_thr = F)
-  v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = F)
+  v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = FALSE)
+  v_bush  <- raster_to_vector((dh_mask>.2 & dh_mask<3),id="bush" ,mask_thr = FALSE)
+  v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = FALSE)
 
   # Merge all landcover vectors
   landtype <- terra::vect(c(landtype,v_grass,v_bush,v_tree))
