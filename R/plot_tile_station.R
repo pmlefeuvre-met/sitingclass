@@ -130,9 +130,9 @@ plot_tile_station <- function(stn = NULL,
   g <- g +
     xlab("Easting (metre)") +
     ylab("Northing (metre)") +
-    annotate("text", x = Inf, y = -Inf, size = 3, hjust = 1, vjust=0,
+    annotate("label", x = Inf, y = -Inf, size = 3, hjust = 1, vjust=0,
              label = sprintf("%s - ETRS89/UTM33", credit),
-             fill="white",label.size=NA)
+             fill="white",colour = "white",label.size=NA)
 
   # Save plot
   if(!is.null(path)){
