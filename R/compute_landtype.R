@@ -65,8 +65,8 @@ compute_landtype <- function(stn=NULL,
   dh_mask <- terra::mask(dh, landtype, inverse=TRUE, touches=FALSE)
 
   # Classify vegetation based on dh thresholds
-  v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = FALSE)
-  v_bush  <- raster_to_vector((dh_mask>.2 & dh_mask<3),id="bush" ,mask_thr = FALSE)
+  v_grass <- raster_to_vector( dh_mask<=.25            ,id="grass",mask_thr = FALSE)
+  v_bush  <- raster_to_vector((dh_mask>.25 & dh_mask<3),id="bush" ,mask_thr = FALSE)
   v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = FALSE)
   print('Vectorised vegetation')
 

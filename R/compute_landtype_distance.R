@@ -93,7 +93,7 @@ compute_landtype_distance <- function(stn=NULL,
   type_array <- levels(landtype$landtype)
 
   # Assign array with total area to store area/distance distribution per land type
-  distance_breaks <- c(0,1,2,3,seq(4,dx*1.5,2))
+  distance_breaks <- c(0:29,seq(30,dx*1.5,2))
   h <- terra::hist(dist_stn, plot=F, breaks=distance_breaks)
   h_all <- h$counts*prod(terra::res(r)) #array(0,distance_breaks)
 
