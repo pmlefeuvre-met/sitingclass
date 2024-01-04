@@ -131,6 +131,8 @@ compute_landtype_distance <- function(stn=NULL,
   colnames(h_all) <- c("tot_area_data","total_area_radius",type_array)
   rownames(h_all) <- distance_breaks[-1]
 
+  # Keep only data inside the radius dx
+  h_all <- h_all[1:which(distance_breaks==dx),]
 
   return(h_all)
 }
