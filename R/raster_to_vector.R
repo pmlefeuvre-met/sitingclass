@@ -48,7 +48,7 @@ raster_to_vector <- function(raster,
   vector <- terra::setValues(vector,id)
 
   # Buffer to fill gaps
-  vector <- terra::buffer(vector, width=mean(terra::res(raster))/2)
+  vector <- terra::buffer(vector, width=mean(terra::res(raster))/4)
 
   # Aggregates single vectors
   vector <- terra::aggregate(vector, by=names(vector), count=FALSE)

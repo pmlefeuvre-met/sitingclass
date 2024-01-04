@@ -24,7 +24,7 @@
 #'
 #' # Compare theoretical Area and from the output (Raster rounding error <5%)
 #' plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
-#' round((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
+#' summary((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
 #'
 #'
 #' @importFrom sf st_coordinates
@@ -69,7 +69,7 @@ compute_landtype_distance <- function(stn=NULL,
       theme(legend.position = "bottom")
     print(g1)
 
-    # Plot with ortophoto
+
     tile <- get_tile_wms(box, layer = "ortofoto")
     # Init ggplot
     g2 <- ggplot() +
