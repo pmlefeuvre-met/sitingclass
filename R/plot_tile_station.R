@@ -132,7 +132,7 @@ plot_tile_station <- function(stn = NULL,
     ylab("Northing (metre)") +
     annotate("label", x = Inf, y = -Inf, size = 3, hjust = 1, vjust=0,
              label = sprintf("%s - ETRS89/UTM33", credit),
-             fill="white",colour = "white",label.size=NA)
+             fill="white",label.size=NA)
 
   # Save plot
   if(!is.null(path)){
