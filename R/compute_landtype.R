@@ -52,12 +52,14 @@ compute_landtype <- function(stn=NULL,
   building  <- get_tile_wms(box, layer = "bygning", px = px)
   road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
   water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
+  print('Loaded WMS tiles')
 
   # Convert raster tile to vector landcover
   v_building <- raster_to_vector(building,id="building",mask_thr=255)
   v_road     <- raster_to_vector(road    ,id="road"    ,mask_thr=255)
   v_water    <- raster_to_vector(water   ,id="water"   ,mask_thr=255)
   landtype <-  terra::vect(c(v_building,v_road,v_water))
+  print('Vectorised WMS tiles')
 
   # Mask already identified land cover
   dh_mask <- terra::mask(dh, landtype, inverse=TRUE, touches=FALSE)
@@ -66,6 +68,7 @@ compute_landtype <- function(stn=NULL,
   v_grass <- raster_to_vector( dh_mask<=.2            ,id="grass",mask_thr = FALSE)
   v_bush  <- raster_to_vector((dh_mask>.2 & dh_mask<3),id="bush" ,mask_thr = FALSE)
   v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = FALSE)
+  print('Vectorised vegetation')
 
   # Merge all landcover vectors
   landtype <- terra::vect(c(landtype,v_grass,v_bush,v_tree))
@@ -78,6 +81,7 @@ compute_landtype <- function(stn=NULL,
   # Erase overlapping vectors with hierarchy defined by the order of levels
   landtype <- terra::erase(landtype[order(landtype$landtype,decreasing = TRUE),],
                      sequential=TRUE)
+  print('Erased overlapping vectors')
 
   # Plot vector result with fill specific to each factor
   if(f.plot){

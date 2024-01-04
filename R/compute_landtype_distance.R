@@ -22,7 +22,7 @@
 #' # Compute land type distance to station
 #' landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 #'
-#' # Compare theoretical Area and from the output (Raster rounding error <5%)
+#' # Compare theoretical Area and from the output (Raster rounding error: 0%)
 #' plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
 #' summary((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
 #'
@@ -69,29 +69,31 @@ compute_landtype_distance <- function(stn=NULL,
       theme(legend.position = "bottom")
     print(g1)
 
-
-    tile <- get_tile_wms(box, layer = "ortofoto")
-    # Init ggplot
-    g2 <- ggplot() +
-      tidyterra::geom_spatraster_rgb(data = tile) +
-      geom_sf(data = stn, fill = NA, color = 'red') +
-      tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
-      scale_color_manual(values = c("building"="skyblue3",
-                                    "road"="azure3",
-                                    "water"="cadetblue2",
-                                    "grass"="darkolivegreen1",
-                                    "bush"="darkolivegreen3",
-                                    "tree"="chartreuse4")) +
-      theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
-      theme(legend.position = "bottom")
-    print(g2)
+    # Plot ortophoto and classification (limit to areas < 500m)
+    if(dx<500){
+      # Get WMS tile and plot
+      tile <- get_tile_wms(box, layer = "ortofoto")
+      g2 <- ggplot() +
+        tidyterra::geom_spatraster_rgb(data = tile) +
+        geom_sf(data = stn, fill = NA, color = 'red') +
+        tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
+        scale_color_manual(values = c("building"="skyblue3",
+                                      "road"="azure3",
+                                      "water"="cadetblue2",
+                                      "grass"="darkolivegreen1",
+                                      "bush"="darkolivegreen3",
+                                      "tree"="chartreuse4")) +
+        theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
+        theme(legend.position = "bottom")
+      print(g2)
+    }
   }
 
   # Extract land type factors
   type_array <- levels(landtype$landtype)
 
   # Assign array with total area to store area/distance distribution per land type
-  distance_breaks <- seq(0,dx*1.5,2)
+  distance_breaks <- c(1,2,3,seq(4,dx*1.5,2))
   h <- terra::hist(dist_stn, plot=F, breaks=distance_breaks)
   h_all <- h$counts*prod(terra::res(r)) #array(0,distance_breaks)
 
@@ -112,13 +114,13 @@ compute_landtype_distance <- function(stn=NULL,
     # Merge distributions
     h_all <- cbind(h_all,h$counts)
 
-    if(f.plot){
-      plot(h,
-           main=sprintf("landcover: %s",type),
-           xlab="Distance in metre",
-           ylab="Area in square metre",
-           xlim=c(0,150))
-    }
+    # if(f.plot){
+    #   plot(h,
+    #        main=sprintf("landcover: %s",type),
+    #        xlab="Distance in metre",
+    #        ylab="Area in square metre",
+    #        xlim=c(0,150))
+    # }
   }
 
   # Compute total area from output and cumulative sums
