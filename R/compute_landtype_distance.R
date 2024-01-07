@@ -52,22 +52,22 @@ compute_landtype_distance <- function(stn=NULL,
   r <- terra::rast(dem)
   dist_stn <- terra::distance(r, stn)
 
-  # Plot station distance in relation to land cover types
   if(f.plot){
-    g1 <- ggplot() +
-      tidyterra::geom_spatraster(data=dist_stn) +
-      geom_sf(data = stn, fill = NA, color = 'red') +
-      scale_fill_gradient(low = "grey50", high = "white") +
-      tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
-      scale_color_manual(values = c("building"="skyblue3",
-                                    "road"="azure3",
-                                    "water"="cadetblue2",
-                                    "grass"="darkolivegreen1",
-                                    "bush"="darkolivegreen3",
-                                    "tree"="chartreuse4")) +
-      theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
-      theme(legend.position = "bottom")
-    print(g1)
+    # Plot station distance in relation to land cover types
+    # g1 <- ggplot() +
+    #   tidyterra::geom_spatraster(data=dist_stn) +
+    #   geom_sf(data = stn, fill = NA, color = 'red') +
+    #   scale_fill_gradient(low = "grey50", high = "white") +
+    #   tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
+    #   scale_color_manual(values = c("building"="skyblue3",
+    #                                 "road"="azure3",
+    #                                 "water"="cadetblue2",
+    #                                 "grass"="darkolivegreen1",
+    #                                 "bush"="darkolivegreen3",
+    #                                 "tree"="chartreuse4")) +
+    #   theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
+    #   theme(legend.position = "bottom")
+    # print(g1)
 
     # Plot ortophoto and classification (limit to areas < 500m)
     if(dx<500){
@@ -92,10 +92,14 @@ compute_landtype_distance <- function(stn=NULL,
   # Extract land type factors
   type_array <- levels(landtype$landtype)
 
-  # Assign array with total area to store area/distance distribution per land type
-  distance_breaks <- c(0:29,seq(30,dx*1.5,2))
+  # Make histogram breaks every 1 m first and then 2 m after 30m
+  distance_breaks <- c(0:29, seq(30,dx*1.5,2) )
+
+  # Compute histogram from distance raster for theoretical total area
   h <- terra::hist(dist_stn, plot=F, breaks=distance_breaks)
-  h_all <- h$counts*prod(terra::res(r)) #array(0,distance_breaks)
+
+  # Convert to area and assign array to store area distribution per land type
+  h_all <- h$counts*prod(terra::res(r))
 
   # Loop through land types
   for (type in type_array){
@@ -114,9 +118,10 @@ compute_landtype_distance <- function(stn=NULL,
     # Merge distributions
     h_all <- cbind(h_all,h$counts)
 
+    # Plot histogram for each land type
     # if(f.plot){
     #   plot(h,
-    #        main=sprintf("landcover: %s",type),
+    #        main=sprintf("landtype: %s",type),
     #        xlab="Distance in metre",
     #        ylab="Area in square metre",
     #        xlim=c(0,150))
@@ -124,14 +129,15 @@ compute_landtype_distance <- function(stn=NULL,
   }
 
   # Compute total area from output and cumulative sums
-  h_all <- cbind(rowSums(h_all[,-1]),h_all)
+  #h_all <- cbind(rowSums(h_all[,-1]),h_all) #1) Just for total area verification
   h_all <- apply(h_all, 2, cumsum)
 
   # Set column and row names
-  colnames(h_all) <- c("tot_area_data","total_area_radius",type_array)
+  #colnames(h_all) <- c("tot_area_data","total_area_radius",type_array) #1)
+  colnames(h_all) <- c("tot_area",type_array)
   rownames(h_all) <- distance_breaks[-1]
 
-  # Keep only data inside the radius dx
+  # Keep only data inside the radius dx and avoid corner effect from bbox
   h_all <- h_all[1:which(distance_breaks==dx),]
 
   return(h_all)
