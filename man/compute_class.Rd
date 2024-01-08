@@ -4,7 +4,7 @@
 \alias{compute_class}
 \title{Compute station class}
 \usage{
-compute_class(df.in, test.type = "WMO", f.plot = TRUE)
+compute_class(df.in = landtype_dist, test.type = "WMO", f.plot = TRUE)
 }
 \arguments{
 \item{df.in}{A data.frame with land type distribution from \code{"compute_landtype_distance"}}

@@ -62,7 +62,8 @@ compute_landtype_distance <- function(stn=NULL,
     #   scale_color_manual(values = c("building"="skyblue3",
     #                                 "road"="azure3",
     #                                 "water"="cadetblue2",
-    #                                 "grass"="darkolivegreen1",
+    #                                 "grass"="darkolivegreen1",,
+    #                                 "crop"="gold1",
     #                                 "bush"="darkolivegreen3",
     #                                 "tree"="chartreuse4")) +
     #   theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
@@ -77,12 +78,7 @@ compute_landtype_distance <- function(stn=NULL,
         tidyterra::geom_spatraster_rgb(data = tile) +
         geom_sf(data = stn, fill = NA, color = 'red') +
         tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
-        scale_color_manual(values = c("building"="skyblue3",
-                                      "road"="azure3",
-                                      "water"="cadetblue2",
-                                      "grass"="darkolivegreen1",
-                                      "bush"="darkolivegreen3",
-                                      "tree"="chartreuse4")) +
+        scale_color_manual(values = fill_landtype) +
         theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
         theme(legend.position = "bottom")
       print(g2)
@@ -134,7 +130,7 @@ compute_landtype_distance <- function(stn=NULL,
 
   # Set column and row names
   #colnames(h_all) <- c("tot_area_data","total_area_radius",type_array) #1)
-  colnames(h_all) <- c("tot_area",type_array)
+  colnames(h_all) <- c("total_area",type_array)
   rownames(h_all) <- distance_breaks[-1]
 
   # Keep only data inside the radius dx and avoid corner effect from bbox

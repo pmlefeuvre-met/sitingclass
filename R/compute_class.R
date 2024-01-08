@@ -29,16 +29,9 @@
 #' @importFrom ggplot2 ggplot geom_area
 #'
 #' @export
-compute_class <- function(df.in,
+compute_class <- function(df.in=landtype_dist,
                           test.type="WMO",
                           f.plot=TRUE){
-  # Colour parameter
-  fill <- c("building"="skyblue3",
-            "road"="azure3",
-            "water"="cadetblue2",
-            "grass"="darkolivegreen1",
-            "bush"="darkolivegreen3",
-            "tree"="chartreuse4")
 
   # Extract column and land type names
   colname <- colnames(df.in)
@@ -55,12 +48,12 @@ compute_class <- function(df.in,
 
   if(f.plot){
     # Plot area distribution per land type in percentage and log10 x-axis
-    ggplot(df_percent, aes(x=distance, y=area, fill=landtype)) +
+    ggplot(df, aes(x=distance, y=area, fill=landtype)) +
       geom_area(position="stack", stat="identity") +
       xlab("Distance in metre (log10 scale)") +
       ylab("Area in percentage") +
       theme_minimal() +
-      scale_fill_manual(values = fill) +
+      scale_fill_manual(values = fill_landtype) +
       scale_x_continuous(trans = 'log10')
   }
 

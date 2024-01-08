@@ -64,17 +64,18 @@ compute_landtype <- function(stn=NULL,
   # Mask already identified land cover
   dh_mask <- terra::mask(dh, landtype, inverse=TRUE, touches=FALSE)
 
-  # Classify vegetation based on dh thresholds
-  v_grass <- raster_to_vector( dh_mask<=.25            ,id="grass",mask_thr = FALSE)
-  v_bush  <- raster_to_vector((dh_mask>.25 & dh_mask<3),id="bush" ,mask_thr = FALSE)
-  v_tree  <- raster_to_vector( dh_mask>=3             ,id="tree" ,mask_thr = FALSE)
+  # Classify vegetation based on dh thresholds in metre
+  v_grass <- raster_to_vector( dh_mask<=.10               ,id="grass",mask_thr = FALSE)
+  v_crop  <- raster_to_vector((dh_mask>.10 & dh_mask<=.25),id="crop" ,mask_thr = FALSE)
+  v_bush  <- raster_to_vector((dh_mask>.25 & dh_mask<=3)  ,id="bush" ,mask_thr = FALSE)
+  v_tree  <- raster_to_vector( dh_mask>=3                 ,id="tree" ,mask_thr = FALSE)
   print('Vectorised vegetation')
 
   # Merge all landcover vectors
-  landtype <- terra::vect(c(landtype,v_grass,v_bush,v_tree))
+  landtype <- terra::vect(c(landtype,v_grass,v_crop,v_bush,v_tree))
 
   # Convert landcover type values to factors
-  levels <-  c("building", "road", "water", "grass", "bush", "tree")
+  levels <-  c("building", "road", "water", "grass", "crop", "bush", "tree")
   landtype$landtype <- factor(landtype$value, levels = levels)
   landtype <- landtype[,2]
 
@@ -88,12 +89,7 @@ compute_landtype <- function(stn=NULL,
     g <- ggplot(data=landtype) +
       tidyterra::geom_spatvector(aes(fill=landtype ),
                                  linewidth=0) +
-      scale_fill_manual(values = c("building"="skyblue3",
-                                   "road"="azure3",
-                                   "water"="cadetblue2",
-                                   "grass"="darkolivegreen1",
-                                   "bush"="darkolivegreen3",
-                                   "tree"="chartreuse4")) +
+      scale_fill_manual(values = fill_landtype) +
       coord_sf(datum = tidyterra::pull_crs(box)) +
       theme_minimal()+
       theme(legend.position = "bottom")
