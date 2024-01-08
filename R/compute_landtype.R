@@ -19,7 +19,7 @@
 #' stn <- get_latlon_frost(stationid=18700)
 #'
 #'# Compute land cover
-#' compute_landtype(stn, dx=100, f.plot=TRUE)
+#' compute_landtype(stn, dx=100, resx=1, f.plot=TRUE)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom terra vect mask erase
@@ -30,6 +30,7 @@
 
 compute_landtype <- function(stn=NULL,
                              dx=100,
+                             resx=1,
                              f.plot=FALSE){
 
   # Bind variable to function
@@ -43,8 +44,8 @@ compute_landtype <- function(stn=NULL,
   box <- make_bbox(centre, dx)
 
   # Download DEMs and compute difference to assess vegetation
-  dem <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx = 1)
-  dsm <- download_dem_kartverket(stationid,centre,name="dom",dx,resx = 1)
+  dem <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx)
+  dsm <- download_dem_kartverket(stationid,centre,name="dom",dx,resx)
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles

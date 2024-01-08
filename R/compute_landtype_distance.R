@@ -35,7 +35,8 @@
 #' @export
 compute_landtype_distance <- function(stn=NULL,
                                       landtype=NULL,
-                                      dx=200,
+                                      dx=100,
+                                      resx=1,
                                       f.plot=FALSE){
 
   # Extract stationID and centre point of the station
@@ -46,7 +47,7 @@ compute_landtype_distance <- function(stn=NULL,
   box <- make_bbox(centre, dx)
 
   # Download DEMs to set raster reference
-  dem <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx = 1)
+  dem <- download_dem_kartverket(stationid, centre, name="dtm", dx, resx)
 
   # Compute distance from station
   r <- terra::rast(dem)
