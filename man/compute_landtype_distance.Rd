@@ -37,9 +37,9 @@ landtype <- compute_landtype(stn, dx=100, f.plot=TRUE)
 # Compute land type distance to station
 landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 
-# Compare theoretical Area and from the output (Raster rounding error <5\%)
+# Compare theoretical Area and from the output (Raster rounding error: 0\%)
 plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
-round((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
+summary((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
 
 
 }

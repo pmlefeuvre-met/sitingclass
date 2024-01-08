@@ -1,7 +1,8 @@
-#' Compute station class for landtypes
+#' Compute station class
 #'
-#' Assess the class of a station from the type of land cover around a station
-#' by applying WMO's station test
+#' Assess the class of a station from the type of surrounding land cover, slope,
+#' vegetation and shadowing as potential heat sources affecting sensors and
+#' using the requirements set by WMO and Met
 #'
 #' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 #'
@@ -21,20 +22,16 @@
 #' # Compute land type distance to station
 #' landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
 #'
-#' # Compare theoretical Area and from the output (Raster rounding error: 0%)
-#' plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
-#' summary((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
+#' # Compute class
+#' compute_class(landtype_dist, test.type="WMO", f.plot=TRUE)
 #'
 #'
-#' @importFrom sf st_coordinates
-#' @importFrom terra vect mask
-#' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
-#' @importFrom tidyterra geom_spatvector
+#' @importFrom ggplot2 ggplot geom_area
 #'
 #' @export
-compute_class_landtype <- function(df.in,
-                                   test.type="WMO",
-                                   f.plot=TRUE){
+compute_class <- function(df.in,
+                          test.type="WMO",
+                          f.plot=TRUE){
   # Colour parameter
   fill <- c("building"="skyblue3",
             "road"="azure3",
