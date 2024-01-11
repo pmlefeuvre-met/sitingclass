@@ -9,7 +9,8 @@
 #' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
 #'
 #' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
-#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
+#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point
+#' @param resx A horizontal resolution in metre
 #' @param f.plot A boolean whether to plot the land cover types
 #'
 #' @return A SpatVector of land cover types

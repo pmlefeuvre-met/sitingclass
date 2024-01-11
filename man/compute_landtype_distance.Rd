@@ -7,7 +7,8 @@
 compute_landtype_distance(
   stn = NULL,
   landtype = NULL,
-  dx = 200,
+  dx = 100,
+  resx = 1,
   f.plot = FALSE
 )
 }
@@ -16,7 +17,9 @@ compute_landtype_distance(
 
 \item{landtype}{A SpatVector with landtype attributes from \code{"compute_landtype"}}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
+\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point}
+
+\item{resx}{A horizontal resolution in metre}
 
 \item{f.plot}{A boolean whether to plot figures}
 }

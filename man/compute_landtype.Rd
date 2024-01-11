@@ -4,12 +4,14 @@
 \alias{compute_landtype}
 \title{Compute land cover types}
 \usage{
-compute_landtype(stn = NULL, dx = 100, f.plot = FALSE)
+compute_landtype(stn = NULL, dx = 100, resx = 1, f.plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
+\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point}
+
+\item{resx}{A horizontal resolution in metre}
 
 \item{f.plot}{A boolean whether to plot the land cover types}
 }
@@ -28,7 +30,7 @@ of the tile of the topographic data.
 stn <- get_latlon_frost(stationid=18700)
 
 # Compute land cover
-compute_landtype(stn, dx=100, f.plot=TRUE)
+compute_landtype(stn, dx=100, resx=1, f.plot=TRUE)
 
 }
 \references{

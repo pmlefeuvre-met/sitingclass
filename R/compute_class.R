@@ -19,11 +19,13 @@
 #' stn <- get_latlon_frost(stationid=18700)
 #' stn.id      <- stn$id.stationid
 #' stn.centre  <- sf::st_coordinates(stn)
-#' stn.level   <- stn$id.level
 #'
 #' # Parameters
 #' dx   <- 100
 #' resx <- 1
+#'
+#' # Load a digital elevation model
+#' dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm", dx, resx)
 #'
 #'# Compute land type
 #' landtype <- compute_landtype(stn, dx, resx, f.plot=TRUE)
@@ -31,33 +33,26 @@
 #' # Compute land type distance to station
 #' landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx, f.plot=TRUE)
 #'
-#' # Load digital elevation models of the terrain and surface
-#' dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm", dx, resx)
-#' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx, resx)
-#' demkm <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=20e3,resx=20)
-#'
-#'   # Compute horizon view from location
-#'   horizon_dem   <- compute_horizon(stn.centre,dem,level=stn.level,step=.01,f.plot.polygon=TRUE)
-#'   horizon_dsm   <- compute_horizon(stn.centre,dsm,level=stn.level,step=.01,f.plot.polygon=TRUE)
-#'   horizon_demkm <- compute_horizon(stn.centre,demkm,level=stn.level,step=.01,f.plot.polygon=TRUE)
-#'   horizon_max   <- data.frame(azimuth=horizon_dem[,1],
-#'                               horizon_height=apply(cbind(horizon_dem[,2],
-#'                                                          horizon_dsm[,2],
-#'                                                          horizon_demkm[,2]),
-#'                                                    1, max) )
+#' # Compute maximum horizon
+#' horizon_max <- compute_horizon_max(stn, dx, resx, step=1, f.plot.polygon=FALSE)
 #'
 #' # Compute class
 #' compute_class(landtype_dist, horizon_max, dem, test.type="WMO", f.plot=TRUE)
 #'
 #'
 #' @importFrom ggplot2 ggplot geom_area
+#' @importFrom stats quantile
+#' @importFrom utils stack
 #'
 #' @export
-compute_class <- function(land=landtype_dist,
-                          horizon=horizon_max,
-                          dem=dem,
-                          test.type="WMO",
-                          f.plot=TRUE){
+compute_class <- function(land = NULL,
+                          horizon = NULL,
+                          dem = dem,
+                          test.type = "WMO",
+                          f.plot = TRUE){
+
+  # Bind variable to function
+  distance <- landtype <- NULL
 
   # Extract column and land type names
   colname <- colnames(land)
@@ -67,7 +62,7 @@ compute_class <- function(land=landtype_dist,
   df <- land[,colname %in% landtype_name] / land[,colname=="total_area"] *100
 
   # Reshape data.frame, equivalent to pivot_longer()
-  df <- with(stack(as.data.frame(t( df ))),
+  df <- with(utils::stack(as.data.frame(t( df ))),
              data.frame(distance = as.numeric(as.character(ind)),
                         landtype = factor(colnames(df), landtype_name),
                         area = values))
@@ -113,7 +108,7 @@ compute_class <- function(land=landtype_dist,
   vegetation[2,] <- colSums(vegetation)
   vegetation     <- round( rowMeans(vegetation))
   # 3) Projected shade limits
-  shade <- quantile(horizon[,"horizon_height"],.90)
+  shade <- stats::quantile(horizon[,"horizon_height"],.90)
   names(shade) <- "shade"
   # 4) Compute median slope
   slope <- terra::global(terra::terrain(dem),\(x) quantile(x,0.5,na.rm=T))

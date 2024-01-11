@@ -7,7 +7,8 @@
 #'
 #' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
 #' @param landtype A SpatVector with landtype attributes from \code{"compute_landtype"}
-#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
+#' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point
+#' @param resx A horizontal resolution in metre
 #' @param f.plot A boolean whether to plot figures
 #'
 #' @return A distance distribution per land cover type

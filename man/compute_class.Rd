@@ -4,10 +4,20 @@
 \alias{compute_class}
 \title{Compute station class}
 \usage{
-compute_class(df.in = landtype_dist, test.type = "WMO", f.plot = TRUE)
+compute_class(
+  land = NULL,
+  horizon = NULL,
+  dem = dem,
+  test.type = "WMO",
+  f.plot = TRUE
+)
 }
 \arguments{
-\item{df.in}{A data.frame with land type distribution from \code{"compute_landtype_distance"}}
+\item{land}{A data.frame with land type distribution from \code{"compute_landtype_distance"}}
+
+\item{horizon}{A data.frame with horizon distribution from \code{"compute_horizon"}}
+
+\item{dem}{A SpatRaster terrain model}
 
 \item{test.type}{A string defining a type of tests to apply: "WMO" or "Met"}
 
@@ -24,15 +34,27 @@ using the requirements set by WMO and Met
 \examples{
 # Get station metadata
 stn <- get_latlon_frost(stationid=18700)
+stn.id      <- stn$id.stationid
+stn.centre  <- sf::st_coordinates(stn)
+
+# Parameters
+dx   <- 100
+resx <- 1
+
+# Load a digital elevation model
+dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm", dx, resx)
 
 # Compute land type
-landtype <- compute_landtype(stn, dx=100, f.plot=TRUE)
+landtype <- compute_landtype(stn, dx, resx, f.plot=TRUE)
 
 # Compute land type distance to station
-landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
+landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx, f.plot=TRUE)
+
+# Compute maximum horizon
+horizon_max <- compute_horizon_max(stn, dx, resx, step=1, f.plot.polygon=FALSE)
 
 # Compute class
-compute_class(landtype_dist, test.type="WMO", f.plot=TRUE)
+compute_class(landtype_dist, horizon_max, dem, test.type="WMO", f.plot=TRUE)
 
 
 }
