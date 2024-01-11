@@ -13,5 +13,6 @@ plot/*
 data/*
 vignettes/plot/*
 vignettes/data/*
+tests/testthat/data/*
 /doc/
 /Meta/
