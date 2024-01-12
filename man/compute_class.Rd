@@ -8,20 +8,22 @@ compute_class(
   land = NULL,
   horizon = NULL,
   dem = dem,
-  test.type = "WMO",
-  f.plot = TRUE
+  test_type = "WMO",
+  f_plot = TRUE
 )
 }
 \arguments{
-\item{land}{A data.frame with land type distribution from \code{"compute_landtype_distance"}}
+\item{land}{A data.frame with land type distribution from
+\code{"compute_landtype_distance"}}
 
-\item{horizon}{A data.frame with horizon distribution from \code{"compute_horizon"}}
+\item{horizon}{A data.frame with horizon distribution from
+\code{"compute_horizon"}}
 
 \item{dem}{A SpatRaster terrain model}
 
-\item{test.type}{A string defining a type of tests to apply: "WMO" or "Met"}
+\item{test_type}{A string defining a type of tests to apply: "WMO" or "Met"}
 
-\item{f.plot}{A boolean whether to plot figures}
+\item{f_plot}{A boolean whether to plot figures}
 }
 \value{
 A class
@@ -40,19 +42,22 @@ dx   <- 100
 resx <- 1
 
 # Load a digital elevation model
-dem   <- download_dem_kartverket(stn, name="dtm", dx, resx)
+dem   <- download_dem_kartverket(stn, name = "dtm", dx, resx)
 
 # Compute land type
-landtype <- compute_landtype(stn, dx, resx, f.plot=TRUE)
+landtype <- compute_landtype(stn, dx, resx, f_plot = TRUE)
 
 # Compute land type distance to station
-landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx, f.plot=TRUE)
+landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx,
+                                           f_plot = TRUE)
 
 # Compute maximum horizon
-horizon_max <- compute_horizon_max(stn, dx, resx, step=1, f.plot.polygon=FALSE)
+horizon_max <- compute_horizon_max(stn, dx, resx, step = 1,
+                                   f_plot.polygon = FALSE)
 
 # Compute class
-compute_class(landtype_dist, horizon_max, dem, test.type="WMO", f.plot=TRUE)
+compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",
+              f_plot = TRUE)
 
 
 }

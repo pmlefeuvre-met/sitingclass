@@ -19,18 +19,19 @@ add_grid(g = NULL, box = NULL, nx = NULL, n = 2)
 A ggplot2 object
 }
 \description{
-Add a grid and add buffers on a map to assess the area of same land cover type.
+Add a grid and add buffers on a map to assess the area of same land cover
+type.
 }
 \examples{
 # Get station metadata
-stn <- get_latlon_frost(stationid=18700)
+stn <- get_latlon_frost(stationid = 18700)
 
 # Get coordinates and define boundary box
 centre <- sf::st_coordinates(stn)
-box <- make_bbox(centre,1600)
+box <- make_bbox(centre, dx = 1600)
 
 # Plot map tile
-g <- plot_tile_station(stn, box, tile_name="ortofoto")
+g <- plot_tile_station(stn, box, tile_name = "ortofoto")
 
 # Add grid and buffer
 nx <- 200

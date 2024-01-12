@@ -18,12 +18,12 @@
 #' @importFrom sf st_as_sf st_crs
 #'
 #' @export
-make_bbox <- function(centre,
-                      dx){
+make_bbox <- function (centre,
+                      dx) {
 
   # Set box boundary as a distance dx from the centre coordinates
-  box <- round( c(c(centre[1],centre[2])-dx,
-                  c(centre[1],centre[2])+dx) )
+  box <- round(c(c(centre[1], centre[2])-dx,
+                  c(centre[1], centre[2])+dx))
 
   # Assign class bbox
   class(box) <- "bbox"

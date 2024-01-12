@@ -23,6 +23,6 @@ stn <- get_latlon_frost(stationid=18700)
 
 # Get coordinates and define boundary box
 centre <- sf::st_coordinates(stn)
-box <- make_bbox(centre,1600)
+box <- make_bbox(centre,dx=1600)
 
 }

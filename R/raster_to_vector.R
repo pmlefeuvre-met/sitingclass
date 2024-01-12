@@ -14,17 +14,17 @@
 #'
 #' @examples
 #' # Load station
-#' stn <- get_latlon_frost(stationid=18700)
+#' stn <- get_latlon_frost(stationid = 18700)
 #' centre <- sf::st_coordinates(stn)
 #'
 #' # Construct box with 200 m radius to extract WMS tile
-#' box <- make_bbox(centre, dx=200)
+#' box <- make_bbox(centre, dx = 200)
 #'
 #' # Load a tile
 #' building  <- get_tile_wms(box, layer = "bygning", px = 400)
 #'
 #' # Convert raster tile to vector landcover
-#' v_building <- raster_to_vector(building,id="building",mask_thr=255)
+#' v_building <- raster_to_vector(building, id = "building", mask_thr = 255)
 #'
 #' @importFrom terra as.polygons setValues buffer res aggregate
 #' @importFrom ggplot2 ggplot
@@ -33,29 +33,30 @@
 #' @export
 #'
 #
-raster_to_vector <- function(raster,
-                             id="undefined",
-                             mask_thr=255,
-                             f.plot=FALSE){
+raster_to_vector <- function (raster,
+                              id = "undefined",
+                              mask_thr = 255,
+                              f.plot = FALSE) {
 
   # Convert raster to vector (i.e. polygons)
-  vector <- terra::as.polygons(raster, round=FALSE, aggregate=TRUE)
+  vector <- terra::as.polygons(raster, round = FALSE, aggregate = TRUE)
 
   # Remove background: white background (255) or mask (FALSE)
-  vector <- vector[!(vector[[1]]==mask_thr)]
+  vector <- vector[!(vector[[1]] == mask_thr)]
 
   # Set vector ids
-  vector <- terra::setValues(vector,id)
+  vector <- terra::setValues(vector, id)
 
   # Buffer to fill gaps
-  vector <- terra::buffer(vector, width=mean(terra::res(raster))/4)
+  vector <- terra::buffer(vector, width = mean(terra::res(raster)) / 4)
 
   # Aggregates single vectors
-  vector <- terra::aggregate(vector, by=names(vector), count=FALSE)
+  vector <- terra::aggregate(vector, by = names(vector), count = FALSE)
 
   # Plot
-  if(f.plot){
-    print( ggplot(data=vector) + tidyterra::geom_spatvector(aes(fill=id), linewidth=0) )
+  if (f.plot){
+    print(ggplot(data = vector) +
+            tidyterra::geom_spatvector(aes(fill = id), linewidth = 0))
   }
 
   return(vector)

@@ -9,19 +9,22 @@ compute_landtype_distance(
   landtype = NULL,
   dx = 100,
   resx = 1,
-  f.plot = FALSE
+  f_plot = FALSE
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
-\item{landtype}{A SpatVector with landtype attributes from \code{"compute_landtype"}}
+\item{landtype}{A SpatVector with landtype attributes from
+\code{"compute_landtype"}}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point}
+\item{dx}{A distance in metre or radius defining the extent of the
+bounding box from the centre point}
 
 \item{resx}{A horizontal resolution in metre}
 
-\item{f.plot}{A boolean whether to plot figures}
+\item{f_plot}{A boolean whether to plot figures}
 }
 \value{
 A distance distribution per land cover type
@@ -32,17 +35,18 @@ the WMO siting class
 }
 \examples{
 # Get station metadata
-stn <- get_latlon_frost(stationid=18700)
+stn <- get_latlon_frost(stationid = 18700)
 
 # Compute land type
-landtype <- compute_landtype(stn, dx=100, f.plot=TRUE)
+landtype <- compute_landtype(stn, dx = 100, f_plot = TRUE)
 
 # Compute land type distance to station
-landtype_dist <- compute_landtype_distance(stn, landtype, dx=100, f.plot=TRUE)
+landtype_dist <- compute_landtype_distance(stn, landtype, dx = 100,
+                                           f_plot = TRUE)
 
 # Compare theoretical Area and from the output (Raster rounding error: 0\%)
-plot(rep(as.numeric(rownames(landtype_dist)),2),landtype_dist[,1:2])
-summary((landtype_dist[,1]-landtype_dist[,2])/landtype_dist[,2]*100)
+plot(rep(as.numeric(rownames(landtype_dist)), 2), landtype_dist[, 1:2])
+summary((landtype_dist[, 1] - landtype_dist[, 2]) / landtype_dist[, 2] * 100)
 
 
 }

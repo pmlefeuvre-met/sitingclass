@@ -38,7 +38,7 @@ add_buffer <- function(g = NULL,
                        buf1 = NULL,
                        buf2 = NULL,
                        nx = NULL,
-                       n = 2){
+                       n = 2) {
 
   # Convert box to SpatExtent and centre to SpatVector
   bbox <- terra::ext(terra::vect(box))
@@ -46,26 +46,38 @@ add_buffer <- function(g = NULL,
   v <- terra::vect(centre, crs = "epsg:25833")
 
   # Compute segment/label position
-  ybuf1 <- bbox[4] - nx*(n-.5)
-  ybuf2 <- bbox[4] - nx*(n-1)
+  ybuf1 <- bbox[4] - nx * (n - .5)
+  ybuf2 <- bbox[4] - nx * (n - 1)
 
   # Add buffers
   g <- g +
-    geom_sf(data=terra::buffer(v, buf1), fill = NA, color = "black") +
-    geom_sf(data=terra::buffer(v, buf2), fill = NA, color = "black")
+    geom_sf(data = terra::buffer(v, buf1), fill = NA, color = "black") +
+    geom_sf(data = terra::buffer(v, buf2), fill = NA, color = "black")
 
   # Add buffer legend as arrow segments
   g <- g +
-    geom_segment(aes(x=centre[1], y=ybuf1, xend=centre[1]-buf1, yend=ybuf1),
-                 arrow = arrow(length=unit(0.30,"cm"), type = "closed")) +
-    geom_segment(aes(x=centre[1], y=ybuf2, xend=centre[1]+buf2, yend=ybuf2),
-                 arrow = arrow(length=unit(0.30,"cm"), type = "closed"))
+    geom_segment(aes(x = centre[1],
+                     y = ybuf1,
+                     xend = centre[1] - buf1,
+                     yend = ybuf1),
+                 arrow = arrow(length = unit(0.30, "cm"), type = "closed")) +
+    geom_segment(aes(x = centre[1],
+                     y = ybuf2,
+                     xend = centre[1] + buf2,
+                     yend = ybuf2),
+                 arrow = arrow(length = unit(0.30, "cm"), type = "closed"))
 
   # Add labels to arrow segments
   # The label for buf1 is placed on the same line than buf2 for clarity
   g <- g +
-    geom_label(aes(label=sprintf("%i m",buf1), x=centre[1]-buf1/2, y=ybuf2), size=2) +
-    geom_label(aes(label=sprintf("%i m",buf2), x=centre[1]+buf2/2, y=ybuf2), size=2)
+    geom_label(aes(label = sprintf("%i m", buf1),
+                   x = centre[1] - buf1 / 2,
+                   y = ybuf2),
+               size = 2) +
+    geom_label(aes(label = sprintf("%i m", buf2),
+                   x = centre[1] + buf2 / 2,
+                   y = ybuf2),
+               size = 2)
 
   # Fix coordinate system caused by SpatVector conversion
   g <- g + coord_sf(datum = tidyterra::pull_crs(box))

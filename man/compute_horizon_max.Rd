@@ -9,22 +9,27 @@ compute_horizon_max(
   dx = 100,
   resx = 1,
   step = 10,
-  f.plot.polygon = FALSE
+  f_plot_polygon = FALSE
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point}
+\item{dx}{A distance in metre or radius defining the extent of the
+bounding box from the centre point}
 
 \item{resx}{A horizontal resolution in metre}
 
-\item{step}{An interval in degrees at which the horizon will be computed, default is every 10 deg.}
+\item{step}{An interval in degrees at which the horizon will be computed,
+default is every 10 deg.}
 
-\item{f.plot.polygon}{A boolean setting boundary values to -20 deg to facilitate plotting as polygon}
+\item{f_plot_polygon}{A boolean setting boundary values to -20 deg to
+facilitate plotting as polygon}
 }
 \value{
-A dataframe with `horizon_height` in degrees and `azimuth` angle in degrees at which the horizon is computed in degrees
+A dataframe with `horizon_height` in degrees and `azimuth` angle in
+       degrees at which the horizon is computed in degrees
 }
 \description{
 Compute maximum horizon height in degrees from a station location in UTM 33
@@ -33,7 +38,7 @@ and based on three DEMs: Digital Terrain Model, Digital Surface Model and
 }
 \examples{
 # Load the station metadata including location and level
-stn <- get_latlon_frost(stationid=18700, paramid=211)
+stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 
 # Parameters
 dx <- 100
@@ -41,7 +46,7 @@ resx <- 1
 
 # Compute the maximum horizon
 compute_horizon_max(stn, dx, resx)
-compute_horizon_max(stn, dx, resx, step=1, f.plot.polygon=FALSE)
+compute_horizon_max(stn, dx, resx, step = 1, f_plot_polygon = FALSE)
 
 }
 \references{

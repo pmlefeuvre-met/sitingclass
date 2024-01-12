@@ -26,15 +26,12 @@ Fetch map tiles from publicly available WMS released by Nibio
 require(sf)
 
 # Get station coordinates and name
-stn    <- get_latlon_frost(18700)
+stn    <- get_latlon_frost(stationid=18700)
 centre <- sf::st_coordinates(stn)
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) \%>\% round()
-class(box) <- "bbox"
-box <- st_as_sfc(box)
-st_crs(box) <- 25833 # UTM33
+box <- make_bbox(centre, dx)
 
 # Load tiles
 tile <- get_tile_wms(box, layer = "ar5")

@@ -4,9 +4,11 @@
 #'
 #' @references \url{https://github.com/OSGeo/grass-addons/blob/grass8/src/raster/r.skyview/r.skyview.py}
 #'
-#' @param horizon An array of horizon height in degrees from \code{"compute_horizon"}
+#' @param horizon An array of horizon height in degrees from
+#'        \code{"compute_horizon"}
 #'
-#' @return Estimated sky view factor, 1 defines an open sky view and 0 a totally obstructed sky view
+#' @return Estimated sky view factor, 1 defines an open sky view and 0 a
+#'        totally obstructed sky view
 #'
 #' @examples
 #'# Synthetic example of horizon, see \code{"compute_horizon"}
@@ -17,11 +19,11 @@
 #'
 #' @export
 
-compute_skyviewfactor <- function(horizon = NULL){
+compute_skyviewfactor <- function(horizon = NULL) {
 
   # Load function
-  deg2rad <- function (angle_in_degrees) {
-    angle_in_radian <- (angle_in_degrees * pi)/(180)
+  deg2rad <- function(angle_in_degrees) {
+    angle_in_radian <- (angle_in_degrees * pi) / 180
     return(angle_in_radian)
   }
 

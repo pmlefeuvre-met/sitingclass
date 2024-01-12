@@ -6,11 +6,13 @@
 #'
 #' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 #'
-#' @param land A data.frame with land type distribution from \code{"compute_landtype_distance"}
-#' @param horizon A data.frame with horizon distribution from \code{"compute_horizon"}
+#' @param land A data.frame with land type distribution from
+#' \code{"compute_landtype_distance"}
+#' @param horizon A data.frame with horizon distribution from
+#' \code{"compute_horizon"}
 #' @param dem A SpatRaster terrain model
-#' @param test.type A string defining a type of tests to apply: "WMO" or "Met"
-#' @param f.plot A boolean whether to plot figures
+#' @param test_type A string defining a type of tests to apply: "WMO" or "Met"
+#' @param f_plot A boolean whether to plot figures
 #'
 #' @return A class
 #'
@@ -23,19 +25,22 @@
 #' resx <- 1
 #'
 #' # Load a digital elevation model
-#' dem   <- download_dem_kartverket(stn, name="dtm", dx, resx)
+#' dem   <- download_dem_kartverket(stn, name = "dtm", dx, resx)
 #'
 #'# Compute land type
-#' landtype <- compute_landtype(stn, dx, resx, f.plot=TRUE)
+#' landtype <- compute_landtype(stn, dx, resx, f_plot = TRUE)
 #'
 #' # Compute land type distance to station
-#' landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx, f.plot=TRUE)
+#' landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx,
+#'                                            f_plot = TRUE)
 #'
 #' # Compute maximum horizon
-#' horizon_max <- compute_horizon_max(stn, dx, resx, step=1, f.plot.polygon=FALSE)
+#' horizon_max <- compute_horizon_max(stn, dx, resx, step = 1,
+#'                                    f_plot.polygon = FALSE)
 #'
 #' # Compute class
-#' compute_class(landtype_dist, horizon_max, dem, test.type="WMO", f.plot=TRUE)
+#' compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",
+#'               f_plot = TRUE)
 #'
 #'
 #' @importFrom ggplot2 ggplot geom_area
@@ -46,8 +51,8 @@
 compute_class <- function(land = NULL,
                           horizon = NULL,
                           dem = dem,
-                          test.type = "WMO",
-                          f.plot = TRUE){
+                          test_type = "WMO",
+                          f_plot = TRUE) {
 
   # Bind variable to function
   distance <- landtype <- NULL
@@ -57,76 +62,77 @@ compute_class <- function(land = NULL,
   landtype_name <- colname[-1]
 
   # Compute area percentage per land type
-  df <- land[,colname %in% landtype_name] / land[,colname=="total_area"] *100
+  df <- land[, colname %in% landtype_name] /
+    land[, colname == "total_area"] * 100
 
   # Reshape data.frame, equivalent to pivot_longer()
-  df <- with(utils::stack(as.data.frame(t( df ))),
+  df <- with(utils::stack(as.data.frame(t(df))),
              data.frame(distance = as.numeric(as.character(ind)),
                         landtype = factor(colnames(df), landtype_name),
                         area = values))
 
-  if(f.plot){
+  if (f_plot) {
     # Plot area distribution per land type in percentage and log10 x-axis
-    ggplot(df, aes(x=distance, y=area, fill=landtype)) +
-      geom_area(position="stack", stat="identity") +
+    ggplot(df, aes(x = distance, y = area, fill = landtype)) +
+      geom_area(position = "stack", stat = "identity") +
       xlab("Distance in metre (log10 scale)") +
       ylab("Area in percentage") +
       theme_minimal() +
       scale_fill_manual(values = fill_landtype) +
-      scale_x_continuous(trans = 'log10')
+      scale_x_continuous(trans = "log10")
   }
 
   # Compute area within an annular area 5-10m and 10-30m
-  ring <- land[rownames(land) %in% c(10,30), colname %in% landtype_name] -
-    land[rownames(land) %in% c(5 ,10), colname %in% landtype_name]
-  ring_area <- land[rownames(land) %in% c(10,30), colname=="total_area"] -
-    land[rownames(land) %in% c(5 ,10), colname=="total_area"]
-  ring <- ( ring / ring_area )*100
+  ring <- land[rownames(land) %in% c(10, 30), colname %in% landtype_name] -
+    land[rownames(land) %in% c(5, 10), colname %in% landtype_name]
+  ring_area <- land[rownames(land) %in% c(10, 30), colname == "total_area"] -
+    land[rownames(land) %in% c(5, 10), colname == "total_area"]
+  ring <- (ring / ring_area) * 100
 
   # Extract areas (%) at 3, 5, 5-10, 10, 10-30, 30, 100m radius for class tests
-  df.radius <- round(cbind(df[df$distance==3, "area"],
-                           df[df$distance==5, "area"],
-                           ring[rownames(ring)==10],
-                           df[df$distance==10, "area"],
-                           ring[rownames(ring)==30],
-                           df[df$distance==30, "area"],
-                           df[df$distance==100, "area"]))
+  df_radius <- round(cbind(df[df$distance == 3, "area"],
+                           df[df$distance == 5, "area"],
+                           ring[rownames(ring) == 10],
+                           df[df$distance == 10, "area"],
+                           ring[rownames(ring) == 30],
+                           df[df$distance == 30, "area"],
+                           df[df$distance == 100, "area"]))
 
   # Assign names for rows and columns
-  rownames(df.radius) <- colnames(land)[-1]
-  colnames(df.radius) <- c("3m","5m","5-10m","10m","10-30m","30m","100m")
-  # print(df.radius)
+  rownames(df_radius) <- colnames(land)[-1]
+  colnames(df_radius) <- c("3m", "5m", "5-10m", "10m", "10-30m", "30m", "100m")
 
   ## List of parameters to be tested
   # 1) Sum area percentages of building, road and water (1:3 rows) for each
   # distance (columns)
-  landtypes <- colSums(df.radius[c("building","road","water"),])
+  landtypes <- colSums(df_radius[c("building", "road", "water"), ])
   # 2) Sum grass to crop area and compute mean over distance classes
-  vegetation     <- df.radius[c("grass","crop"),]
-  vegetation[2,] <- colSums(vegetation)
-  vegetation     <- round( rowMeans(vegetation))
+  vegetation      <- df_radius[c("grass", "crop"), ]
+  vegetation[2, ] <- colSums(vegetation)
+  vegetation      <- round(rowMeans(vegetation))
   # 3) Projected shade limits
-  shade <- stats::quantile(horizon[,"horizon_height"],.90)
+  shade <- stats::quantile(horizon[, "horizon_height"], .90)
   names(shade) <- "shade"
   # 4) Compute median slope
-  slope <- terra::global(terra::terrain(dem),\(x) quantile(x,0.5,na.rm=T))
+  slope <- terra::global(terra::terrain(dem),
+                         \(x) quantile(x, 0.5, na.rm = TRUE))
   names(slope) <- "slope"
 
   # Set matrix of class test parameters
-  if(test.type=="WMO"){
-    class.names <- c("class1","class2","class3","class4","class5")
-    type.names  <- c(names(landtypes), names(vegetation),
+  if (test_type == "WMO") {
+    class_names <- c("class1", "class2", "class3", "class4", "class5")
+    type_names  <- c(names(landtypes), names(vegetation),
                      names(shade), names(slope))
-    params <- matrix(c(NA,NA,NA, 1, 5,NA,10,51, 0, 5,19,
-                       NA, 1, 5,NA,NA,10,NA,51, 0, 7,19,
-                       NA, 5,NA,10,NA,NA,NA,99,51, 7,99,
-                       30,NA,NA,50,NA,NA,NA,99,51,20,99,
-                       NA,NA,NA,NA,NA,NA,NA,99,99,99,99),
-                     nrow = length(class.names),
-                     ncol = length(type.names),
-                     byrow = T,
-                     dimnames = list(class.names,
-                                     type.names) )
+    params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  5, 19,
+                       NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
+                       NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
+                       30, NA, NA, 50, NA, NA, NA, 99, 51, 20, 99,
+                       NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
+                     nrow = length(class_names),
+                     ncol = length(type_names),
+                     byrow = TRUE,
+                     dimnames = list(class_names,
+                                     type_names))
   }
 
   # Sum area percentages of building, road and water (1:3 rows) for each
@@ -135,34 +141,40 @@ compute_class <- function(land = NULL,
   area <- matrix(values,
                  nrow = dim(params)[1],
                  ncol = dim(params)[2],
-                 byrow = T,
+                 byrow = TRUE,
                  dimnames = list(rownames(params),
-                                 colnames(params)) )
+                                 colnames(params)))
 
   # Apply class tests
-  col.lesser  <- which(colnames(area) %in% c(names(landtypes ),
+  col_lesser  <- which(colnames(area) %in% c(names(landtypes),
                                              names(slope),
                                              names(shade)))
-  col.greater <- which(colnames(area) %in% c(names(vegetation)))
-  class.test <- cbind( area[,col.lesser ] <= params[,col.lesser ],
-                       area[,col.greater] >= params[,col.greater])
+  col_greater <- which(colnames(area) %in% c(names(vegetation)))
+  class_test <- cbind(area[, col_lesser]  <= params[, col_lesser],
+                      area[, col_greater] >= params[, col_greater])
 
   # Compute number of tests per class to assess success rate per class
-  test.length <- rowSums(!is.na(class.test))
+  test_length <- rowSums(!is.na(class_test))
 
   # Assess which class passed tests and success rate
-  f.all <- function(x) all(x,na.rm = TRUE)
-  f.per <- function(x) sum(x,na.rm = TRUE)
-  final <- round(rbind(class_landtype  =apply(class.test[,names(landtypes)] , 1, FUN = f.all),
-                       class_vegetation=apply(class.test[,names(vegetation)], 1, FUN = f.all),
-                       class_shade     =class.test[,names(shade)],
-                       class_slope     =class.test[,names(slope)],
-                       class_boolean   =apply(class.test, 1, FUN = f.all),
-                       success_percent =apply(class.test, 1, FUN = f.per)/test.length*100 ))
-  # print(class.test)
-  # print(test.type)
-  # print(final)
+  f_all <- function(x) all(x, na.rm = TRUE)
+  f_per <- function(x) sum(x, na.rm = TRUE)
+  final <- round(rbind(class_landtype   = apply(class_test[, names(landtypes)],
+                                                1, FUN = f_all),
+                       class_vegetation = apply(class_test[, names(vegetation)],
+                                                1, FUN = f_all),
+                       class_shade      = class_test[, names(shade)],
+                       class_slope      = class_test[, names(slope)],
+                       class_boolean    = apply(class_test,
+                                                1, FUN = f_all),
+                       success_percent  = apply(class_test,
+                                                1, FUN = f_per) /
+                         test_length * 100)
+  )
+  # print(class_test)
+  # print(test_type)
+  #   print(final)
 
   # Return assessed class name
-  return( apply(final[1:4,], 1, FUN = function(x) names(x)[which.max(x)]) )
+  return(apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)]))
 }

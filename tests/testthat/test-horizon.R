@@ -3,7 +3,7 @@ testthat::test_that("compute horizon works", {
   # Load the station metadata
   centre  <- cbind(260966.8, 6652718)
   colnames(centre) <- c("x", "y")
-  stn_test <- terra::vect(centre, "points", crs="epsg:25833")
+  stn_test <- terra::vect(centre, "points", crs = "epsg:25833")
   stn_test$id.stationid <- 18700
   stn_test <- sf::st_as_sf(stn_test)
 
@@ -23,11 +23,12 @@ testthat::test_that("compute horizon works", {
   )
 
   # Load a digital elevation model
-  dsm   <- download_dem_kartverket(stn_test, name="dom", dx=100, resx=1)
+  dsm   <- download_dem_kartverket(stn_test, name = "dom", dx = 100, resx = 1)
 
   # Compute the horizon
   horizon_computed <- compute_horizon(centre, dsm)
 
   # Compare result and expected horizon
   testthat::expect_equal(round(horizon_computed,1), horizon_expected)
-})
+}
+)

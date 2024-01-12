@@ -4,15 +4,18 @@
 \alias{compute_sun_position}
 \title{Sun position in the sky}
 \usage{
-compute_sun_position(stn = NULL, f.hour = FALSE)
+compute_sun_position(stn = NULL, f_hour = FALSE)
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
-\item{f.hour}{A boolean value to compute sun position for hours if TRUE and for days if FALSE}
+\item{f_hour}{A boolean value to compute sun position for hours if TRUE and
+for days if FALSE}
 }
 \value{
-dataframe with inclination of the sun position in the sky in degrees, azimuth in degrees and timestamp as factor
+dataframe with inclination of the sun position in the sky in
+       degrees, azimuth in degrees and timestamp as factor
 }
 \description{
 Compute sun position in the sky from a station location in UTM 33
@@ -22,8 +25,8 @@ Compute sun position in the sky from a station location in UTM 33
 stn <- get_latlon_frost(stationid=18700, paramid=211)
 
 # Compute sun position in the sky
-compute_sun_position(stn, f.hour = TRUE)
-compute_sun_position(stn, f.hour = FALSE)
+compute_sun_position(stn, f_hour = TRUE)
+compute_sun_position(stn, f_hour = FALSE)
 
 }
 \references{
