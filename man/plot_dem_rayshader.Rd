@@ -7,11 +7,13 @@
 plot_dem_rayshader(stn = NULL, dsm = NULL, path = NULL)
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
-\item{dsm}{A SpatRaster of a digital surface model around the station, expected radius is 100 m}
+\item{dsm}{A SpatRaster of a digital surface model around the station}
 
-\item{path}{A string path that defines where to save the plot, if NULL (default) the plot is printed on-screen and not saved}
+\item{path}{A string path that defines where to save the plot, if NULL
+(default) the plot is printed on-screen and not saved}
 }
 \value{
 A rendered image
@@ -24,13 +26,13 @@ four cardinal angles
 require(sf)
 
 # Load the station metadata and location
-stn <- get_latlon_frost(stationid=18700, paramid=211)
+stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 
 # Load a digital elevation model
-dsm   <- download_dem_kartverket(stn, name="dom", dx=100, resx=1)
+dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
 
 # Plot 3D DEM with rayshader
-plot_dem_rayshader(stn, dsm, path='plot/dem3D')
+plot_dem_rayshader(stn, dsm, path = 'plot/dem3D')
 
 }
 \references{

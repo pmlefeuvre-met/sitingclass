@@ -7,11 +7,13 @@
 plot_station_grid(stn = NULL, tile_name = "ortofoto", path = NULL)
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
 \item{tile_name}{A string naming a tile to pass to \code{"get_tile_wms"}}
 
-\item{path}{A directory path defining where will be saved the plots, if path is NULL the plots are printed to the console}
+\item{path}{A directory path defining where will be saved the plots,
+if path is NULL the plots are printed to the console}
 }
 \value{
 A ggplot2 object
@@ -23,9 +25,9 @@ Four different scales are plotted: 10 m, 30 m, 100 m and 1000 m.
 }
 \examples{
 # Get station metadata
-stn    <- get_latlon_frost(stationid=18700)
+stn    <- get_latlon_frost(stationid = 18700)
 
 # Plot grid and buffers on four different scales
-plot_station_grid(stn, path="plot/map")
+plot_station_grid(stn, path = "plot/map")
 
 }

@@ -8,33 +8,36 @@ download_dem_kartverket(
   stn = NULL,
   name = "dom",
   dx = 100,
-  resx = dx/100,
+  resx = ifelse(dx > 200, dx/100, 1),
   path = "data/dem",
   f.overwrite = FALSE
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attribute `id.stationid` from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attribute `id.stationid` from
+\code{"get_latlon_frost"}}
 
-\item{name}{A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model}
+\item{name}{A name of the DEM to download, either "dtm" a terrain model}
 
-\item{dx}{A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres}
+\item{dx}{A distance in metre or radius defining the extent of the
+bounding box from the centre point}
 
-\item{resx}{A horizontal resolution in metre, default is `dx/100` if greater than `1` metre}
+\item{resx}{A horizontal resolution in metre}
 
-\item{path}{A directory path defining where will be saved the data, default path is "data/dem"}
+\item{path}{A directory path defining where will be saved the data}
 
-\item{f.overwrite}{A boolean whether the DEM file should be overwritten, default `FALSE`}
+\item{f.overwrite}{A boolean whether the DEM file should be overwritten}
 }
 \value{
 A Digital Elevation Model
 }
 \description{
-Define a GetCapabilities request URL using OSW4R and Kartverket's Web Coverage Service
-that downloads a DEM from a bounding box and a DEM type (i.e. "dom" or "dtm").
-The bounding box is centered to a parsed location and a parsed radius set the
-extent. The downloaded DEM is a SpatRaster object. If the DEM file already
-exists, it is loaded by default unless f.overwrite is set to TRUE
+Define a GetCapabilities request URL using OSW4R and Kartverket's Web
+Coverage Service that downloads a DEM from a bounding box and a DEM type
+(i.e. "dom" or "dtm"). The bounding box is centered to a parsed location
+and a parsed radius set the extent. The downloaded DEM is a SpatRaster
+object. If the DEM file already exists, it is loaded by default unless
+f.overwrite is set to TRUE
 }
 \examples{
 # Define parameters

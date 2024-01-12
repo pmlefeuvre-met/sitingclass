@@ -13,37 +13,39 @@ plot_station_horizon_sun(
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
-\item{dem}{A SpatRaster of a digital elevation/terrain model around the station, expected radius is 100 m}
+\item{dem}{A SpatRaster of a digital terrain model around the station}
 
-\item{dsm}{A SpatRaster of a digital surface model around the station, expected radius is 100 m}
+\item{dsm}{A SpatRaster of a digital surface model around the station}
 
-\item{demkm}{A SpatRaster of a digital elevation/terrain model around the station, expected radius is 20 km}
+\item{demkm}{A SpatRaster of a wider digital terrain model around the station}
 
-\item{path}{A directory path defining where will be saved the plots, if path is NULL the plots are printed to the console}
+\item{path}{A directory path defining where will be saved the plots,
+if path is NULL the plots are printed to the console}
 }
 \value{
 Sun diagram with station metadata
 }
 \description{
-Fetch station metadata based on station number and parameter id from Frost v1.
-The function gets station name, location and sensor details such as level, exposure and performance
+Plot sun position and horizons from local terrain model, local surface model
+and regional digital terrain model with infos from the weather station.
 }
 \examples{
 require(sf)
 
 # Load the station metadata and location
-stn <- get_latlon_frost(stationid=18700, paramid=211)
+stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 
 # Load DEM data
-dem   <- download_dem_kartverket(stn, name="dtm",dx=100,resx=1)
-dsm   <- download_dem_kartverket(stn, name="dom",dx=100,resx=1)
-demkm <- download_dem_kartverket(stn, name="dtm",dx=20e3,resx=20)
+dem   <- download_dem_kartverket(stn, name = "dtm", dx = 100, resx = 1)
+dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
+demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 
 # Plot sun diagram and save
 path <- 'plot/horizon'
-plot_station_horizon_sun(stn, dem, dsm, demkm, path=path)
+plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
 
 }
 \references{

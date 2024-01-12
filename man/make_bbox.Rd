@@ -9,7 +9,8 @@ make_bbox(centre, dx)
 \arguments{
 \item{centre}{An array of two coordinates in UTM 33 (epsg:25833)}
 
-\item{dx}{A distance in metre to compute the box boundary as a distance from the centre point}
+\item{dx}{A distance in metre to compute the box boundary as a distance
+from the centre point}
 }
 \value{
 A bbox object
@@ -19,10 +20,10 @@ Construct boundary box from sf package
 }
 \examples{
 # Get station metadata
-stn <- get_latlon_frost(stationid=18700)
+stn <- get_latlon_frost(stationid = 18700)
 
 # Get coordinates and define boundary box
 centre <- sf::st_coordinates(stn)
-box <- make_bbox(centre,dx=1600)
+box <- make_bbox(centre, dx = 1600)
 
 }

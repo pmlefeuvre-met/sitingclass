@@ -7,16 +7,17 @@
 get_latlon_frost(stationid = 18700, paramid = NULL)
 }
 \arguments{
-\item{stationid}{A station number as integer and defined by met.no, default is 18700 - Blindern}
+\item{stationid}{A station number as integer and defined by met.no}
 
-\item{paramid}{A parameter number as integer and defined by met.no, default is NULL, thus getting all paramid available}
+\item{paramid}{A parameter number as integer and defined by met.no}
 }
 \value{
 Station metadata
 }
 \description{
-Fetch station metadata based on station number and parameter id from Frost v1.
-The function gets station name, location and sensor details such as level, exposure and performance
+Fetch station metadata based on station number & parameter id from Frost v1.
+The function gets station name, location and sensor details such as level,
+exposure and performance
 }
 \examples{
 get_latlon_frost(stationid=18700)
