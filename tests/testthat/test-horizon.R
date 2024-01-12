@@ -21,8 +21,7 @@ testthat::test_that("compute horizon works", {
   )
 
   # Load a digital elevation model
-  dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom",
-                                   dx=100, resx=1,path = )
+  dsm   <- download_dem_kartverket(stn, name="dom", dx=100, resx=1)
 
   # Compute the horizon
   horizon.computed <- compute_horizon(stn.centre, dsm)

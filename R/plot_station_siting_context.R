@@ -17,7 +17,7 @@
 #' plot_station_siting_context(stationid=18700)
 #' plot_station_siting_context(stationid=18700, paramid=211, f.verbose=TRUE)
 #'
-#' @importFrom sf st_coordinates st_as_sfc st_crs
+#' @importFrom sf st_coordinates
 #' @importFrom grDevices dev.off pdf
 #'
 #' @export
@@ -36,12 +36,9 @@ plot_station_siting_context <- function(stationid = 18700,
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
+  centre <- sf::st_coordinates(stn)
   dx <- 200
-  box <- c(c(centre[1],centre[2])-dx,
-           c(centre[1],centre[2])+dx) %>% round()
-  class(box) <- "bbox"
-  box <- sf::st_as_sfc(box)
-  sf::st_crs(box) <- 25833 #32633 #to match tile projection
+  box <- make_bbox(centre, dx)
 
   # Print
   if (f.verbose){
@@ -58,9 +55,9 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Load data
   f.ow  <- FALSE
-  dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx=1,f.overwrite=f.ow)
-  dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx,resx=1,f.overwrite=f.ow)
-  demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
+  dem   <- download_dem_kartverket(stn, name="dtm",dx,resx=1,f.overwrite=f.ow)
+  dsm   <- download_dem_kartverket(stn, name="dom",dx,resx=1,f.overwrite=f.ow)
+  demkm <- download_dem_kartverket(stn, name="dtm",20e3,resx=20,f.overwrite=f.ow)
   #ar5 <- load_data_ar5(box,f.wms=F)
 
   # Plot OpenStreetMap

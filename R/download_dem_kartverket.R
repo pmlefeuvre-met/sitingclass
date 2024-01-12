@@ -10,8 +10,7 @@
 #' @references \url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/e36ea427-13a1-4d7c-be82-977068dfc3e3}
 #' @references \url{https://cran.r-project.org/web/packages/ows4R/vignettes/wcs.html}
 #'
-#' @param stationid A station ID used for the DEM file name
-#' @param centre A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. epsg:25833)
+#' @param stn A SpatVector with station attribute `id.stationid` from \code{"get_latlon_frost"}
 #' @param name A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model
 #' @param dx A distance in metre or radius defining the extent of the bounding box from the centre point, default `100` metres
 #' @param resx A horizontal resolution in metre, default is `dx/100` if greater than `1` metre
@@ -21,31 +20,31 @@
 #' @return A Digital Elevation Model
 #'
 #' @examples
-#' require(sf)
-#'
 #' # Define parameters
-#' stationid <- 18700
 #' stn <- get_latlon_frost(stationid)
-#' centre <- sf::st_coordinates(stn)
 #' path   <- "data/dem"
 #'
 #' # Load data using ows4R ## WCSClient$new() getCapabilities()
-#' dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
-#' dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
-#' demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
+#' dem    <- download_dem_kartverket(stn,name="dtm",dx=100,resx=1,path=path)
+#' dsm    <- download_dem_kartverket(stn,name="dom",dx=100,resx=1,path=path)
+#' demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 #'
 #' @importFrom ows4R WCSClient
 #' @importFrom terra rast setMinMax
+#' @importFrom sf st_coordinates
 #'
 #' @export
 
-download_dem_kartverket <- function(stationid = NULL,
-                                    centre = NULL,
+download_dem_kartverket <- function(stn = NULL,
                                     name = "dom",
                                     dx = 100,
                                     resx = dx/100,
                                     path = "data/dem",
                                     f.overwrite = FALSE){
+
+  # Extract stationID and centre point of the station
+  stationid <- stn$id.stationid
+  centre <- sf::st_coordinates(stn)
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",

@@ -98,12 +98,7 @@ centre
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- round( c(c(centre[1],centre[2])-dx,
-                c(centre[1],centre[2])+dx) )
-class(box) <- "bbox"
-box <- sf::st_as_sfc(box)
-sf::st_crs(box) <- 25833 #32633 #to match tile projection
-
+box <- make_bbox(centre,dx)
 ```
 
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
@@ -120,9 +115,9 @@ plot_tile_station(stn, box, tile_name="esri")
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model.", results = 'hide'}
 # Load Karverket's DEMs
 f.ow  <- FALSE #TRUE to overwrite files
-dem   <- download_dem_kartverket(stationid,centre,name="dtm",dx  ,resx=1 ,f.overwrite=f.ow)
-dsm   <- download_dem_kartverket(stationid,centre,name="dom",dx  ,resx=1 ,f.overwrite=f.ow)
-demkm <- download_dem_kartverket(stationid,centre,name="dtm",20e3,resx=20,f.overwrite=f.ow)
+dem   <- download_dem_kartverket(stn,name="dtm",dx  ,resx=1 ,f.overwrite=f.ow)
+dsm   <- download_dem_kartverket(stn,name="dom",dx  ,resx=1 ,f.overwrite=f.ow)
+demkm <- download_dem_kartverket(stn,name="dtm",20e3,resx=20,f.overwrite=f.ow)
 
 # Plot 100-m Digital Surface Model and 20-km Digital Terrain Model
 library(rayshader)

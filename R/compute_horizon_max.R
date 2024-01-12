@@ -36,14 +36,13 @@ compute_horizon_max <- function(stn = NULL,
                                 step = 10,
                                 f.plot.polygon = FALSE){
   # Get station metadata
-  stn.id      <- stn$id.stationid
   stn.centre  <- sf::st_coordinates(stn)
   stn.level   <- stn$id.level
 
   # Load digital elevation models of the terrain and surface
-  dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm", dx, resx)
-  dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx, resx)
-  demkm <- download_dem_kartverket(stn.id, stn.centre, name="dtm",dx=20e3,resx=20)
+  dem   <- download_dem_kartverket(stn, name="dtm", dx, resx)
+  dsm   <- download_dem_kartverket(stn, name="dom", dx, resx)
+  demkm <- download_dem_kartverket(stn, name="dtm",dx=20e3,resx=20)
 
   # Compute horizon for three DEMs: DTM, DSM and DTM_20km
   horizon_dem   <- compute_horizon(stn.centre,

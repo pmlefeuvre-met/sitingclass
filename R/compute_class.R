@@ -17,15 +17,13 @@
 #' @examples
 #'# Get station metadata
 #' stn <- get_latlon_frost(stationid=18700)
-#' stn.id      <- stn$id.stationid
-#' stn.centre  <- sf::st_coordinates(stn)
 #'
 #' # Parameters
 #' dx   <- 100
 #' resx <- 1
 #'
 #' # Load a digital elevation model
-#' dem   <- download_dem_kartverket(stn.id, stn.centre, name="dtm", dx, resx)
+#' dem   <- download_dem_kartverket(stn, name="dtm", dx, resx)
 #'
 #'# Compute land type
 #' landtype <- compute_landtype(stn, dx, resx, f.plot=TRUE)

@@ -16,14 +16,12 @@
 #'
 #' # Load the station metadata and location
 #' stn <- get_latlon_frost(stationid=18700, paramid=211)
-#' stn.id      <- stn$id.stationid
-#' stn.centre  <- sf::st_coordinates(stn)
 #'
 #' # Load a digital elevation model
-#' dsm   <- download_dem_kartverket(stn.id, stn.centre, name="dom", dx=100, resx=1)
+#' dsm   <- download_dem_kartverket(stn, name="dom", dx=100, resx=1)
 #'
 #' # Plot 3D DEM with rayshader
-#' plot_dem_rayshader(stn,dsm, path='plot/dem3D')
+#' plot_dem_rayshader(stn, dsm, path='plot/dem3D')
 #'
 #' @importFrom rayshader raster_to_matrix sphere_shade ray_shade  render_camera
 #' @importFrom rayshader add_shadow ambient_shade plot_3d render_label

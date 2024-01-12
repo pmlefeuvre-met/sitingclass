@@ -31,12 +31,8 @@ Plots publicly-available maps, atlas, land cover or satellite imagery near
 a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 }
 \examples{
-require(sf)
-
 # Get station coordinates and name
-stationid <-  18700
-stn    <- get_latlon_frost(stationid)
-centre <- sf::st_coordinates(stn)
+stn    <- get_latlon_frost(18700)
 
 # Construct box to extract WMS tile
 dx <- 100
@@ -54,7 +50,7 @@ plot_tile_station(stn, box, tile_name="clc")
 plot_tile_station(stn, box, tile_name="urban")
 
 # Include Digital Elevation Model as contour
-dsm   <- download_dem_kartverket(stationid, centre, name="dom", dx, resx=1)
+dsm   <- download_dem_kartverket(stn, name="dom", dx, resx=1)
 plot_tile_station(stn, box, tile_name="osm", dsm=dsm, path="plot/map")
 
 }

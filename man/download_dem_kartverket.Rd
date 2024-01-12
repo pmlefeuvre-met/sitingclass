@@ -5,8 +5,7 @@
 \title{Download digital elevation models from Kartverket's WCS API}
 \usage{
 download_dem_kartverket(
-  stationid = NULL,
-  centre = NULL,
+  stn = NULL,
   name = "dom",
   dx = 100,
   resx = dx/100,
@@ -15,9 +14,7 @@ download_dem_kartverket(
 )
 }
 \arguments{
-\item{stationid}{A station ID used for the DEM file name}
-
-\item{centre}{A coordinate array (i.e. `c(x, y)`) of the station in UTM 33 (i.e. epsg:25833)}
+\item{stn}{A SpatVector with station attribute `id.stationid` from \code{"get_latlon_frost"}}
 
 \item{name}{A name of the DEM to download, either "dtm" a terrain model or the default "dom" a surface model}
 
@@ -40,18 +37,14 @@ extent. The downloaded DEM is a SpatRaster object. If the DEM file already
 exists, it is loaded by default unless f.overwrite is set to TRUE
 }
 \examples{
-require(sf)
-
 # Define parameters
-stationid <- 18700
 stn <- get_latlon_frost(stationid)
-centre <- sf::st_coordinates(stn)
 path   <- "data/dem"
 
 # Load data using ows4R ## WCSClient$new() getCapabilities()
-dem    <- download_dem_kartverket(stationid,centre,name="dtm",dx=100,resx=1,path=path)
-dsm    <- download_dem_kartverket(stationid,centre,name="dom",dx=100,resx=1,path=path)
-demkm  <- download_dem_kartverket(stationid,centre,name="dtm",dx=20e3,resx=20,path=path)
+dem    <- download_dem_kartverket(stn,name="dtm",dx=100,resx=1,path=path)
+dsm    <- download_dem_kartverket(stn,name="dom",dx=100,resx=1,path=path)
+demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 
 }
 \references{

@@ -40,15 +40,14 @@ compute_landtype_distance <- function(stn=NULL,
                                       resx=1,
                                       f.plot=FALSE){
 
-  # Extract stationID and centre point of the station
-  stationid <- stn$id.stationid
+  # Extract centre point of the station
   centre <- sf::st_coordinates(stn)
 
   # Construct box to extract WMS tile
   box <- make_bbox(centre, dx)
 
   # Download DEMs to set raster reference
-  dem <- download_dem_kartverket(stationid, centre, name="dtm", dx, resx)
+  dem <- download_dem_kartverket(stn, name="dtm", dx, resx)
 
   # Compute distance from station
   r <- terra::rast(dem)

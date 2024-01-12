@@ -45,8 +45,8 @@ compute_landtype <- function(stn=NULL,
   box <- make_bbox(centre, dx)
 
   # Download DEMs and compute difference to assess vegetation
-  dem <- download_dem_kartverket(stationid,centre,name="dtm",dx,resx)
-  dsm <- download_dem_kartverket(stationid,centre,name="dom",dx,resx)
+  dem <- download_dem_kartverket(stn, name="dtm", dx, resx)
+  dsm <- download_dem_kartverket(stn, name="dom", dx, resx)
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles
