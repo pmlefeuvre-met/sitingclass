@@ -7,17 +7,17 @@
 #' @param box A SpatExtent defining the area to plot
 #' @param layer A name of a layer provided by WMS such as "ar5", "toporaster",
 #' "CORINE_Land_Cover_2012", "Urban_Atlas_Lu_Lc_2012","ortofoto",
-#' "fkb_arealdekke", "fkb_arealdekke","fkb_vann","vann_omrade","fkb_samferdsel",
-#' "veg","fkb_bygning","bygning","fkb_naturinfo", "naturinfo"
-#' @param px A pixel number that defines the resolution of the image/tile, default is 500 px
+#' "fkb_arealdekke", "fkb_arealdekke","fkb_vann","vann_omrade",
+#' "fkb_samferdsel", "veg","fkb_bygning","bygning","fkb_naturinfo",
+#' "naturinfo"
+#' @param px A pixel number that defines the resolution of the image/tile,
+#' default is 500 px
 #'
 #' @return A map tile
 #'
 #' @examples
-#' require(sf)
-#'
 #' # Get station coordinates and name
-#' stn    <- get_latlon_frost(stationid=18700)
+#' stn    <- get_latlon_frost(stationid = 18700)
 #' centre <- sf::st_coordinates(stn)
 #'
 #' # Construct box to extract WMS tile
@@ -88,21 +88,20 @@ get_tile_wms <- function(box = NULL,
 
   # Set WMS connection
   con <- paste(url,
-               paste(
-                 "SERVICE=WMS",
-                 version,
-                 "request=GetMap",
-                 "FORMAT=image/png",
-                 crs,
-                 sprintf("LAYERS=%s", layer),
-                 sprintf("bbox=%1.0f,%1.0f,%1.0f,%1.0f",
-                         bbox[1],
-                         bbox[3],
-                         bbox[2],
-                         bbox[4]),
-                 sprintf("WIDTH=%i", px),
-                 sprintf("HEIGHT=%i", px),
-                 sep = "&"),
+               paste("SERVICE=WMS",
+                     version,
+                     "request=GetMap",
+                     "FORMAT=image/png",
+                     crs,
+                     sprintf("LAYERS=%s", layer),
+                     sprintf("bbox=%1.0f,%1.0f,%1.0f,%1.0f",
+                             bbox[1],
+                             bbox[3],
+                             bbox[2],
+                             bbox[4]),
+                     sprintf("WIDTH=%i", px),
+                     sprintf("HEIGHT=%i", px),
+                     sep = "&"),
                sep = "?")
 
   # Load WMS and convert to SpatRaster

@@ -7,15 +7,17 @@
 #'
 #' @param stationid A station number as integer and defined by met.no
 #' @param paramid A parameter number as integer and defined by met.no
-#' @param f.verbose A boolean string to print debug messages, default is TRUE
-#' @param f.pdf A boolean string to combine all plots into a pdf file, default is FALSE
+#' @param f_verbose A boolean string to print debug messages, default is TRUE
+#' @param f_pdf A boolean string to combine all plots into a pdf file
 #'
 #' @return None
 #'
 #' @examples
 #' # Plot sun diagram and map infos for a weather station
-#' plot_station_siting_context(stationid=18700)
-#' plot_station_siting_context(stationid=18700, paramid=211, f.verbose=TRUE)
+#' plot_station_siting_context(stationid = 18700)
+#' plot_station_siting_context(stationid = 18700,
+#'                             paramid = 211,
+#'                             f_verbose = TRUE)
 #'
 #' @importFrom sf st_coordinates
 #' @importFrom grDevices dev.off pdf
@@ -24,15 +26,15 @@
 
 plot_station_siting_context <- function(stationid = 18700,
                                         paramid = 211,
-                                        f.verbose = FALSE,
-                                        f.pdf = FALSE){
+                                        f_verbose = FALSE,
+                                        f_pdf = FALSE) {
 
   # Get station coordinates and name
-  stn <- get_latlon_frost(stationid,paramid)
+  stn <- get_latlon_frost(stationid, paramid)
   centre <- sf::st_coordinates(stn)
 
   # To save files
-  path <- sprintf("plot/output/%i",stn$id.stationid)
+  path <- sprintf("plot/output/%i", stn$id.stationid)
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
@@ -41,44 +43,55 @@ plot_station_siting_context <- function(stationid = 18700,
   box <- make_bbox(centre, dx)
 
   # Print
-  if (f.verbose){
+  if (f_verbose) {
     print(stn$id.stationid)
     print(stn$station.name)
     print(centre)
     print(box)
   }
   # Plot ESRI imagery
-  g0  <- plot_tile_station(stn,box,tile_name="esri", path=path)
-  g10 <- plot_tile_station(stn,box,tile_name="ar5", path=path)
-  g11 <- plot_tile_station(stn,box,tile_name="clc", path=path)
-  g12 <- plot_tile_station(stn,box,tile_name="urban", path=path)
+  g0  <- plot_tile_station(stn, box, tile_name = "esri", path = path)
+  g10 <- plot_tile_station(stn, box, tile_name = "ar5", path = path)
+  g11 <- plot_tile_station(stn, box, tile_name = "clc", path = path)
+  g12 <- plot_tile_station(stn, box, tile_name = "urban", path = path)
 
   # Load data
-  f.ow  <- FALSE
-  dem   <- download_dem_kartverket(stn, name="dtm",dx,resx=1,f.overwrite=f.ow)
-  dsm   <- download_dem_kartverket(stn, name="dom",dx,resx=1,f.overwrite=f.ow)
-  demkm <- download_dem_kartverket(stn, name="dtm",20e3,resx=20,f.overwrite=f.ow)
-  #ar5 <- load_data_ar5(box,f.wms=F)
+  f_ow  <- FALSE
+  dem   <- download_dem_kartverket(stn,
+                                   name = "dtm",
+                                   dx,
+                                   resx = 1,
+                                   f_overwrite = f_ow)
+  dsm   <- download_dem_kartverket(stn,
+                                   name = "dom",
+                                   dx,
+                                   resx = 1,
+                                   f_overwrite = f_ow)
+  demkm <- download_dem_kartverket(stn,
+                                   name = "dtm",
+                                   dx = 20e3,
+                                   resx = 20,
+                                   f_overwrite = f_ow)
 
   # Plot OpenStreetMap
-  g2 <- plot_tile_station(stn,box,tile_name="osm",dsm=dsm, path=path)
+  g2 <- plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = path)
 
   # Print
-  if (f.verbose){
+  if (f_verbose) {
     print(dem)
     print(dsm)
   }
   # Plot
-  g3 <- plot_station_horizon_sun(stn,dem,dsm,demkm, path=path)
+  g3 <- plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
 
   # Plot DEM with rayshader
-  g4 <- plot_dem_rayshader(stn, dsm, path=NULL)
+  g4 <- plot_dem_rayshader(stn, dsm, path = NULL)
 
   # Save pdf
-  if(f.pdf){
-    fname <- sprintf("%s/%i_infos.pdf",path,stn$id.stationid)
+  if (f_pdf) {
+    fname <- sprintf("%s/%i_infos.pdf", path, stn$id.stationid)
     pdf(fname)
-    invisible(lapply(list(g0,g2,g10,g3,g4,g11,g12), print))
+    invisible(lapply(list(g0, g2, g10, g3, g4, g11, g12), print))
     dev.off()
   }
 }

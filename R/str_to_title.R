@@ -13,7 +13,7 @@
 #' str_to_title(str)
 #'
 #' @export
-str_to_title <- function(str){
+str_to_title <- function(str) {
 
   s <- strsplit(tolower(str), " ")[[1]]
 

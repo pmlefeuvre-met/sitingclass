@@ -16,8 +16,6 @@
 #' @return Sun diagram with station metadata
 #'
 #' @examples
-#' require(sf)
-#'
 #' # Load the station metadata and location
 #' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 #'
@@ -40,7 +38,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                                      dem = NULL,
                                      dsm = NULL,
                                      demkm = NULL,
-                                     path = NULL){
+                                     path = NULL) {
 
   # Extract timezone from System and assign variables
   tz <- Sys.timezone()
@@ -57,17 +55,21 @@ plot_station_horizon_sun <- function(stn = NULL,
   stn_param   <- stn$id.parameterid
   stn_expos   <- stn$timeseries.quality.exposure.value
   stn_perf    <- stn$timeseries.quality.performance.value
-  if(stn_expos == "unknown"){stn_expos <- NA}
-  if(stn_perf  == "unknown"){stn_perf  <- NA}
+  if (stn_expos == "unknown") {
+    stn_expos <- NA
+    }
+  if (stn_perf  == "unknown") {
+    stn_perf  <- NA
+    }
 
   # Set cardinals (North position is edited to be visible on the plot)
-  cardinals <- data.frame(azimuth=c(0+15, 90, 180, 260, 360-15),
-                          inclination=rep((ymax - 0.05 * ymax), 5),
-                          labels=c("North", "East", "South", "West", "North"))
+  cardinals <- data.frame(azimuth = c(0 + 15, 90, 180, 260, 360 - 15),
+                          inclination = rep((ymax - 0.05 * ymax), 5),
+                          labels = c("North", "East", "South", "West", "North"))
 
   # Compute sun position from station location
   sun       <- compute_sun_position(stn)
-  sun_hour  <- compute_sun_position(stn, f.hour = TRUE)
+  sun_hour  <- compute_sun_position(stn, f_hour = TRUE)
 
   # Compute horizon view from location
   step <- 0.01
@@ -86,11 +88,11 @@ plot_station_horizon_sun <- function(stn = NULL,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = TRUE)
-  horizon_max   <- data.frame(azimuth = horizon_dem[,1],
+  horizon_max   <- data.frame(azimuth = horizon_dem[, 1],
                               horizon_height = apply(cbind(horizon_dem[, 2],
                                                            horizon_dsm[, 2],
                                                            horizon_demkm[, 2]),
-                                                     1, max) )
+                                                     1, max))
   skyviewfactor <- compute_skyviewfactor(horizon_max)
 
   # Plot init
@@ -130,7 +132,7 @@ plot_station_horizon_sun <- function(stn = NULL,
               mapping = aes(x = azimuth,
                             y = horizon_height,
                             linetype = "surface"),
-              linewidth=.25) +
+              linewidth = .25) +
     geom_line(data = horizon_demkm,
               mapping = aes(x = azimuth,
                             y = horizon_height,
@@ -139,11 +141,15 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Plot sun position from the station location
   g <- g +
     geom_path(data = sun_hour,
-              aes(x = azimuth, y = inclination, group = hour),
+              aes(x = azimuth,
+                  y = inclination,
+                  group = hour),
               linewidth = .2,
               color = "coral") +
     geom_line(data = sun,
-              aes(x = azimuth, y = inclination, color = day))+
+              aes(x = azimuth,
+                  y = inclination,
+                  color = day)) +
     scale_color_viridis_d(labels = c("21 jun.",
                                      "21 jul.",
                                      "21 aug.",
@@ -174,7 +180,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   xmax <- 360
   g <- g +
     scale_x_continuous(breaks = seq(xmin, xmax, by = 30), expand = c(0, 0)) +
-    scale_y_continuous(breaks = seq(0, 65 , by = 5 ), expand = c(0, 0)) +
+    scale_y_continuous(breaks = seq(0, 65, by = 5), expand = c(0, 0)) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(0, ymax), expand = TRUE)
 
   # Add annotation with infos

@@ -24,8 +24,6 @@
 #' @importFrom utils write.csv
 #'
 #' @examples
-#' require(sf)
-#'
 #' # Load the station metadata including location and level
 #' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 #' stn_centre  <- sf::st_coordinates(stn)

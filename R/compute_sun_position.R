@@ -61,8 +61,7 @@ compute_sun_position <- function(stn = NULL,
                                                       tz = tz)),
                                     sort(as.numeric(unique(format(sun_hours,
                                                                   "%H",
-                                                                  tz = tz))))
-                      ))
+                                                                  tz = tz))))))
   }else {
     # Function to get day sequence in minutes, on each 21st of the month
     seq_day <- function(m) {
@@ -84,8 +83,7 @@ compute_sun_position <- function(stn = NULL,
     df  <- data.frame(azimuth = sun_year[, 1],
                       inclination = sun_year[, 2],
                       day = factor(format(sun_days, "%d %b"),
-                                   unique(format(sun_days, "%d %b"))
-                      ))
+                                   unique(format(sun_days, "%d %b"))))
   }
 
   return(df)

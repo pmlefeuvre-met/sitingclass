@@ -5,7 +5,7 @@
 #' (i.e. "dom" or "dtm"). The bounding box is centered to a parsed location
 #' and a parsed radius set the extent. The downloaded DEM is a SpatRaster
 #' object. If the DEM file already exists, it is loaded by default unless
-#' f.overwrite is set to TRUE
+#' f_overwrite is set to TRUE
 #'
 #' @references \url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/0f0a0f38-00c4-4213-a9e5-2d861dc4abb0}
 #' @references \url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/e36ea427-13a1-4d7c-be82-977068dfc3e3}
@@ -18,7 +18,7 @@
 #'        bounding box from the centre point
 #' @param resx A horizontal resolution in metre
 #' @param path A directory path defining where will be saved the data
-#' @param f.overwrite A boolean whether the DEM file should be overwritten
+#' @param f_overwrite A boolean whether the DEM file should be overwritten
 #'
 #' @return A Digital Elevation Model
 #'
@@ -43,7 +43,7 @@ download_dem_kartverket <- function(stn = NULL,
                                     dx = 100,
                                     resx = ifelse(dx > 200, dx / 100, 1),
                                     path = "data/dem",
-                                    f.overwrite = FALSE) {
+                                    f_overwrite = FALSE) {
 
   # Extract stationID and centre point of the station
   stationid <- stn$id.stationid
@@ -67,7 +67,7 @@ download_dem_kartverket <- function(stn = NULL,
                        resx)
 
   # Verify if file exists
-  if (file.exists(fname_out) && !f.overwrite) {
+  if (file.exists(fname_out) && !f_overwrite) {
 
     # Load DEM as SpatRaster
     dem <- terra::rast(fname_out)

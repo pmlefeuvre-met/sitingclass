@@ -25,7 +25,7 @@
 
 plot_station_grid <- function(stn = NULL,
                               tile_name = "ortofoto",
-                              path = NULL){
+                              path = NULL) {
 
   # Get coordinates
   centre <- sf::st_coordinates(stn)
@@ -53,7 +53,7 @@ plot_station_grid <- function(stn = NULL,
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
     print(g)
-    }
+  }
 
   #-----------------------------
   dx <- 160

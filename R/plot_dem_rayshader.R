@@ -14,8 +14,6 @@
 #' @return A rendered image
 #'
 #' @examples
-#' require(sf)
-#'
 #' # Load the station metadata and location
 #' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 #'
@@ -37,7 +35,7 @@ plot_dem_rayshader <- function(stn = NULL,
                                path = NULL) {
 
   # Extract station name, latlon and level
-  stn.name    <- str_to_title(stn$station.name)
+  stn_name    <- str_to_title(stn$station.name)
 
   # Convert DEM to a matrix:
   elmat <- rayshader::raster_to_matrix(dsm)
@@ -61,7 +59,7 @@ plot_dem_rayshader <- function(stn = NULL,
                           x = dim(elmat)[1] / 2,
                           y = dim(elmat)[2] / 2,
                           z = max(elmat, na.rm = TRUE) * 1.15,
-                          text="",
+                          text = "",
                           linecolor = "white",
                           relativez = FALSE)
   # render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2,
@@ -78,7 +76,7 @@ plot_dem_rayshader <- function(stn = NULL,
 
   } else {
     cardinal_array <- c("northward", "westward", "southward", "eastward")
-    theta <- stats::setNames( seq(0, 359 , by = 90), cardinal_array)
+    theta <- stats::setNames(seq(0, 359, by = 90), cardinal_array)
 
     for (cardinal in cardinal_array) {
       dir.create(path, showWarnings = FALSE, recursive = TRUE)
@@ -86,13 +84,13 @@ plot_dem_rayshader <- function(stn = NULL,
                        path,
                        stn$id.stationid,
                        cardinal)
-      title <- paste(stn.name, "-", cardinal)
+      title <- paste(stn_name, "-", cardinal)
 
       rayshader::render_camera(theta = theta[cardinal])
       # rayshader::render_snapshot(fname, title_text = title,
       #                            instant_capture=F, width = 2100,
       #                            height = 2100, title_size = 140)
-      # #render_highquality(fname, clear = TRUE, title_text = stn.name,
+      # #render_highquality(fname, clear = TRUE, title_text = stn_name,
       #                   width = 400, height = 400)
     }
   }
