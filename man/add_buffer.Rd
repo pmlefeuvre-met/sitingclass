@@ -7,9 +7,9 @@
 add_buffer(g = NULL, box = NULL, buf1 = NULL, buf2 = NULL, nx = NULL, n = 2)
 }
 \arguments{
-\item{g}{A ggplot objects on which to add the grid}
+\item{g}{A ggplot objects on which to add the buffer}
 
-\item{box}{A boundary box object to get the box extent and centre point}
+\item{box}{A SpatExtent to get the box extent and centre point}
 
 \item{buf1}{A distance in metre representing the inner buffer radius}
 

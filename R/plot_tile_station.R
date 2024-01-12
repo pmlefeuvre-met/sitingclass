@@ -41,6 +41,7 @@
 #'
 #' @import ggplot2
 #' @importFrom sf st_transform st_coordinates
+#' @importFrom terra vect
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
 #'
@@ -64,6 +65,13 @@ plot_tile_station <- function(stn = NULL,
                            stn_latlon[2],
                            stn$elev)
 
+  # Convert SpatExtent to SpatVector to get CRS in UTM
+  if (tile_name %in% c("osm","esri")) {
+    # box <- sf::st_as_sf(vect(box))
+    # sf::st_crs(box) <- 25833
+    #box <- terra::project(box,"epsg:25833", "epsg:4326")
+    box <- terra::vect(box,crs="epsg:25833")
+  }
   # Load tile
   if (tile_name == "osm") {
     tile <- maptiles::get_tiles(box,

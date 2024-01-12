@@ -2,8 +2,8 @@
 #'
 #' Add two buffers on a map to assess the area of same land cover type.
 #'
-#' @param g A ggplot objects on which to add the grid
-#' @param box A boundary box object to get the box extent and centre point
+#' @param g A ggplot objects on which to add the buffer
+#' @param box A SpatExtent to get the box extent and centre point
 #' @param buf1 A distance in metre representing the inner buffer radius
 #' @param buf2 A distance in metre representing the outer buffer radius
 #' @param nx A number defining the grid interval in metre for x and y
@@ -29,7 +29,7 @@
 #' g <- add_buffer(g, centre, 300, 1000, nx, n)
 #' g
 #'
-#' @importFrom terra ext vect buffer
+#' @importFrom terra vect buffer
 #' @importFrom tidyterra pull_crs
 #'
 #' @export
@@ -41,13 +41,12 @@ add_buffer <- function(g = NULL,
                        n = 2) {
 
   # Convert box to SpatExtent and centre to SpatVector
-  bbox <- terra::ext(terra::vect(box))
-  centre <- cbind(X = mean(bbox[1:2]), Y = mean(bbox[3:4]))
+  centre <- cbind(X = mean(box[1:2]), Y = mean(box[3:4]))
   v <- terra::vect(centre, crs = "epsg:25833")
 
   # Compute segment/label position
-  ybuf1 <- bbox[4] - nx * (n - .5)
-  ybuf2 <- bbox[4] - nx * (n - 1)
+  ybuf1 <- box[4] - nx * (n - .5)
+  ybuf2 <- box[4] - nx * (n - 1)
 
   # Add buffers
   g <- g +
@@ -80,7 +79,7 @@ add_buffer <- function(g = NULL,
                size = 2)
 
   # Fix coordinate system caused by SpatVector conversion
-  g <- g + coord_sf(datum = tidyterra::pull_crs(box))
+  g <- g + coord_sf(datum = tidyterra::pull_crs(v))
 
   return(g)
 }

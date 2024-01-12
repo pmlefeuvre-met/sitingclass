@@ -16,7 +16,7 @@
 #' centre <- sf::st_coordinates(stn)
 #' box <- make_bbox(centre, dx = 1600)
 #'
-#' @importFrom sf st_as_sf st_crs
+#' @importFrom terra ext
 #'
 #' @export
 make_bbox <- function(centre,
@@ -26,12 +26,8 @@ make_bbox <- function(centre,
   box <- round(c(c(centre[1], centre[2]) - dx,
                  c(centre[1], centre[2]) + dx))
 
-  # Assign class bbox
-  class(box) <- "bbox"
-
-  # Convert to sfc object (polygon) and set CRS as UTM 33
-  box <- sf::st_as_sfc(box)
-  sf::st_crs(box) <- 25833
+  # Assign class SpatExtent
+  box <- terra::ext(box[1], box[3], box[2], box[4])
 
   return(box)
 }

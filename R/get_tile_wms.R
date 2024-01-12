@@ -29,7 +29,7 @@
 #' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
 #'
-#' @importFrom terra vect ext rast crs
+#' @importFrom terra ext rast crs
 #' @importFrom httr GET content
 #' @importFrom magrittr %>%
 #'
@@ -38,9 +38,6 @@
 get_tile_wms <- function(box = NULL,
                          layer = "ar5",
                          px = 500) {
-
-  # Extract bounding box
-  bbox <- terra::ext(terra::vect(box))
 
   # Set URL options to get data
   if (layer == "ar5") {
@@ -95,10 +92,10 @@ get_tile_wms <- function(box = NULL,
                      crs,
                      sprintf("LAYERS=%s", layer),
                      sprintf("bbox=%1.0f,%1.0f,%1.0f,%1.0f",
-                             bbox[1],
-                             bbox[3],
-                             bbox[2],
-                             bbox[4]),
+                             box[1],
+                             box[3],
+                             box[2],
+                             box[4]),
                      sprintf("WIDTH=%i", px),
                      sprintf("HEIGHT=%i", px),
                      sep = "&"),
@@ -111,7 +108,7 @@ get_tile_wms <- function(box = NULL,
   } else if (dim(wms)[3] == 4) {
     names(wms) <- c("red", "green", "blue", "alpha")
   }
-  terra::ext(wms) <- bbox
+  terra::ext(wms) <- box
   terra::crs(wms) <- "epsg:25833"
 
   return(wms)

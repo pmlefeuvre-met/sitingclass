@@ -109,7 +109,7 @@ compute_landtype <- function(stn = NULL,
       tidyterra::geom_spatvector(aes(fill = landtype),
                                  linewidth = 0) +
       scale_fill_manual(values = fill_landtype) +
-      coord_sf(datum = tidyterra::pull_crs(box)) +
+      coord_sf(datum = tidyterra::pull_crs(dem)) +
       theme_minimal() +
       theme(legend.position = "bottom")
 

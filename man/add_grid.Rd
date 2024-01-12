@@ -9,7 +9,7 @@ add_grid(g = NULL, box = NULL, nx = NULL, n = 2)
 \arguments{
 \item{g}{A ggplot objects on which to add the grid}
 
-\item{box}{A boundary box object to get the box extent}
+\item{box}{A SpatExtent to get the box extent}
 
 \item{nx}{A number defining the grid interval in metre for x and y}
 
