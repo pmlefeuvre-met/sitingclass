@@ -83,9 +83,9 @@ compute_landtype <- function(stn = NULL,
   v_bush  <- raster_to_vector((dh_mask > .25 & dh_mask <= 3),
                               id = "bush",
                               mask_thr = FALSE)
-  v_tree  <- raster_to_vector( dh_mask >= 3,
-                               id = "tree",
-                               mask_thr = FALSE)
+  v_tree  <- raster_to_vector(dh_mask >= 3,
+                              id = "tree",
+                              mask_thr = FALSE)
   print("Vectorised vegetation")
 
   # Merge all landcover vectors

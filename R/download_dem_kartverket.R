@@ -38,9 +38,9 @@
 download_dem_kartverket <- function(stn = NULL,
                                     name = "dom",
                                     dx = 100,
-                                    resx = dx/100,
+                                    resx = ifelse(dx > 200, dx / 100, 1),
                                     path = "data/dem",
-                                    f.overwrite = FALSE){
+                                    f.overwrite = FALSE) {
 
   # Extract stationID and centre point of the station
   stationid <- stn$id.stationid
@@ -51,43 +51,54 @@ download_dem_kartverket <- function(stn = NULL,
                 stationid, centre[1], centre[2], name, dx, resx, path))
 
   # Compute bounding box
-  box <- c(c(centre[1],centre[2])-dx,
-           c(centre[1],centre[2])+dx) %>% round
-
-  # # Set horizontal resolution if not defined
-  # if(is.null(resx)){resx <- dx/100}
+  box <- round(c(c(centre[1], centre[2]) - dx,
+                 c(centre[1], centre[2]) + dx))
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
-  fname_out <- sprintf("%s/%i_%s_25833_d%05.0fm_%02.1fm.tif",path,stationid,name,dx,resx)
+  fname_out <- sprintf("%s/%i_%s_25833_d%05.0fm_%02.1fm.tif",
+                       path,
+                       stationid,
+                       name,
+                       dx,
+                       resx)
 
   # Verify if file exists
-  if(file.exists(fname_out) && !f.overwrite){
+  if (file.exists(fname_out) && !f.overwrite) {
 
     # Load DEM as SpatRaster
     dem <- terra::rast(fname_out)
     terra::setMinMax(dem)
 
     # Print file loading and return DEM
-    print(sprintf("Load existing file: %s",fname_out))
+    print(sprintf("Load existing file: %s", fname_out))
     return(dem)
-
   }
 
   # Get WCS info from an URL request with the layer name (i.e. DEM name)
-  url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",name)
-  WCS  <- ows4R::WCSClient$new(url, serviceVersion = "1.0.0", logger = "INFO")
+  url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",
+                  name)
+  WCS  <- ows4R::WCSClient$new(url,
+                               serviceVersion = "1.0.0",
+                               logger = "INFO")
   caps <- WCS$getCapabilities()
-  chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833",name), exact = TRUE)
+  chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833", name),
+                                       exact = TRUE)
 
   # Send URL request to download the DEM data.
-  dem <- chla$getCoverage(crs = "EPSG:25833",RESX = resx, RESY = resx,
-                          bbox=ows4R::OWSUtils$toBBOX(box[1],box[3],box[2],box[4]),
+  dem <- chla$getCoverage(crs = "EPSG:25833",
+                          RESX = resx,
+                          RESY = resx,
+                          bbox=ows4R::OWSUtils$toBBOX(box[1],
+                                                      box[3],
+                                                      box[2],
+                                                      box[4]),
                           filename = fname_out)
 
   # Assign Not-A-Number values and compute MinMax of the DEM
-  dem[dem==0] <- NA
+  dem[dem == 0] <- NA
   terra::setMinMax(dem)
 
+  # Return DEM
   return(dem)
 }
