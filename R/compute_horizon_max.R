@@ -42,7 +42,7 @@ compute_horizon_max <- function(stn = NULL,
                                 f_plot_polygon = FALSE) {
   # Get station metadata
   stn_centre  <- sf::st_coordinates(stn)
-  stn_level   <- stn$id_level
+  stn_level   <- stn$id.level
 
   # Load digital elevation models of the terrain and surface
   dem   <- download_dem_kartverket(stn, name = "dtm", dx, resx)

@@ -4,22 +4,24 @@
 \alias{raster_to_vector}
 \title{Convert SpatRaster to SpatVector}
 \usage{
-raster_to_vector(raster, id = "undefined", mask_thr = 255, f.plot = FALSE)
+raster_to_vector(raster, id = "undefined", mask_thr = 255, f_plot = FALSE)
 }
 \arguments{
 \item{raster}{A SpatRaster image or mask}
 
-\item{id}{A string or number defining a common factor for all generated polygons}
+\item{id}{A string or number defining a common factor for all generated
+polygons}
 
 \item{mask_thr}{A number or boolean defining a background value to remove}
 
-\item{f.plot}{A boolean whether to plot the vectorisation result}
+\item{f_plot}{A boolean whether to plot the vectorisation result}
 }
 \value{
 A SpatVector
 }
 \description{
-Convert a raster to polygon, remove raster background from vector (white for image, FALSE for mask),
+Convert a raster to polygon, remove raster background from vector
+(white for image, FALSE for mask),
 aggregate single polygons and set vector values as a single id.
 }
 \examples{
@@ -38,5 +40,6 @@ v_building <- raster_to_vector(building, id = "building", mask_thr = 255)
 
 }
 \references{
-\url{https://rspatial.r-universe.dev/terra/doc/manual.html#as.polygons}
+\url{https://rspatial.r-universe.dev/terra/
+doc/manual.html#as.polygons}
 }

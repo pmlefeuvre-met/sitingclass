@@ -7,10 +7,16 @@ The package `sitingclass` is available on Met's Gitlab and can be installed usin
 
 ```R
 # manually adding your token
-remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
+remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",
+                     force=TRUE)
 
 # If you have set your token in .Renviron, use:
-remotes::install_git(paste0("https://",Sys.getenv('GIT_ID'),":",Sys.getenv('GIT_TOKEN'),"@gitlab.met.no/pierreml/sitingclass.git"),force=T)
+remotes::install_git(paste0("https://",
+                            Sys.getenv('GIT_ID'),
+                            ":",
+                            Sys.getenv('GIT_TOKEN'),
+                            "@gitlab.met.no/pierreml/sitingclass.git"),
+                     force = TRUE)
 
 .rs.restartR()
 library(sitingclass)
@@ -80,26 +86,26 @@ centre
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- make_bbox(centre,dx)
+box <- make_bbox(centre, dx)
 ```
 
 ```
 # Plot ESRI imagery tile
-plot_tile_station(stn, box, tile_name="esri")
+plot_tile_station(stn, box, tile_name = "esri")
 ```
 
 ```
 # Plot tile with grid and proximity circles 
-plot_station_grid(stn, tile_name="ortofoto")
+plot_station_grid(stn, tile_name = "ortofoto")
 ```
 
 ### Download Digital Elevation Models
 ```
 # Load Karverket's DEMs
-f.ow  <- FALSE #TRUE to overwrite files
-dem   <- download_dem_kartverket(stn,name="dtm",dx  ,resx=1 ,f.overwrite=f.ow)
-dsm   <- download_dem_kartverket(stn,name="dom",dx  ,resx=1 ,f.overwrite=f.ow)
-demkm <- download_dem_kartverket(stn,name="dtm",20e3,resx=20,f.overwrite=f.ow)
+f_ow  <- FALSE #TRUE to overwrite files
+dem   <- download_dem_kartverket(stn,name="dtm",dx  ,resx=1 ,f_overwrite=f_ow)
+dsm   <- download_dem_kartverket(stn,name="dom",dx  ,resx=1 ,f_overwrite=f_ow)
+demkm <- download_dem_kartverket(stn,name="dtm",20e3,resx=20,f_overwrite=f_ow)
 
 # Plot 100-m Digital Surface Model and 20-km Digital Terrain Model
 library(rayshader)
@@ -126,9 +132,12 @@ The function `plot_station_siting_context()` will compute all the code chunks fr
 
 ```
 # Set timezone to avoid time shift between winter and summer time
-Sys.setenv(TZ="UTC") # "Europe/Oslo"
+Sys.setenv(TZ = "UTC") # "Europe/Oslo"
 
 # The main function plotting sun diagram and context for a weather station 
-plot_station_siting_context(stationid=18700, paramid=211, f.verbose=F, f.pdf=F)
+plot_station_siting_context(stationid = 18700,
+                            paramid = 211,
+                            f_verbose = FALSE,
+                            f_pdf = FALSE)
 ```
 

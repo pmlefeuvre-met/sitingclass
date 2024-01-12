@@ -3,7 +3,8 @@
 #' Plots weather station's sun diagram and background maps to assess
 #' the exposure of a station and to compute its WMO/met.no siting classification
 #'
-#' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification#MembersTools}
+#' @references \url{https://community.wmo.int/en/activity-areas/
+#' imop/siting-classification#MembersTools}
 #'
 #' @param stationid A station number as integer and defined by met.no
 #' @param paramid A parameter number as integer and defined by met.no
@@ -23,7 +24,6 @@
 #' @importFrom grDevices dev.off pdf
 #'
 #' @export
-
 plot_station_siting_context <- function(stationid = 18700,
                                         paramid = 211,
                                         f_verbose = FALSE,

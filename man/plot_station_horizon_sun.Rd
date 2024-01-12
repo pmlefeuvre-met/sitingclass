@@ -33,8 +33,6 @@ Plot sun position and horizons from local terrain model, local surface model
 and regional digital terrain model with infos from the weather station.
 }
 \examples{
-require(sf)
-
 # Load the station metadata and location
 stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 

@@ -10,7 +10,7 @@ download_dem_kartverket(
   dx = 100,
   resx = ifelse(dx > 200, dx/100, 1),
   path = "data/dem",
-  f.overwrite = FALSE
+  f_overwrite = FALSE
 )
 }
 \arguments{
@@ -26,7 +26,7 @@ bounding box from the centre point}
 
 \item{path}{A directory path defining where will be saved the data}
 
-\item{f.overwrite}{A boolean whether the DEM file should be overwritten}
+\item{f_overwrite}{A boolean whether the DEM file should be overwritten}
 }
 \value{
 A Digital Elevation Model
@@ -37,7 +37,7 @@ Coverage Service that downloads a DEM from a bounding box and a DEM type
 (i.e. "dom" or "dtm"). The bounding box is centered to a parsed location
 and a parsed radius set the extent. The downloaded DEM is a SpatRaster
 object. If the DEM file already exists, it is loaded by default unless
-f.overwrite is set to TRUE
+f_overwrite is set to TRUE
 }
 \examples{
 # Define parameters
@@ -51,9 +51,14 @@ demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 
 }
 \references{
-\url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/0f0a0f38-00c4-4213-a9e5-2d861dc4abb0}
+\url{https://kartkatalog.geonorge.no/metadata/
+nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/
+0f0a0f38-00c4-4213-a9e5-2d861dc4abb0}
 
-\url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/e36ea427-13a1-4d7c-be82-977068dfc3e3}
+\url{https://kartkatalog.geonorge.no/metadata/
+nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/
+e36ea427-13a1-4d7c-be82-977068dfc3e3}
 
-\url{https://cran.r-project.org/web/packages/ows4R/vignettes/wcs.html}
+\url{https://cran.r-project.org/web/packages/ows4R/
+vignettes/wcs.html}
 }

@@ -35,7 +35,7 @@ plot_station_grid <- function(stn = NULL,
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 
-  # First sale: 1000 metres
+  # 1) 1000-metre scale
   #-----------------------------
   dx <- 1600
   box <- make_bbox(centre, dx)
@@ -55,6 +55,7 @@ plot_station_grid <- function(stn = NULL,
     print(g)
   }
 
+  # 2) 100-metre scale
   #-----------------------------
   dx <- 160
   box <- make_bbox(centre, dx)
@@ -74,6 +75,7 @@ plot_station_grid <- function(stn = NULL,
     print(g)
   }
 
+  # 3) 50-metre scale
   #-----------------------------
   dx <- 50
   box <- make_bbox(centre, dx)
@@ -93,6 +95,7 @@ plot_station_grid <- function(stn = NULL,
     print(g)
   }
 
+  # 4a) 10-metre scale
   #-----------------------------
   dx <- 16
   box <- make_bbox(centre, dx)
@@ -103,6 +106,18 @@ plot_station_grid <- function(stn = NULL,
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 3, buf2 = 10, nx)
 
+  # 4b) 10-metre scale with 5-metre radius radius
+  #-----------------------------
+  dx <- 16
+  box <- make_bbox(centre, dx)
+  g <- plot_tile_station(stn, box, tile_name)
+
+  # Add grid and buffer. dx and nx are in metre.
+  nx <- 2
+  g <- add_grid(g, box, nx)
+  g <- add_buffer(g, box, buf1 = 3, buf2 = 5, nx)
+
+  #-----------------------------
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,

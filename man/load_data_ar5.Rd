@@ -4,12 +4,12 @@
 \alias{load_data_ar5}
 \title{Load FKB-AR5 from vector files stored locally (restricted access to download)}
 \usage{
-load_data_ar5(box = NULL, f.wms = TRUE, layer = "Arealtype", px = 500)
+load_data_ar5(box = NULL, f_wms = TRUE, layer = "Arealtype", px = 500)
 }
 \arguments{
 \item{box}{A SpatExtent defining the area to plot}
 
-\item{f.wms}{A boolean to switch to WMS image tile instead of loading file, default TRUE (deprecated)}
+\item{f_wms}{A boolean to switch to WMS image tile instead of loading file, default TRUE (deprecated)}
 
 \item{layer}{A name of a layer provided by WMS. For "ar5", it is "Arealtype" as default}
 

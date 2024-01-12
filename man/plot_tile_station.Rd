@@ -13,15 +13,20 @@ plot_tile_station(
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attributes from \code{"get_latlon_frost"}}
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
 
 \item{box}{A SpatExtent defining the area to plot}
 
-\item{tile_name}{A string defining the type of tile to plot among "osm" (map, default), "esri" (satellite imagery), "ar5" (area type), "clc" (Corine land cover) and "urban" (urban atlas)}
+\item{tile_name}{A string defining the type of tile to plot among "osm"
+(map, default), "esri" (satellite imagery), "ar5" (area type), "clc"
+(Corine land cover) and "urban" (urban atlas)}
 
-\item{dsm}{A SpatRaster of a digital surface model around the station, expected radius is 100 m}
+\item{dsm}{A SpatRaster of a digital surface model around the station,
+expected radius is 100 m}
 
-\item{path}{A string path that defines where to save the plot, if NULL (default) the plot is printed on-screen and not saved}
+\item{path}{A string path that defines where to save the plot, if NULL
+(default) the plot is printed on-screen and not saved}
 }
 \value{
 A ggplot object
@@ -32,26 +37,24 @@ a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 }
 \examples{
 # Get station coordinates and name
-stn    <- get_latlon_frost(stationid=18700)
+stn    <- get_latlon_frost(stationid = 18700)
+centre <- sf::st_coordinates(stn)
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- c(c(centre[1],centre[2])-dx, c(centre[1],centre[2])+dx) \%>\% round()
-class(box) <- "bbox"
-box <- st_as_sfc(box)
-st_crs(box) <- 25833 # UTM33
+box <- make_bbox(centre, dx = 1600)
 
 # Plot maps using plot_tile_station()
 g <- plot_tile_station(stn, box, tile_name = "esri")
 g
-plot_tile_station(stn, box, tile_name="esri")
-plot_tile_station(stn, box, tile_name="ar5")
-plot_tile_station(stn, box, tile_name="clc")
-plot_tile_station(stn, box, tile_name="urban")
+plot_tile_station(stn, box, tile_name = "esri")
+plot_tile_station(stn, box, tile_name = "ar5")
+plot_tile_station(stn, box, tile_name = "clc")
+plot_tile_station(stn, box, tile_name = "urban")
 
 # Include Digital Elevation Model as contour
-dsm   <- download_dem_kartverket(stn, name="dom", dx, resx=1)
-plot_tile_station(stn, box, tile_name="osm", dsm=dsm, path="plot/map")
+dsm   <- download_dem_kartverket(stn, name = "dom", dx, resx = 1)
+plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = "plot/map")
 
 }
 \references{

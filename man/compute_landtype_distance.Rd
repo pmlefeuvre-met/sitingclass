@@ -51,5 +51,6 @@ summary((landtype_dist[, 1] - landtype_dist[, 2]) / landtype_dist[, 2] * 100)
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
+\url{https://community.wmo.int/en/activity-areas/
+imop/siting-classification}
 }

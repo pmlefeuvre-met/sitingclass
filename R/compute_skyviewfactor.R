@@ -2,7 +2,8 @@
 #'
 #' Compute Sky View Factor from horizon data
 #'
-#' @references \url{https://github.com/OSGeo/grass-addons/blob/grass8/src/raster/r.skyview/r.skyview.py}
+#' @references \url{https://github.com/OSGeo/grass-addons/blob/grass8/src/
+#' raster/r.skyview/r.skyview.py}
 #'
 #' @param horizon An array of horizon height in degrees from
 #'        \code{"compute_horizon"}

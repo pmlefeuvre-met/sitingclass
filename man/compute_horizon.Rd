@@ -35,8 +35,6 @@ A dataframe with `horizon_height` in degrees and `azimuth` angle in
 Compute horizon height in degrees from a station location in UTM 33
 }
 \examples{
-require(sf)
-
 # Load the station metadata including location and level
 stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 stn_centre  <- sf::st_coordinates(stn)

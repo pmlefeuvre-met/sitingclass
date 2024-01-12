@@ -5,11 +5,16 @@
 #'
 #' @references \url{https://github.com/riatelab/maptiles}
 #'
-#' @param stn A SpatVector with station attributes from \code{"get_latlon_frost"}
+#' @param stn A SpatVector with station attributes from
+#' \code{"get_latlon_frost"}
 #' @param box A SpatExtent defining the area to plot
-#' @param tile_name A string defining the type of tile to plot among "osm" (map, default), "esri" (satellite imagery), "ar5" (area type), "clc" (Corine land cover) and "urban" (urban atlas)
-#' @param dsm A SpatRaster of a digital surface model around the station, expected radius is 100 m
-#' @param path A string path that defines where to save the plot, if NULL (default) the plot is printed on-screen and not saved
+#' @param tile_name A string defining the type of tile to plot among "osm"
+#' (map, default), "esri" (satellite imagery), "ar5" (area type), "clc"
+#' (Corine land cover) and "urban" (urban atlas)
+#' @param dsm A SpatRaster of a digital surface model around the station,
+#' expected radius is 100 m
+#' @param path A string path that defines where to save the plot, if NULL
+#' (default) the plot is printed on-screen and not saved
 #'
 #' @return A ggplot object
 #'
@@ -61,39 +66,54 @@ plot_tile_station <- function(stn = NULL,
 
   # Load tile
   if (tile_name == "osm") {
-    tile <- maptiles::get_tiles(box, crop = TRUE, provider = "OpenStreetMap")
+    tile <- maptiles::get_tiles(box,
+                                crop = TRUE,
+                                provider = "OpenStreetMap")
     credit <- "\uA9 OpenStreetMap"
 
   } else if (tile_name == "esri") {
-    tile <- maptiles::get_tiles(box, crop = TRUE, provider = "Esri.WorldImagery" )
+    tile <- maptiles::get_tiles(box,
+                                crop = TRUE,
+                                provider = "Esri.WorldImagery")
     credit <- "\uA9 ESRI WorldImagery"
 
   } else if (tile_name == "ar5") {
     tile <- get_tile_wms(box, layer = tile_name)
     credit <- "FKB-AR5 \uA9 Nibio"
-    legend <- "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png"
+    legend <- paste0("https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&",
+    "service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png")
 
   } else if (tile_name == "clc") {
-    tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
+    tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012")
     credit <- "CORINE LC 2012 \uA9 Nibio"
-    legend <- "https://wms.nibio.no/cgi-bin/clc?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&format=image/png"
+    legend <- paste0("https://wms.nibio.no/cgi-bin/clc?version=1.1.1&",
+    "service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&",
+    "format=image/png")
 
   } else if (tile_name == "urban") {
-    tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
+    tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012")
     credit <- "Urban Atlas 2012 \uA9 Nibio"
-    legend <- "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=Urban_Atlas_Lu_Lc_2012&format=image/png"
+    legend <- paste0("https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&",
+                     "service=WMS&request=GetLegendGraphic&",
+                     "layer=Urban_Atlas_Lu_Lc_2012&format=image/png")
 
   } else if (tile_name == "toporaster") {
-    tile <- get_tile_wms(box, layer = tile_name )
+    tile <- get_tile_wms(box, layer = tile_name)
     credit <- "Toporaster4 \uA9 Kartverket"
 
   } else if (tile_name == "ortofoto") {
-    tile <- get_tile_wms(box, layer = tile_name )
+    tile <- get_tile_wms(box, layer = tile_name)
     credit <- "Ortophoto \uA9 Kartverket"
 
-  }else if (any(tile_name %in% c("ar5","fkb_arealdekke","fkb_vann",
-                                 "vann_omrade","fkb_samferdsel","veg",
-                                 "fkb_bygning","bygning","fkb_naturinfo",
+  }else if (any(tile_name %in% c("ar5",
+                                 "fkb_arealdekke",
+                                 "fkb_vann",
+                                 "vann_omrade",
+                                 "fkb_samferdsel",
+                                 "veg",
+                                 "fkb_bygning",
+                                 "bygning",
+                                 "fkb_naturinfo",
                                  "naturinfo"))) {
     tile <- get_tile_wms(box, layer = tile_name)
     credit <- "FKB-AR5 \uA9 Kartverket"
@@ -134,7 +154,7 @@ plot_tile_station <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_map_%s.png",path, stn$id.stationid, tile_name)
+    fname <- sprintf("%s/%i_map_%s.png", path, stn$id.stationid, tile_name)
     ggsave(fname, bg = "white", width = 7, height = 7)
   }
 

@@ -4,7 +4,8 @@
 #' vegetation and shadowing as potential heat sources affecting sensors and
 #' using the requirements set by WMO and Met
 #'
-#' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
+#' @references \url{https://community.wmo.int/en/activity-areas/
+#' imop/siting-classification}
 #'
 #' @param land A data.frame with land type distribution from
 #' \code{"compute_landtype_distance"}
@@ -36,7 +37,7 @@
 #'
 #' # Compute maximum horizon
 #' horizon_max <- compute_horizon_max(stn, dx, resx, step = 1,
-#'                                    f_plot.polygon = FALSE)
+#'                                    f_plot_polygon = FALSE)
 #'
 #' # Compute class
 #' compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",

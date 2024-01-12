@@ -53,7 +53,7 @@ landtype_dist <- compute_landtype_distance(stn, landtype, dx, resx,
 
 # Compute maximum horizon
 horizon_max <- compute_horizon_max(stn, dx, resx, step = 1,
-                                   f_plot.polygon = FALSE)
+                                   f_plot_polygon = FALSE)
 
 # Compute class
 compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",
@@ -62,5 +62,6 @@ compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
+\url{https://community.wmo.int/en/activity-areas/
+imop/siting-classification}
 }

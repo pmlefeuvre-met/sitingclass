@@ -3,7 +3,8 @@
 #' Compute distance distribution of land cover types around a station to assess
 #' the WMO siting class
 #'
-#' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
+#' @references \url{https://community.wmo.int/en/activity-areas/
+#' imop/siting-classification}
 #'
 #' @param stn A SpatVector with station attributes from
 #'        \code{"get_latlon_frost"}

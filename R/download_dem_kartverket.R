@@ -7,9 +7,14 @@
 #' object. If the DEM file already exists, it is loaded by default unless
 #' f_overwrite is set to TRUE
 #'
-#' @references \url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/0f0a0f38-00c4-4213-a9e5-2d861dc4abb0}
-#' @references \url{https://kartkatalog.geonorge.no/metadata/nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/e36ea427-13a1-4d7c-be82-977068dfc3e3}
-#' @references \url{https://cran.r-project.org/web/packages/ows4R/vignettes/wcs.html}
+#' @references \url{https://kartkatalog.geonorge.no/metadata/
+#' nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/
+#' 0f0a0f38-00c4-4213-a9e5-2d861dc4abb0}
+#' @references \url{https://kartkatalog.geonorge.no/metadata/
+#' nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/
+#' e36ea427-13a1-4d7c-be82-977068dfc3e3}
+#' @references \url{https://cran.r-project.org/web/packages/ows4R/
+#' vignettes/wcs.html}
 #'
 #' @param stn A SpatVector with station attribute `id.stationid` from
 #'        \code{"get_latlon_frost"}

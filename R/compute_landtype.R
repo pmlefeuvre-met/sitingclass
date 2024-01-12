@@ -6,7 +6,8 @@
 #' horizontal resolution of the digital elevation models defines the resolution
 #' of the tile of the topographic data.
 #'
-#' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
+#' @references \url{https://kartkatalog.geonorge.no/metadata/fkb-wms/
+#' 84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
 #'
 #' @param stn A SpatVector with station attributes from
 #'        \code{"get_latlon_frost"}

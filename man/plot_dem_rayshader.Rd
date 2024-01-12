@@ -23,8 +23,6 @@ Use rayshader to plot surface elevation model near a weather station from
 four cardinal angles
 }
 \examples{
-require(sf)
-
 # Load the station metadata and location
 stn <- get_latlon_frost(stationid = 18700, paramid = 211)
 

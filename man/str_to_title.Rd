@@ -21,5 +21,6 @@ str_to_title(str)
 
 }
 \references{
-\url{https://stackoverflow.com/questions/6364783/capitalize-the-first-letter-of-both-words-in-a-two-word-string}
+\url{https://stackoverflow.com/questions/6364783/
+capitalize-the-first-letter-of-both-words-in-a-two-word-string}
 }
