@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' # Define parameters
-#' stn <- get_latlon_frost(stationid)
+#' stn <- get_latlon_frost(stationid=18700)
 #' path   <- "data/dem"
 #'
 #' # Load data using ows4R ## WCSClient$new() getCapabilities()

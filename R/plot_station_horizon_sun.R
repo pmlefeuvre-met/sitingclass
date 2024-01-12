@@ -59,9 +59,9 @@ plot_station_horizon_sun <- function(stn = NULL,
   if(stn.perf  == "unknown"){stn.perf  <- NA}
 
   # Set cardinals (North position is edited to be visible on the plot)
-  cardinals <- data.frame(azimuth=c(0+15,90,180,260,360-15),
-                          inclination=rep((ymax-0.05*ymax),5),
-                          labels=c("North","East","South","West","North"))
+  cardinals <- data.frame(azimuth=c(0+15, 90, 180, 260, 360-15),
+                          inclination=rep((ymax-0.05*ymax), 5),
+                          labels=c("North", "East", "South", "West", "North"))
 
   # Compute sun position from station location
   sun       <- compute_sun_position(stn)

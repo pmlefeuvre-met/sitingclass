@@ -1,12 +1,14 @@
 testthat::test_that("compute horizon works", {
 
   # Load the station metadata
-  stn.id      <- 18700
-  stn.centre  <- cbind(260966.8, 6652718)
-  colnames(stn.centre) <- c("X", "Y")
+  centre  <- cbind(260966.8, 6652718)
+  colnames(centre) <- c("x", "y")
+  stn_test <- terra::vect(centre, "points", crs="epsg:25833")
+  stn_test$id.stationid <- 18700
+  stn_test <- sf::st_as_sf(stn_test)
 
   # Set expected horizon
-  horizon.expected <- data.frame(azimuth=c(0, 350, 340, 330, 320, 310, 300,
+  horizon_expected <- data.frame(azimuth=c(0, 350, 340, 330, 320, 310, 300,
                                            290, 280, 270, 260, 250, 240, 230,
                                            220, 210, 200, 190, 180, 170, 160,
                                            150, 140, 130, 120, 110, 100, 90,
@@ -21,11 +23,11 @@ testthat::test_that("compute horizon works", {
   )
 
   # Load a digital elevation model
-  dsm   <- download_dem_kartverket(stn, name="dom", dx=100, resx=1)
+  dsm   <- download_dem_kartverket(stn_test, name="dom", dx=100, resx=1)
 
   # Compute the horizon
-  horizon.computed <- compute_horizon(stn.centre, dsm)
+  horizon_computed <- compute_horizon(centre, dsm)
 
   # Compare result and expected horizon
-  testthat::expect_equal(round(horizon.computed,1), horizon.expected)
+  testthat::expect_equal(round(horizon_computed,1), horizon_expected)
 })

@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' # Get station coordinates and name
-#' stn    <- get_latlon_frost(18700)
+#' stn    <- get_latlon_frost(stationid=18700)
 #'
 #' # Construct box to extract WMS tile
 #' dx <- 100

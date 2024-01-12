@@ -13,7 +13,7 @@
 #'
 #' # Get coordinates and define boundary box
 #' centre <- sf::st_coordinates(stn)
-#' box <- make_bbox(centre,1600)
+#' box <- make_bbox(centre,dx=1600)
 #'
 #' @importFrom sf st_as_sf st_crs
 #'

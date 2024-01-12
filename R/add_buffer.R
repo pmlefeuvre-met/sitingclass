@@ -38,21 +38,21 @@ add_buffer <- function(g = NULL,
                        buf1 = NULL,
                        buf2 = NULL,
                        nx = NULL,
-                       n=2){
+                       n = 2){
 
   # Convert box to SpatExtent and centre to SpatVector
   bbox <- terra::ext(terra::vect(box))
-  centre <- cbind(X=mean(bbox[1:2]), Y=mean(bbox[3:4]))
-  v <- terra::vect(centre, crs="epsg:25833")
+  centre <- cbind(X = mean(bbox[1:2]), Y = mean(bbox[3:4]))
+  v <- terra::vect(centre, crs = "epsg:25833")
 
   # Compute segment/label position
-  ybuf1 <- bbox[4]-nx*(n-.5)
-  ybuf2 <- bbox[4]-nx*(n-1)
+  ybuf1 <- bbox[4] - nx*(n-.5)
+  ybuf2 <- bbox[4] - nx*(n-1)
 
   # Add buffers
   g <- g +
-    geom_sf(data=terra::buffer(v, buf1), fill=NA, color="black") +
-    geom_sf(data=terra::buffer(v, buf2), fill=NA, color="black")
+    geom_sf(data=terra::buffer(v, buf1), fill = NA, color = "black") +
+    geom_sf(data=terra::buffer(v, buf2), fill = NA, color = "black")
 
   # Add buffer legend as arrow segments
   g <- g +

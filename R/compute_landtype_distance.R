@@ -34,11 +34,11 @@
 #' @importFrom tidyterra geom_spatvector
 #'
 #' @export
-compute_landtype_distance <- function(stn=NULL,
-                                      landtype=NULL,
-                                      dx=100,
-                                      resx=1,
-                                      f.plot=FALSE){
+compute_landtype_distance <- function (stn=NULL,
+                                       landtype=NULL,
+                                       dx=100,
+                                       resx=1,
+                                       f.plot=FALSE) {
 
   # Extract centre point of the station
   centre <- sf::st_coordinates(stn)
@@ -53,7 +53,7 @@ compute_landtype_distance <- function(stn=NULL,
   r <- terra::rast(dem)
   dist_stn <- terra::distance(r, stn)
 
-  if(f.plot){
+  if (f.plot) {
     # Plot station distance in relation to land cover types
     # g1 <- ggplot() +
     #   tidyterra::geom_spatraster(data=dist_stn) +
@@ -72,13 +72,13 @@ compute_landtype_distance <- function(stn=NULL,
     # print(g1)
 
     # Plot ortophoto and classification (limit to areas < 500m)
-    if(dx<500){
+    if (dx<500) {
       # Get WMS tile and plot
       tile <- get_tile_wms(box, layer = "ortofoto")
       g2 <- ggplot() +
         tidyterra::geom_spatraster_rgb(data = tile) +
         geom_sf(data = stn, fill = NA, color = 'red') +
-        tidyterra::geom_spatvector(data=landtype, aes(color = landtype), fill=NA) +
+        tidyterra::geom_spatvector(data = landtype, aes(color = landtype), fill = NA) +
         scale_color_manual(values = fill_landtype) +
         theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
         theme(legend.position = "bottom")
@@ -90,10 +90,10 @@ compute_landtype_distance <- function(stn=NULL,
   type_array <- levels(landtype$landtype)
 
   # Make histogram breaks every 1 m first and then 2 m after 30m
-  distance_breaks <- c(0:29, seq(30,dx*1.5,2) )
+  distance_breaks <- c(0:29, seq(30, dx*1.5, 2) )
 
   # Compute histogram from distance raster for theoretical total area
-  h <- terra::hist(dist_stn, plot=F, breaks=distance_breaks)
+  h <- terra::hist(dist_stn, plot = FALSE, breaks = distance_breaks)
 
   # Convert to area and assign array to store area distribution per land type
   h_all <- h$counts*prod(terra::res(r))
@@ -103,40 +103,39 @@ compute_landtype_distance <- function(stn=NULL,
     print(type)
 
     # Crop distance raster using polygons for a specific land type
-    distance <- terra::crop(dist_stn,landtype[landtype$landtype==type,],
-                            mask=TRUE, touches=FALSE)
+    distance <- terra::crop(dist_stn, landtype[landtype$landtype==type, ],
+                            mask = TRUE, touches = FALSE)
 
     # Compute histogram
-    h <- terra::hist(distance, plot=FALSE, breaks=distance_breaks)
+    h <- terra::hist(distance, plot = FALSE, breaks = distance_breaks)
 
     # Convert count to area in square metre
-    h$counts <- h$counts*prod(terra::res(r))
+    h$counts <- h$counts * prod(terra::res(r))
 
     # Merge distributions
-    h_all <- cbind(h_all,h$counts)
+    h_all <- cbind(h_all, h$counts)
 
     # Plot histogram for each land type
     # if(f.plot){
     #   plot(h,
-    #        main=sprintf("landtype: %s",type),
-    #        xlab="Distance in metre",
-    #        ylab="Area in square metre",
-    #        xlim=c(0,150))
+    #        main = sprintf("landtype: %s", type),
+    #        xlab = "Distance in metre",
+    #        ylab = "Area in square metre",
+    #        xlim = c(0, 150))
     # }
   }
 
   # Compute total area from output and cumulative sums
-  #h_all <- cbind(rowSums(h_all[,-1]),h_all) #1) Just for total area verification
+  #h_all <- cbind(rowSums(h_all[, -1]), h_all) #1) Just for total area verification
   h_all <- apply(h_all, 2, cumsum)
 
   # Set column and row names
-  #colnames(h_all) <- c("tot_area_data","total_area_radius",type_array) #1)
-  colnames(h_all) <- c("total_area",type_array)
+  #colnames(h_all) <- c("tot_area_data", "total_area_radius",type_array) #1)
+  colnames(h_all) <- c("total_area", type_array)
   rownames(h_all) <- distance_breaks[-1]
 
   # Keep only data inside the radius dx and avoid corner effect from bbox
-  h_all <- h_all[1:which(distance_breaks==dx),]
+  h_all <- h_all[1:which(distance_breaks == dx), ]
 
   return(h_all)
 }
-

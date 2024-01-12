@@ -22,11 +22,12 @@ compute_skyviewfactor <- function(horizon = NULL){
   # Load function
   deg2rad <- function (angle_in_degrees) {
     angle_in_radian <- (angle_in_degrees * pi)/(180)
+    return(angle_in_radian)
   }
 
   # Convert positive angles (above horizon) in degrees to radian
-  angle_above_horizon <- deg2rad(ifelse(horizon[,2] < 0, 0, horizon[,2]))
-  skyviewfactor <- 1 - sum( sin(angle_above_horizon) ) / length(horizon[,1])
+  angle_above_horizon <- deg2rad(ifelse(horizon[, 2] < 0, 0, horizon[, 2]))
+  skyviewfactor <- 1 - sum(sin(angle_above_horizon)) / length(horizon[, 1])
 
   return(skyviewfactor)
 }

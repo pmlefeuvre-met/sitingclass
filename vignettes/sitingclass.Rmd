@@ -27,7 +27,7 @@ The package `sitingclass` is available on Met's Gitlab and can be installed usin
 remotes::install_git("https://YOUR_GIT_ID:YOUR_GIT_TOKEN@gitlab.met.no/pierreml/sitingclass.git",force=T)
 
 # If you have set your token in .Renviron, use:
-remotes::install_git(paste0("https://",Sys.getenv('GIT_ID'),":",Sys.getenv('GIT_TOKEN'),"@gitlab.met.no/pierreml/sitingclass.git"),force=T)
+remotes::install_git(paste0("https://",Sys.getenv("GIT_ID"),":",Sys.getenv("GIT_TOKEN"),"@gitlab.met.no/pierreml/sitingclass.git"),force=T)
 
 .rs.restartR()
 library(sitingclass)

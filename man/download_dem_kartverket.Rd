@@ -38,7 +38,7 @@ exists, it is loaded by default unless f.overwrite is set to TRUE
 }
 \examples{
 # Define parameters
-stn <- get_latlon_frost(stationid)
+stn <- get_latlon_frost(stationid=18700)
 path   <- "data/dem"
 
 # Load data using ows4R ## WCSClient$new() getCapabilities()
