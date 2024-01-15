@@ -20,12 +20,11 @@
 #'
 #' @examples
 #' # Get station coordinates and name
-#' stn    <- get_latlon_frost(stationid = 18700)
-#' centre <- sf::st_coordinates(stn)
+#' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Construct box to extract WMS tile
 #' dx <- 100
-#' box <- make_bbox(centre, dx = 1600)
+#' box <- make_bbox(stn, dx)
 #'
 #' # Plot maps using plot_tile_station()
 #' g <- plot_tile_station(stn, box, tile_name = "esri")
@@ -40,8 +39,7 @@
 #' plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = "plot/map")
 #'
 #' @import ggplot2
-#' @importFrom sf st_transform st_coordinates
-#' @importFrom terra vect
+#' @importFrom terra crds project vect
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
 #'
@@ -55,23 +53,21 @@ plot_tile_station <- function(stn = NULL,
 
   # Extract station name and latlon
   stn_name    <- str_to_title(stn$station.name)
-  stn_latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates()
+  stn_latlon  <- terra::crds(terra::project(stn, "epsg:4326"))
 
   # Reformat name for title in annotate
   stn_title     <- sprintf("station: %s", stn_name)
-  stn_subtitle  <- sprintf("id: %i - lat: %02.2f - long: %02.2f - elev:%1.0f",
-                           stn$id.stationid,
+  stn_subtitle  <- sprintf("id: %i - lat: %02.2f - long: %02.2f - elev: %1.0f",
+                           stn$stationid,
                            stn_latlon[1],
                            stn_latlon[2],
                            stn$elev)
 
   # Convert SpatExtent to SpatVector to get CRS in UTM
-  if (tile_name %in% c("osm","esri")) {
-    # box <- sf::st_as_sf(vect(box))
-    # sf::st_crs(box) <- 25833
-    #box <- terra::project(box,"epsg:25833", "epsg:4326")
-    box <- terra::vect(box,crs="epsg:25833")
+  if (tile_name %in% c("osm", "esri")) {
+    box <- terra::vect(box, crs = "epsg:25833")
   }
+
   # Load tile
   if (tile_name == "osm") {
     tile <- maptiles::get_tiles(box,
@@ -162,7 +158,7 @@ plot_tile_station <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_map_%s.png", path, stn$id.stationid, tile_name)
+    fname <- sprintf("%s/%i_map_%s.png", path, stn$stationid, tile_name)
     ggsave(fname, bg = "white", width = 7, height = 7)
   }
 

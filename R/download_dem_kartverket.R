@@ -16,7 +16,7 @@
 #' @references \url{https://cran.r-project.org/web/packages/ows4R/
 #' vignettes/wcs.html}
 #'
-#' @param stn A SpatVector with station attribute `id.stationid` from
+#' @param stn A SpatVector with station attribute `stationid` from
 #'        \code{"get_latlon_frost"}
 #' @param name A name of the DEM to download, either "dtm" a terrain model
 #' @param dx A distance in metre or radius defining the extent of the
@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' # Define parameters
-#' stn <- get_latlon_frost(stationid=18700)
+#' stn <- get_metadata_frost(stationid=18700)
 #' path   <- "data/dem"
 #'
 #' # Load data using ows4R ## WCSClient$new() getCapabilities()
@@ -38,8 +38,7 @@
 #' demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 #'
 #' @importFrom ows4R WCSClient
-#' @importFrom terra rast setMinMax
-#' @importFrom sf st_coordinates
+#' @importFrom terra crds rast setMinMax
 #'
 #' @export
 
@@ -51,8 +50,8 @@ download_dem_kartverket <- function(stn = NULL,
                                     f_overwrite = FALSE) {
 
   # Extract stationID and centre point of the station
-  stationid <- stn$id.stationid
-  centre <- sf::st_coordinates(stn)
+  stationid <- stn$stationid
+  centre <- terra::crds(stn)
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",

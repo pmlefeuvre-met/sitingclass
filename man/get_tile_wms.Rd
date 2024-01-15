@@ -26,12 +26,11 @@ Fetch map tiles from publicly available WMS released by Nibio
 }
 \examples{
 # Get station coordinates and name
-stn    <- get_latlon_frost(stationid = 18700)
-centre <- sf::st_coordinates(stn)
+stn    <- get_metadata_frost(stationid = 18700)
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- make_bbox(centre, dx)
+box <- make_bbox(stn, dx)
 
 # Load tiles
 tile <- get_tile_wms(box, layer = "ar5")

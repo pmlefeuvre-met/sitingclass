@@ -5,16 +5,14 @@
 \title{Horizon height at a station}
 \usage{
 compute_horizon(
-  centre = NULL,
+  stn = NULL,
   dem = NULL,
-  level = 2,
+  level = NULL,
   step = 10,
   f_plot_polygon = FALSE
 )
 }
 \arguments{
-\item{centre}{An array of two coordinates in UTM 33 (epsg:25833)}
-
 \item{dem}{A SpatRaster of a digital elevation/surface model in
 UTM 33 (epsg:25833)}
 
@@ -26,6 +24,8 @@ default is every 10 deg.}
 
 \item{f_plot_polygon}{A boolean setting boundary values to -20 deg to
 facilitate plotting as polygon}
+
+\item{centre}{An array of two coordinates in UTM 33 (epsg:25833)}
 }
 \value{
 A dataframe with `horizon_height` in degrees and `azimuth` angle in
@@ -36,17 +36,14 @@ Compute horizon height in degrees from a station location in UTM 33
 }
 \examples{
 # Load the station metadata including location and level
-stn <- get_latlon_frost(stationid = 18700, paramid = 211)
-stn_centre  <- sf::st_coordinates(stn)
-stn_level   <- stn$id.level
+stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
 # Load a digital elevation model
 dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
 
 # Compute the horizon
-compute_horizon(stn_centre, dsm)
-compute_horizon(stn_centre, dsm, level = stn_level, step = 1,
-               f_plot_polygon = TRUE)
+compute_horizon(stn, dsm)
+compute_horizon(stn, dsm, step = 1, f_plot_polygon = TRUE)
 
 }
 \references{

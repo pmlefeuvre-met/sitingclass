@@ -14,7 +14,7 @@ download_dem_kartverket(
 )
 }
 \arguments{
-\item{stn}{A SpatVector with station attribute `id.stationid` from
+\item{stn}{A SpatVector with station attribute `stationid` from
 \code{"get_latlon_frost"}}
 
 \item{name}{A name of the DEM to download, either "dtm" a terrain model}
@@ -41,7 +41,7 @@ f_overwrite is set to TRUE
 }
 \examples{
 # Define parameters
-stn <- get_latlon_frost(stationid=18700)
+stn <- get_metadata_frost(stationid=18700)
 path   <- "data/dem"
 
 # Load data using ows4R ## WCSClient$new() getCapabilities()

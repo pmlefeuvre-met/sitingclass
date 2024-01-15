@@ -19,7 +19,7 @@
 #'
 #' @examples
 #'# Get station metadata
-#' stn <- get_latlon_frost(stationid=18700)
+#' stn <- get_metadata_frost(stationid=18700)
 #'
 #' # Parameters
 #' dx   <- 100

@@ -38,7 +38,7 @@ and based on three DEMs: Digital Terrain Model, Digital Surface Model and
 }
 \examples{
 # Load the station metadata including location and level
-stn <- get_latlon_frost(stationid = 18700, paramid = 211)
+stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
 # Parameters
 dx <- 100

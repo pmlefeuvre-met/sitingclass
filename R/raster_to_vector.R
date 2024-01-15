@@ -17,11 +17,10 @@
 #'
 #' @examples
 #' # Load station
-#' stn <- get_latlon_frost(stationid = 18700)
-#' centre <- sf::st_coordinates(stn)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
 #' # Construct box with 200 m radius to extract WMS tile
-#' box <- make_bbox(centre, dx = 200)
+#' box <- make_bbox(stn, dx = 200)
 #'
 #' # Load a tile
 #' building  <- get_tile_wms(box, layer = "bygning", px = 400)

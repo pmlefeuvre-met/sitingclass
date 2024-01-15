@@ -10,17 +10,27 @@
 #'
 #' @examples
 #' # Get station metadata
-#' stn <- get_latlon_frost(stationid = 18700)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
-#' # Get coordinates and define boundary box
-#' centre <- sf::st_coordinates(stn)
+#' # Define boundary box from SpatVector
+#' box <- make_bbox(stn, dx = 1600)
+#'
+#' # Get coordinates matrix and define boundary box
+#' centre <- terra::crds(stn)
 #' box <- make_bbox(centre, dx = 1600)
 #'
-#' @importFrom terra ext
+#' @importFrom terra is.valid crds ext
 #'
 #' @export
 make_bbox <- function(centre,
                       dx) {
+
+  # If object is not a matrix and is a SpatVector, then get its coordinates
+  if (!is.matrix(centre)) {
+    if (terra::is.valid(centre)) {
+      centre <- terra::crds(centre)
+    }
+  }
 
   # Set box boundary as a distance dx from the centre coordinates
   box <- round(c(c(centre[1], centre[2]) - dx,

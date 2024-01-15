@@ -37,12 +37,11 @@ a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 }
 \examples{
 # Get station coordinates and name
-stn    <- get_latlon_frost(stationid = 18700)
-centre <- sf::st_coordinates(stn)
+stn    <- get_metadata_frost(stationid = 18700)
 
 # Construct box to extract WMS tile
 dx <- 100
-box <- make_bbox(centre, dx = 1600)
+box <- make_bbox(stn, dx)
 
 # Plot maps using plot_tile_station()
 g <- plot_tile_station(stn, box, tile_name = "esri")

@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' # Load the station metadata and location
-#' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
+#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Load a digital elevation model
 #' dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
@@ -65,7 +65,7 @@ plot_dem_rayshader <- function(stn = NULL,
   # render_label(elmat, x = dim(elmat)[1]/2, y = dim(elmat)[2]/2,
   #            z = 200, zscale = 1,
   #            textcolor = "gray50", linecolor = "white", linewidth = 2,
-  #            text = stn$id.stationid, relativez = FALSE, textsize = 2)
+  #            text = stn$stationid, relativez = FALSE, textsize = 2)
 
   # Print terrain and/or save a png
   Sys.sleep(0.2)
@@ -82,7 +82,7 @@ plot_dem_rayshader <- function(stn = NULL,
       dir.create(path, showWarnings = FALSE, recursive = TRUE)
       fname <- sprintf("%s/%i_terrain3D_%s.png",
                        path,
-                       stn$id.stationid,
+                       stn$stationid,
                        cardinal)
       title <- paste(stn_name, "-", cardinal)
 

@@ -17,12 +17,11 @@
 #'
 #' @examples
 #' # Get station coordinates and name
-#' stn    <- get_latlon_frost(stationid = 18700)
-#' centre <- sf::st_coordinates(stn)
+#' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Construct box to extract WMS tile
 #' dx <- 100
-#' box <- make_bbox(centre, dx)
+#' box <- make_bbox(stn, dx)
 #'
 #' # Load tiles
 #' tile <- get_tile_wms(box, layer = "ar5")
@@ -31,6 +30,8 @@
 #'
 #' @importFrom terra ext rast crs
 #' @importFrom httr GET content
+#' @importFrom httr2 request req_retry req_auth_basic
+#' @importFrom httr2 req_perform resp_body_json
 #'
 #' @export
 
@@ -100,8 +101,16 @@ get_tile_wms <- function(box = NULL,
                      sep = "&"),
                sep = "?")
 
-  # Load WMS and convert to SpatRaster
+  # Load WMS from request
   wms <- httr::content(httr::GET(con)) * 255
+  # resp <- httr2::request(con) |> httr2::req_perform()
+  # resp |> resp_encoding()
+  # resp |> resp_body_string()
+  # resp |> resp_content_type()
+  # resp |> resp_has_body()
+  # resp |> resp_body_raw()
+  # resp |> resp_body_string()
+  # Convert to SpatRaster
   wms <- terra::rast(wms)
   if (dim(wms)[3] == 3) {
     names(wms) <- c("red", "green", "blue")

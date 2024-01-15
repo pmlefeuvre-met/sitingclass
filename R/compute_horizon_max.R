@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' # Load the station metadata including location and level
-#' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
+#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Parameters
 #' dx <- 100
@@ -41,8 +41,7 @@ compute_horizon_max <- function(stn = NULL,
                                 step = 10,
                                 f_plot_polygon = FALSE) {
   # Get station metadata
-  stn_centre  <- terra::crds(stn)
-  stn_level   <- stn$id.level
+  stn_level   <- stn$level
 
   # Load digital elevation models of the terrain and surface
   dem   <- download_dem_kartverket(stn, name = "dtm", dx, resx)
@@ -50,22 +49,24 @@ compute_horizon_max <- function(stn = NULL,
   demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 
   # Compute horizon for three DEMs: DTM, DSM and DTM_20km
-  horizon_dem   <- compute_horizon(stn_centre,
+  horizon_dem   <- compute_horizon(stn,
                                    dem,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = f_plot_polygon)
-  horizon_dsm   <- compute_horizon(stn_centre,
+  Sys.sleep(0.1)
+  horizon_dsm   <- compute_horizon(stn,
                                    dsm,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = f_plot_polygon)
-  horizon_demkm <- compute_horizon(stn_centre,
+  Sys.sleep(0.1)
+  horizon_demkm <- compute_horizon(stn,
                                    demkm,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = f_plot_polygon)
-
+  Sys.sleep(0.1)
   # Compute highest horizon
   horizon_max   <- data.frame(azimuth = horizon_dem[, 1],
                               horizon_height = apply(cbind(horizon_dem[, 2],

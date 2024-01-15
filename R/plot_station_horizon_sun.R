@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' # Load the station metadata and location
-#' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
+#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Load DEM data
 #' dem   <- download_dem_kartverket(stn, name = "dtm", dx = 100, resx = 1)
@@ -28,8 +28,7 @@
 #' path <- 'plot/horizon'
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
 #'
-#' @importFrom magrittr %>%
-#' @importFrom sf st_transform st_coordinates
+#' @importFrom terra crds project
 #' @import ggplot2
 #'
 #' @export
@@ -47,14 +46,14 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Extract station name, latlon and level
   stn_name    <- str_to_title(stn$station.name)
-  stn_id      <- stn$id.stationid
-  stn_wmoid   <- stn$station.alternateids.id
-  stn_level   <- stn$id.level
-  stn_centre  <- sf::st_coordinates(stn)
-  stn_latlon  <- stn %>% sf::st_transform(4326) %>% sf::st_coordinates()
-  stn_param   <- stn$id.parameterid
-  stn_expos   <- stn$timeseries.quality.exposure.value
-  stn_perf    <- stn$timeseries.quality.performance.value
+  stn_id      <- stn$stationid
+  stn_wmoid   <- stn$WMO
+  stn_level   <- stn$level
+  stn_centre  <- terra::crds(stn)
+  stn_latlon  <- terra::crds(terra::project(stn,"epsg:4326"))
+  stn_param   <- stn$parameterid
+  stn_expos   <- stn$exposure.value
+  stn_perf    <- stn$performance.value
   if (stn_expos == "unknown") {
     stn_expos <- NA
     }
@@ -190,7 +189,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                    stn_latlon[1],
                    stn_latlon[2],
                    stn$elev)
-  label <- sprintf("%sparamid: %i - exp.: %i - perf.: %i\n",
+  label <- sprintf("%sparamid: %i - exp.: %s - perf.: %s\n",
                    label,
                    stn_param,
                    stn_expos,
@@ -214,7 +213,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_sun_diagram_auto.png", path, stn$id.stationid)
+    fname <- sprintf("%s/%i_sun_diagram_auto.png", path, stn$stationid)
     ggsave(fname, bg = "white", width = 7, height = 7)
   }
 

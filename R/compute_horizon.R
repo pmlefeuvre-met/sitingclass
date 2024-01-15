@@ -17,32 +17,39 @@
 #' @return A dataframe with `horizon_height` in degrees and `azimuth` angle in
 #'        degrees at which the horizon is computed in degrees
 #'
-#' @importFrom terra cellFromXY
+#' @importFrom terra crds cellFromXY
 #' @importFrom rgrass initGRASS write_RAST execGRASS
 #' @importFrom rgrass unlink_.gislock remove_GISRC
 #' @importFrom utils write.csv
 #'
 #' @examples
 #' # Load the station metadata including location and level
-#' stn <- get_latlon_frost(stationid = 18700, paramid = 211)
-#' stn_centre  <- sf::st_coordinates(stn)
-#' stn_level   <- stn$id.level
+#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Load a digital elevation model
 #' dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
 #'
 #' # Compute the horizon
-#' compute_horizon(stn_centre, dsm)
-#' compute_horizon(stn_centre, dsm, level = stn_level, step = 1,
-#'                f_plot_polygon = TRUE)
+#' compute_horizon(stn, dsm)
+#' compute_horizon(stn, dsm, step = 1, f_plot_polygon = TRUE)
 #'
 #' @export
 
-compute_horizon <- function(centre = NULL,
+compute_horizon <- function(stn = NULL,
                             dem = NULL,
-                            level = 2,
+                            level = NULL,
                             step = 10,
                             f_plot_polygon = FALSE) {
+
+  # Get centre and level
+  if (!is.matrix(centre)) {
+    if (terra::is.valid(centre)) {
+      centre <- terra::crds(centre)
+    }
+  }
+  if (is.null(level)) {
+    level <- stn$level
+  }
 
   # Adjust ground level to match real sensor height
   level <- ifelse(level == 0, 2, level)
@@ -78,10 +85,10 @@ compute_horizon <- function(centre = NULL,
                        intern = TRUE)
 
   # Construct data frame from GRASS output
-  tmp <- data.frame(t(vapply(strsplit(horizon[2:length(horizon)],
-                                      ","),
-                             as.numeric,
-                             numeric(2))))
+  df <- data.frame(t(vapply(strsplit(horizon[2:length(horizon)],
+                                     ","),
+                            as.numeric,
+                            numeric(2))))
 
 
   # Name columns

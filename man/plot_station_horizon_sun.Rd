@@ -34,7 +34,7 @@ and regional digital terrain model with infos from the weather station.
 }
 \examples{
 # Load the station metadata and location
-stn <- get_latlon_frost(stationid = 18700, paramid = 211)
+stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
 # Load DEM data
 dem   <- download_dem_kartverket(stn, name = "dtm", dx = 100, resx = 1)

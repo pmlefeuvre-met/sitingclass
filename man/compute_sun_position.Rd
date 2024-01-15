@@ -22,7 +22,7 @@ Compute sun position in the sky from a station location in UTM 33
 }
 \examples{
 # Load the station metadata including location and level
-stn <- get_latlon_frost(stationid=18700, paramid=211)
+stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
 # Compute sun position in the sky
 compute_sun_position(stn, f_hour = TRUE)

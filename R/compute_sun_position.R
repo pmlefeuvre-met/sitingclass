@@ -14,13 +14,13 @@
 #'
 #' @examples
 #' # Load the station metadata including location and level
-#' stn <- get_latlon_frost(stationid=18700, paramid=211)
+#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Compute sun position in the sky
 #' compute_sun_position(stn, f_hour = TRUE)
 #' compute_sun_position(stn, f_hour = FALSE)
 #'
-#' @importFrom sf st_transform st_coordinates
+#' @importFrom terra crds project
 #' @importFrom suntools solarpos
 #'
 #' @export
@@ -32,7 +32,7 @@ compute_sun_position <- function(stn = NULL,
   tz <- Sys.timezone()
 
   # Convert back to latlon
-  latlon <- stn %>% st_transform(4326) %>% st_coordinates()
+  latlon <- terra::crds(terra::project(stn, "epsg:4326"))
 
   if (f_hour) {
     # Function to get sun position at the same hour over six months,

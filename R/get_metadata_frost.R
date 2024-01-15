@@ -12,8 +12,8 @@
 #' @return Station metadata
 #'
 #' @examples
-#' get_latlon_frost(stationid=18700)
-#' get_latlon_frost(stationid=18700,paramid=211)
+#' get_metadata_frost(stationid=18700)
+#' get_metadata_frost(stationid=18700,paramid=211)
 #'
 #' @importFrom httr2 request req_retry req_auth_basic
 #' @importFrom httr2 req_perform resp_body_json
@@ -22,7 +22,7 @@
 #'
 #' @export
 
-get_latlon_frost <- function(stationid = 18700,
+get_metadata_frost <- function(stationid = 18700,
                              paramid = NULL) {
 
   # Define Frost URL
@@ -61,6 +61,9 @@ get_latlon_frost <- function(stationid = 18700,
   orgs <- map_dfr(res_1$header$extra, "organisation")
   colnames(orgs) <- paste0("organisation", ".", colnames(orgs))
 
+  # Extract quality
+  quality <- t(unlist(map_dfr(res_1$header$extra, "quality")))
+
   # Print station id
   cat(sprintf("station %s: %s -- %s -- WMO: %s\n",
               orgs["organisation.value"],
@@ -82,11 +85,11 @@ get_latlon_frost <- function(stationid = 18700,
   stn_coord <- as.numeric(loc[nrow(loc), 1:3])
 
   # Build data.frame with station attributes
-  stn_attrib <- cbind(map_dfr(res_1, "id"),
+  stn_attrib <- cbind(ids,
                       ids_alt,
-                      map_dfr(res_1$header$extra, "name"),
-                      organis,
-                      t(unlist(map_dfr(res_1$header$extra, "quality"))),
+                      name,
+                      orgs,
+                      quality,
                       lat = stn_coord[1],
                       lon = stn_coord[2],
                       elev = stn_coord[3])

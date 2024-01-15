@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' # Get station metadata
-#' stn    <- get_latlon_frost(stationid = 18700)
+#' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Plot grid and buffers on four different scales
 #' plot_station_grid(stn, path = "plot/map")
 #'
-#' @importFrom sf st_coordinates
+#' @importFrom terra crds
 #'
 #' @export
 
@@ -28,7 +28,7 @@ plot_station_grid <- function(stn = NULL,
                               path = NULL) {
 
   # Get coordinates
-  centre <- sf::st_coordinates(stn)
+  centre <- terra::crds(stn)
 
   # Directory to save plots
   if (!is.null(path)) {
@@ -49,7 +49,7 @@ plot_station_grid <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
-                     stn$id.stationid, tile_name, dx)
+                     stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
     print(g)
@@ -69,7 +69,7 @@ plot_station_grid <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
-                     stn$id.stationid, tile_name, dx)
+                     stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
     print(g)
@@ -89,7 +89,7 @@ plot_station_grid <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
-                     stn$id.stationid, tile_name, dx)
+                     stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
     print(g)
@@ -121,7 +121,7 @@ plot_station_grid <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
-                     stn$id.stationid, tile_name, dx)
+                     stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
     print(g)

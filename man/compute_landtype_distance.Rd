@@ -35,7 +35,7 @@ the WMO siting class
 }
 \examples{
 # Get station metadata
-stn <- get_latlon_frost(stationid = 18700)
+stn <- get_metadata_frost(stationid = 18700)
 
 # Compute land type
 landtype <- compute_landtype(stn, dx = 100, f_plot = TRUE)

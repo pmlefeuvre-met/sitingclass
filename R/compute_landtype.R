@@ -20,13 +20,12 @@
 #'
 #' @examples
 #'# Get station metadata
-#' stn <- get_latlon_frost(stationid=18700)
+#' stn <- get_metadata_frost(stationid=18700)
 #'
 #'# Compute land cover
 #' compute_landtype(stn, dx=100, resx=1, f_plot=TRUE)
 #'
-#' @importFrom sf st_coordinates
-#' @importFrom terra vect mask erase
+#' @importFrom terra crds vect mask erase
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
@@ -41,7 +40,7 @@ compute_landtype <- function(stn = NULL,
   landtype <- NULL
 
   # Extract centre point of the station
-  centre <- sf::st_coordinates(stn)
+  centre <- terra::crds(stn)
 
   # Construct box to extract WMS tile
   box <- make_bbox(centre, dx)

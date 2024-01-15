@@ -20,7 +20,7 @@
 #'                             paramid = 211,
 #'                             f_verbose = TRUE)
 #'
-#' @importFrom sf st_coordinates
+#' @importFrom terra crds
 #' @importFrom grDevices dev.off pdf
 #'
 #' @export
@@ -30,21 +30,20 @@ plot_station_siting_context <- function(stationid = 18700,
                                         f_pdf = FALSE) {
 
   # Get station coordinates and name
-  stn <- get_latlon_frost(stationid, paramid)
-  centre <- sf::st_coordinates(stn)
+  stn <- get_metadata_frost(stationid, paramid)
+  centre <- terra::crds(stn)
 
   # To save files
-  path <- sprintf("plot/output/%i", stn$id.stationid)
+  path <- sprintf("plot/output/%i", stationid)
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
-  centre <- sf::st_coordinates(stn)
   dx <- 200
   box <- make_bbox(centre, dx)
 
   # Print
   if (f_verbose) {
-    print(stn$id.stationid)
+    print(stn$stationid)
     print(stn$station.name)
     print(centre)
     print(box)
@@ -89,7 +88,7 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Save pdf
   if (f_pdf) {
-    fname <- sprintf("%s/%i_infos.pdf", path, stn$id.stationid)
+    fname <- sprintf("%s/%i_infos.pdf", path, stationid)
     pdf(fname)
     invisible(lapply(list(g0, g2, g10, g3, g4, g11, g12), print))
     dev.off()

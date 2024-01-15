@@ -24,7 +24,7 @@ Sys.setenv(TZ="UTC") # "Europe/Oslo"
   #                                 f_verbose = F,
   #                                 f_pdf = F))
   # # # Get station metadata
-  # stn <- get_latlon_frost(stationid = 18700)
+  # stn <- get_metadata_frost(stationid = 18700)
   # # Parameters
   # dx   <- 100
   # resx <- 1

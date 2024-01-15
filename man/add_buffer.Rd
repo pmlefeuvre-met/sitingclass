@@ -27,10 +27,10 @@ Add two buffers on a map to assess the area of same land cover type.
 }
 \examples{
 # Get station metadata
-stn <- get_latlon_frost(stationid=18700)
+stn <- get_metadata_frost(stationid=18700)
 
 # Get coordinates and define boundary box
-centre <- sf::st_coordinates(stn)
+centre <- terra::crds(stn)
 box <- make_bbox(centre,1600)
 
 # Plot map tile
