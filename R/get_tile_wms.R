@@ -31,7 +31,6 @@
 #'
 #' @importFrom terra ext rast crs
 #' @importFrom httr GET content
-#' @importFrom magrittr %>%
 #'
 #' @export
 
@@ -102,7 +101,8 @@ get_tile_wms <- function(box = NULL,
                sep = "?")
 
   # Load WMS and convert to SpatRaster
-  wms <- httr::GET(con) %>% httr::content() %>% "*"(255) %>% terra::rast()
+  wms <- httr::content(httr::GET(con)) * 255
+  wms <- terra::rast(wms)
   if (dim(wms)[3] == 3) {
     names(wms) <- c("red", "green", "blue")
   } else if (dim(wms)[3] == 4) {

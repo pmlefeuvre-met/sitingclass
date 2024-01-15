@@ -20,7 +20,6 @@
 #' @importFrom terra cellFromXY
 #' @importFrom rgrass initGRASS write_RAST execGRASS
 #' @importFrom rgrass unlink_.gislock remove_GISRC
-#' @importFrom magrittr %>%
 #' @importFrom utils write.csv
 #'
 #' @examples
@@ -79,11 +78,11 @@ compute_horizon <- function(centre = NULL,
                        intern = TRUE)
 
   # Construct data frame from GRASS output
-  df <- horizon[2:length(horizon)] %>%
-    strsplit(",") %>%
-    vapply(as.numeric, numeric(2)) %>%
-    t %>%
-    data.frame
+  tmp <- data.frame(t(vapply(strsplit(horizon[2:length(horizon)],
+                                      ","),
+                             as.numeric,
+                             numeric(2))))
+
 
   # Name columns
   colnames(df) <- unlist(strsplit(horizon[[1]], ","))
