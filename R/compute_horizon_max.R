@@ -19,7 +19,7 @@
 #' @return A dataframe with `horizon_height` in degrees and `azimuth` angle in
 #'        degrees at which the horizon is computed in degrees
 #'
-#' @importFrom sf st_coordinates
+#' @importFrom terra crds
 #'
 #' @examples
 #' # Load the station metadata including location and level
@@ -41,7 +41,7 @@ compute_horizon_max <- function(stn = NULL,
                                 step = 10,
                                 f_plot_polygon = FALSE) {
   # Get station metadata
-  stn_centre  <- sf::st_coordinates(stn)
+  stn_centre  <- terra::crds(stn)
   stn_level   <- stn$id.level
 
   # Load digital elevation models of the terrain and surface

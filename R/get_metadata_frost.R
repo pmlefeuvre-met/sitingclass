@@ -15,104 +15,97 @@
 #' get_latlon_frost(stationid=18700)
 #' get_latlon_frost(stationid=18700,paramid=211)
 #'
-#' @importFrom sf st_as_sf st_crs st_transform
-#' @importFrom httr authenticate GET content
+#' @importFrom httr2 request req_retry req_auth_basic
+#' @importFrom httr2 req_perform resp_body_json
 #' @importFrom utils type.convert
+#' @importFrom terra vect project
 #'
 #' @export
 
 get_latlon_frost <- function(stationid = 18700,
                              paramid = NULL) {
 
-  # Define frost url
+  # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
   url <- sprintf("%sincobs=false&stationids=%i&", url, stationid)
-  if (!is.null(paramid)) {url <- sprintf("%sparameterids=%i&", url, paramid)}
+  if (!is.null(paramid)) {
+    url <- sprintf("%sparameterids=%i&", url, paramid)
+  }
   url <- sprintf("%sbasicoutput=false&time=latest", url)
-  auth <- authenticate(Sys.getenv("FROST_ID"), Sys.getenv("FROST_KEY"))
 
-  # Query URL
-  res     <- GET(url, auth)
+  # Build request and authentication
+  req <- httr2::request(url) |>
+    httr2::req_retry(max_tries = 3) |>
+    httr2::req_auth_basic(Sys.getenv("FROST_ID"), Sys.getenv("FROST_KEY"))
 
-  # Format response content as a data.frame
-  content     <- content(res, )#     str(content)
-  if (length(grep("error", content)) > 0) {print(content); stop()}
-  n.paramid <- length(content$data$tseries)
-  df <- content$data$tseries[[1]] %>% unlist() %>% as.matrix() %>% as.data.frame()
-  rownames(df) <- sub(".*extra." , "", rownames(df))
-  rownames(df) <- sub(".*header.", "", rownames(df))
-  # unlist %>% tail(-1) %>% as.matrix
+  # Get response as json
+  res <- req |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+  res_1 <- res$data$tseries[[1]]
+
+  # Function to convert json to dataframe
+  json_to_df <- function(json) {
+    df <- as.data.frame(as.matrix(unlist(json)))
+    return(df)
+  }
+
+  # Extract ids and names
+  ids  <- map_dfr(res_1, "id")
+  name <- map_dfr(res_1$header$extra, "name")
+  colnames(name) <- paste0(colnames(name), ".", "name")
+
+  # Extract alternative ids (WMO) and organisation
+  ids_alt <- t(map_dfr(res_1$header$extra, "alternateids")["id"])
+  colnames(ids_alt) <- t(map_dfr(res_1$header$extra, "alternateids")["key"])
+  orgs <- map_dfr(res_1$header$extra, "organisation")
+  colnames(orgs) <- paste0("organisation", ".", colnames(orgs))
 
   # Print station id
-  cat(sprintf("station: %s \t %s\n",
-              df["id.stationid", ],
-              df["station.name", ]))
+  cat(sprintf("station %s: %s -- %s -- WMO: %s\n",
+              orgs["organisation.value"],
+              ids["stationid"],
+              name["station.name"],
+              ids_alt[, "WMO"]))
 
-  # Extract parameter ids
-  param <- sapply(1:n.paramid,
-                  function(x){unlist(content$data$tseries[[x]]$header$id)})[c("parameterid", "sensor", "level"), ]
-  # elem <- sapply(1:n.paramid,
-  #                       function(x){unlist(content$data$tseries[[x]]$header$extra$element)})[[1]][c("id","name","elementcodes")]
-  # if(n.paramid==1){
-  #   cat(sprintf("\t-paramid: %s \t %s\n",param["parameterid"],elem["name"]))
-  # }else{
-  #   cat(sprintf("\t-paramid: %s \t %s\n",param["parameterid",],elem["name",]))
-  # }
-  # if(n.paramid==1){ cat(sprintf("\t-paramid: %s\n",param["parameterid"]))
-  # }else{              cat(sprintf("\t-paramid: %s\n",param["parameterid",])) }
+  # # Extract parameter ids
+  # n.paramid <- length(res$data$tseries)
+  # param <- sapply(1:n.paramid,
+  #                 function(x){unlist(map_dfr(res$data$tseries[[x]],
+  #                                            "id"))})[c("parameterid",
+  #                                                       "sensor",
+  #                                                       "level"), ]
 
   # Extract latest coordinates
-  l_loc <- length(content$data$tseries[[1]]$header$extra$station$location)
-  stn_coord <- as.numeric(unlist(content$data$tseries[[1]]$header$extra$station$location[[l_loc]]$value))
+  loc <- cbind(map_dfr(res_1$header$extra$station$location, "value"),
+               unique(map_dfr(res_1$header$extra,"location")[, c("from","to")]))
+  stn_coord <- as.numeric(loc[nrow(loc), 1:3])
 
-  # # Transform from lat lon to utm
-  # stn <- stn_coord[c(2:1,3)] %>% st_point() %>% st_sfc(crs=st_crs(4326)) %>% st_transform(25833) #32633
-  rows <- c(grep("id.*", rownames(df)),
-            grep("station.name*", rownames(df)),
-            grep("organisation.*", rownames(df)),
-            grep("level.*", rownames(df)),
-            grep("quality.*", rownames(df)))
-  stn_attrib <- df[rows, , drop = FALSE] %>% t %>% cbind(lat = stn_coord[1],
-                                                         lon = stn_coord[2],
-                                                         elev = stn_coord[3])
-  colnames <- colnames(stn_attrib)
-  stn_attrib <- data.frame( lapply(split(stn_attrib, col(stn_attrib)),
-                                   utils::type.convert,
-                                   as.is = TRUE),
-                            stringsAsFactors = FALSE )
-  colnames(stn_attrib) <- colnames
-  stn <- sf::st_as_sf(stn_attrib, coords=c("lon", "lat"),
-                      crs=sf::st_crs(4326)) %>% sf::st_transform(25833) #32633
-  sf::st_crs(stn) <- 25833 # 32633 - WGS 84 / UTM zone 33N # 25833 ETRS89 / UTM zone 33N
+  # Build data.frame with station attributes
+  stn_attrib <- cbind(map_dfr(res_1, "id"),
+                      ids_alt,
+                      map_dfr(res_1$header$extra, "name"),
+                      organis,
+                      t(unlist(map_dfr(res_1$header$extra, "quality"))),
+                      lat = stn_coord[1],
+                      lon = stn_coord[2],
+                      elev = stn_coord[3])
+
+  # Convert to SpatVector from Lat-Lon to UTM
+  #-- 4326  WGS 84 / Lat Lon
+  #-- 32633 WGS 84 / UTM zone 33N
+  #-- 25833 ETRS89 / UTM zone 33N
+  stn <- terra::vect(stn_attrib,
+                     geom = c("lon", "lat"),
+                     crs = "epsg:4326")
+  stn <- terra::project(stn, "epsg:25833")
 
   return(stn)
-
-  ## Extra help
-  # str(content$data$tseries[[1]]$header$extra$station)
-  # library(listviewer)
-  # jsonedit(content)
-  # rapply(content, class, how="list") %>% jsonedit # to view types
-  #
-  #   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
-  # url <- sprintf("%sincobs=false&stationids=%i&parameterids=%i&",url,stationid,paramid)
-  # url_all <- sprintf("%sbasicoutput=false&time=latest",url)
-  # url_loc <- sprintf("%shdrshow={"extra":{"station":{"location":[]}}}",url)
-  # url_lev <- sprintf("%shdrshow={"id":{"level":{}}}",url)
-  # url_lev <- sprintf("%shdrshow={"extra":{"timeseries":{"geometry":{}}}}",url)
-  # url_QA  <- sprintf("%shdrshow={"extra":{"timeseries":{"quality":{}}}}",url)
-  # auth <- authenticate("ea623856-933a-4bcd-ac39-80b1d30ab6f8","ca0050c5-1112-45db-8114-52caee6967bb")
-  # # Query URL
-  # res     <- GET(url,auth)
-  # res_loc <- GET(url_loc,auth)
-  # res_lev <- GET(url_lev,auth)
-  # res_QA  <- GET(url_QA,auth)
-  # # Extract response content and coordinates
-  # content     <- content(res,);     str(content)
-  # content_loc <- content(res_loc,); str(content_loc)
-  # content_lev <- content(res_lev,); str(content_lev); cat(unlist(content_lev))
-  # content_QA  <- content(res_QA,);  str(content_QA)
-  # df_lev <- content(GET(url_lev,auth),) %>% unlist %>% tail(-1) %>% as.matrix %>% as.data.frame
-  # df_loc <- content(GET(url_loc,auth),) %>% unlist %>% tail(-1) %>% as.matrix %>% as.data.frame
-  # rownames(df_lev) <- sub(".*.level.","",rownames(df_lev))
-  # rownames(df_loc) <- sub(".*.location.","",rownames(df_loc))
 }
+## Extra help
+# library(listviewer)
+# jsonedit(res)
+# rapply(content, class, how="list") %>% jsonedit # to view types
+# df <- json_to_df(res$data$tseries[[1]])
+# rownames(df) <- sub(".*extra." , "", rownames(df))
+# rownames(df) <- sub(".*header.", "", rownames(df))
