@@ -72,12 +72,16 @@ get_metadata_frost <- function(stationid = 18700,
   quality <- json_to_df(res_1$header$extra$timeseries$quality)
 
   # Print station id
+  print(" ")
+  print("-------------------------------------------")
   print(sprintf("station %s: %s -- %s -- %s: %s",
               orgs["organisation.value"],
               ids["stationid"],
               name["station.name"],
               names(ids_alt),
               ids_alt))
+  print("-------------------------------------------")
+  print(" ")
 
   # # Extract parameter ids
   # n.paramid <- length(res$data$tseries)

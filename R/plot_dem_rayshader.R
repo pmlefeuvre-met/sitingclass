@@ -88,9 +88,9 @@ plot_dem_rayshader <- function(stn = NULL,
       title <- paste(stn_name, "-", cardinal)
 
       rayshader::render_camera(theta = theta[cardinal])
-      # rayshader::render_snapshot(fname, title_text = title,
-      #                            instant_capture=F, width = 2100,
-      #                            height = 2100, title_size = 140)
+      rayshader::render_snapshot(fname, title_text = title,
+                                 instant_capture=F, width = 2100,
+                                 height = 2100, title_size = 140)
       # #render_highquality(fname, clear = TRUE, title_text = stn_name,
       #                   width = 400, height = 400)
     }
