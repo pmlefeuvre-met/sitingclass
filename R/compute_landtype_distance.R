@@ -85,9 +85,15 @@ compute_landtype_distance <- function(stn = NULL,
   # Loop through land types
   for (type in type_array) {
     print(type)
+    landtype_select <- landtype[landtype$landtype == type, ]
+
+    # Check if vector is empty
+    if (terra::is.empty(landtype_select)) {
+      next
+    }
 
     # Crop distance raster using polygons for a specific land type
-    distance <- terra::crop(dist_stn, landtype[landtype$landtype == type, ],
+    distance <- terra::crop(dist_stn, landtype_select,
                             mask = TRUE, touches = FALSE)
 
     # Compute histogram
@@ -103,8 +109,9 @@ compute_landtype_distance <- function(stn = NULL,
   # Compute total area from output and cumulative sums
   h_all <- apply(h_all, 2, cumsum)
 
-  # Set column and row names
-  colnames(h_all) <- c("total_area", type_array)
+  # Set column (deal with empty vectors) and row names
+  type_names <- type_array[type_array %in% unique(landtype$landtype)]
+  colnames(h_all) <- c("total_area", type_names)
   rownames(h_all) <- distance_breaks[-1]
 
   # Keep only data inside the radius dx and avoid corner effect from bbox
