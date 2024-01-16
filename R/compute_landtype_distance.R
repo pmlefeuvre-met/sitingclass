@@ -57,7 +57,7 @@ compute_landtype_distance <- function(stn = NULL,
     if (dx < 500) {
       # Get WMS tile and plot
       tile <- get_tile_wms(box, layer = "ortofoto")
-      g2 <- ggplot() +
+      g <- ggplot() +
         tidyterra::geom_spatraster_rgb(data = tile) +
         geom_sf(data = stn, fill = NA, color = "red") +
         tidyterra::geom_spatvector(data = landtype,
@@ -66,7 +66,7 @@ compute_landtype_distance <- function(stn = NULL,
         scale_color_manual(values = fill_landtype) +
         theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
         theme(legend.position = "bottom")
-      print(g2)
+      print(g)
     }
   }
 

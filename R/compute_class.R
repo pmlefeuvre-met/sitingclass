@@ -74,13 +74,14 @@ compute_class <- function(land = NULL,
 
   if (f_plot) {
     # Plot area distribution per land type in percentage and log10 x-axis
-    ggplot(df, aes(x = distance, y = area, fill = landtype)) +
+    g <- ggplot(df, aes(x = distance, y = area, fill = landtype)) +
       geom_area(position = "stack", stat = "identity") +
       xlab("Distance in metre (log10 scale)") +
       ylab("Area in percentage") +
       theme_minimal() +
       scale_fill_manual(values = fill_landtype) +
       scale_x_continuous(trans = "log10")
+    print(g)
   }
 
   # Compute area within an annular area 5-10m and 10-30m
@@ -177,5 +178,6 @@ compute_class <- function(land = NULL,
   #   print(final)
 
   # Return assessed class name
-  return(apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)]))
+  ord <- c(4,2,1,3)
+  return(apply(final[ord, ], 1, FUN = function(x) names(x)[which.max(x)]))
 }
