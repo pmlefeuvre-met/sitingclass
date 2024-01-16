@@ -48,6 +48,9 @@ plot_station_horizon_sun <- function(stn = NULL,
   stn_name    <- str_to_title(stn$station.name)
   stn_id      <- stn$stationid
   stn_wmoid   <- stn$WMO
+  if (is.null(stn_wmoid)) {
+    stn_wmoid   <- stn$WIGOS
+  }
   stn_level   <- stn$level
   stn_centre  <- terra::crds(stn)
   stn_latlon  <- terra::crds(terra::project(stn,"epsg:4326"))
