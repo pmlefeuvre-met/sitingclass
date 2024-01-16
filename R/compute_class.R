@@ -178,6 +178,7 @@ compute_class <- function(land = NULL,
   #   print(final)
 
   # Return assessed class name
-  ord <- c(4,2,1,3)
-  return(apply(final[ord, ], 1, FUN = function(x) names(x)[which.max(x)]))
+  result <- apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)])
+  result <- result[, c(4, 2, 1, 3)]
+  return()
 }
