@@ -101,15 +101,16 @@ compute_class <- function(land = landtype_dist,
                            df[df$distance == 100, "area"]))
 
   # Assign names for rows and columns
-  rownames(df_radius) <- colnames(land)[-1]
+  rownames(df_radius) <- colname[-1]
   colnames(df_radius) <- c("3m", "5m", "5-10m", "10m", "10-30m", "30m", "100m")
 
   ## List of parameters to be tested
   # 1) Sum area percentages of building, road and water (1:3 rows) for each
   # distance (columns)
-  landtypes <- colSums(df_radius[c("building", "road", "water"), ])
+  landtypes <- colSums(df_radius[colname[-1] %in%
+                                   c("building", "road", "water"), ])
   # 2) Sum grass to crop area and compute mean over distance classes
-  vegetation      <- df_radius[c("grass", "crop"), ]
+  vegetation      <- df_radius[colname[-1] %in% c("grass", "crop"), ]
   vegetation[2, ] <- colSums(vegetation)
   vegetation      <- round(rowMeans(vegetation))
   # 3) Projected shade limits
