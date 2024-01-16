@@ -180,5 +180,12 @@ compute_class <- function(land = landtype_dist,
   # Return assessed class name
   result <- apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)])
   result <- result[c(4, 2, 1, 3)]
+  print(" ")
+  print("-------------------------------------------")
+  print(result)
+  print("-------------------------------------------")
+  print("-------------------------------------------")
+  print(" ")
+  print(" ")
   return(result)
 }

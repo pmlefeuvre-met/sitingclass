@@ -73,7 +73,7 @@ plot_dem_rayshader <- function(stn = NULL,
 
   # Save plot
   if (is.null(path)) {
-    #rayshader::render_snapshot()
+    rayshader::render_snapshot()
 
   } else {
     cardinal_array <- c("northward", "westward", "southward", "eastward")
@@ -87,10 +87,11 @@ plot_dem_rayshader <- function(stn = NULL,
                        cardinal)
       title <- paste(stn_name, "-", cardinal)
 
+      Sys.sleep(0.2)
       rayshader::render_camera(theta = theta[cardinal])
       rayshader::render_snapshot(fname, title_text = title,
-                                 instant_capture=F, width = 2100,
-                                 height = 2100, title_size = 140)
+                                 instant_capture=T, width = 2100,
+                                 height = 2100, title_size = 60)
       # #render_highquality(fname, clear = TRUE, title_text = stn_name,
       #                   width = 400, height = 400)
     }
