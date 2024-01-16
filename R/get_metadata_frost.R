@@ -57,7 +57,7 @@ get_metadata_frost <- function(stationid = 18700,
   ids_alt <- json_to_df(res_1$header$extra$station$alternateids)
   ids_alt_names <- ids_alt[, names(ids_alt) == "key"]
   ids_alt_names <- ids_alt_names[ids_alt_names != "N-dagl"]
-  ids_alt <- ids_alt[, names(ids_alt) == "id"]
+  ids_alt <- ids_alt[, names(ids_alt) == "id", drop = F]
   colnames(ids_alt) <- ids_alt_names
 
   # Extract names
