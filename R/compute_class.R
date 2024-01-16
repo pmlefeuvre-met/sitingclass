@@ -179,6 +179,6 @@ compute_class <- function(land = NULL,
 
   # Return assessed class name
   result <- apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)])
-  result <- result[, c(4, 2, 1, 3)]
+  result <- result[c(4, 2, 1, 3)]
   return()
 }
