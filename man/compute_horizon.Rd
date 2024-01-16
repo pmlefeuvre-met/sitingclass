@@ -13,6 +13,8 @@ compute_horizon(
 )
 }
 \arguments{
+\item{stn}{A SpatVector or an array of two coordinates in UTM 33}
+
 \item{dem}{A SpatRaster of a digital elevation/surface model in
 UTM 33 (epsg:25833)}
 
@@ -24,8 +26,6 @@ default is every 10 deg.}
 
 \item{f_plot_polygon}{A boolean setting boundary values to -20 deg to
 facilitate plotting as polygon}
-
-\item{centre}{An array of two coordinates in UTM 33 (epsg:25833)}
 }
 \value{
 A dataframe with `horizon_height` in degrees and `azimuth` angle in

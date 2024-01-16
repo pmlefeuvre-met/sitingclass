@@ -25,7 +25,7 @@ testthat::test_that("compute horizon works", {
   dsm   <- download_dem_kartverket(stn_test, name = "dom", dx = 100, resx = 1)
 
   # Compute the horizon
-  horizon_computed <- compute_horizon(stn, dsm)
+  horizon_computed <- compute_horizon(stn_test, dsm)
 
   # Compare result and expected horizon
   testthat::expect_equal(round(horizon_computed, 1), horizon_expected)

@@ -104,12 +104,12 @@ get_tile_wms <- function(box = NULL,
   # Load WMS from request
   wms <- httr::content(httr::GET(con)) * 255
   # resp <- httr2::request(con) |> httr2::req_perform()
-  # resp |> resp_encoding()
-  # resp |> resp_body_string()
-  # resp |> resp_content_type()
-  # resp |> resp_has_body()
-  # resp |> resp_body_raw()
-  # resp |> resp_body_string()
+  # resp |> httr2::resp_encoding()
+  # resp |> httr2::resp_body_string()
+  # resp |> httr2::resp_content_type()
+  # resp |> httr2::resp_has_body()
+  # resp |> httr2::resp_body_raw()
+  # resp |> httr2::resp_body_string()
   # Convert to SpatRaster
   wms <- terra::rast(wms)
   if (dim(wms)[3] == 3) {

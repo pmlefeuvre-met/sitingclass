@@ -23,7 +23,7 @@
 #' @export
 
 get_metadata_frost <- function(stationid = 18700,
-                             paramid = NULL) {
+                               paramid = NULL) {
 
   # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
@@ -46,23 +46,30 @@ get_metadata_frost <- function(stationid = 18700,
 
   # Function to convert json to dataframe
   json_to_df <- function(json) {
-    df <- as.data.frame(as.matrix(unlist(json)))
+    df <- as.data.frame(t(as.matrix(unlist(json))))
     return(df)
   }
 
-  # Extract ids and names
-  ids  <- map_dfr(res_1, "id")
-  name <- map_dfr(res_1$header$extra, "name")
-  colnames(name) <- paste0(colnames(name), ".", "name")
+  # Extract ids, names and organisation
+  ids  <- json_to_df(res_1$header$id)
 
-  # Extract alternative ids (WMO) and organisation
-  ids_alt <- t(map_dfr(res_1$header$extra, "alternateids")["id"])
-  colnames(ids_alt) <- t(map_dfr(res_1$header$extra, "alternateids")["key"])
-  orgs <- map_dfr(res_1$header$extra, "organisation")
-  colnames(orgs) <- paste0("organisation", ".", colnames(orgs))
+  # Extract alternative ids (WMO,...)
+  ids_alt <- json_to_df(res_1$header$extra$station$alternateids)
+  ids_alt_names <- ids_alt[, names(ids_alt) == "key"]
+  ids_alt <- ids_alt[, names(ids_alt) == "id"]
+  colnames(ids_alt) <- ids_alt_names
+
+  # Extract names
+  name <- cbind(json_to_df(res_1$header$extra$element$name),
+                json_to_df(res_1$header$extra$station$name))
+  colnames(name) <- paste0(c("element", "station"), ".", "name")
+
+  # Extract organisation
+  orgs <- json_to_df(res_1$header$extra$station$organisation)
+  colnames(orgs) <- paste0("organisation", ".", names(orgs))
 
   # Extract quality
-  quality <- t(unlist(map_dfr(res_1$header$extra, "quality")))
+  quality <- json_to_df(res_1$header$extra$timeseries$quality)
 
   # Print station id
   cat(sprintf("station %s: %s -- %s -- WMO: %s\n",
@@ -74,15 +81,18 @@ get_metadata_frost <- function(stationid = 18700,
   # # Extract parameter ids
   # n.paramid <- length(res$data$tseries)
   # param <- sapply(1:n.paramid,
-  #                 function(x){unlist(map_dfr(res$data$tseries[[x]],
-  #                                            "id"))})[c("parameterid",
-  #                                                       "sensor",
-  #                                                       "level"), ]
+  #                 function(x){unlist(purrr:map_dfr(res$data$tseries[[x]],
+  #                                                  "id"))})[c("parameterid",
+  #                                                             "sensor",
+  #                                                             "level"), ]
 
-  # Extract latest coordinates
-  loc <- cbind(map_dfr(res_1$header$extra$station$location, "value"),
-               unique(map_dfr(res_1$header$extra,"location")[, c("from","to")]))
-  stn_coord <- as.numeric(loc[nrow(loc), 1:3])
+  # Extract latest coordinates, hence rev()
+  loc <- rev(json_to_df(res_1$header$extra$station$location))
+  loc <- loc[c(grep("lat", names(loc))[1],
+               grep("lon", names(loc))[1],
+               grep("value.elev", names(loc))[1])]
+  loc <- as.data.frame(t(apply(loc, 1,as.numeric)))
+  names(loc) <- c("lat","lon","elev")
 
   # Build data.frame with station attributes
   stn_attrib <- cbind(ids,
@@ -90,9 +100,7 @@ get_metadata_frost <- function(stationid = 18700,
                       name,
                       orgs,
                       quality,
-                      lat = stn_coord[1],
-                      lon = stn_coord[2],
-                      elev = stn_coord[3])
+                      loc)
 
   # Convert to SpatVector from Lat-Lon to UTM
   #-- 4326  WGS 84 / Lat Lon
@@ -112,3 +120,4 @@ get_metadata_frost <- function(stationid = 18700,
 # df <- json_to_df(res$data$tseries[[1]])
 # rownames(df) <- sub(".*extra." , "", rownames(df))
 # rownames(df) <- sub(".*header.", "", rownames(df))
+

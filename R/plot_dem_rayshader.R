@@ -27,6 +27,7 @@
 #' @importFrom rayshader add_shadow ambient_shade plot_3d render_label
 #' @importFrom rayshader render_snapshot render_highquality render_depth
 #' @importFrom stats setNames
+#' @importFrom magrittr %>%
 #'
 #' @export
 

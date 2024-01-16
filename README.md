@@ -42,7 +42,6 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` then s
   + [maptiles](https://github.com/riatelab/maptiles): to get tiles from available map providers
   + [ows4R](https://github.com/eblondel/ows4R): to download DEMs using **WCS getCoverage** (Web Coverage Service)
 * Geospatial processing:
-  + [sf](https://github.com/rspatial/sf): vector processing and conversion
   + [terra](https://github.com/rspatial/terra): SpatRaster and SpatVector processing and conversion
 * Computing horizon and sun position:
   + [rgrass](https://rsbivand.github.io/rgrass/): to compute horizon from GRASS
@@ -75,18 +74,20 @@ library(sitingclass)
 stationid <- 18700
 
 # Get station metadata
-stn <- get_latlon_frost(stationid)
+stn <- get__latlon_metadata_frost(stationid)
 stn
 ```
 ### Construct the coordinate box
 ```
 # Get coordinates
-centre <- sf::st_coordinates(stn)
+centre <- terra::crds(stn)
 centre
 
 # Construct box to extract WMS tile
 dx <- 100
 box <- make_bbox(centre, dx)
+# or
+box <- make_bbox(stn, dx)
 ```
 
 ```

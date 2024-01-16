@@ -4,7 +4,7 @@
 #'
 #' @references \url{https://grass.osgeo.org/grass83/manuals/r.horizon.html}
 #'
-#' @param centre An array of two coordinates in UTM 33 (epsg:25833)
+#' @param stn A SpatVector or an array of two coordinates in UTM 33
 #' @param dem A SpatRaster of a digital elevation/surface model in
 #'        UTM 33 (epsg:25833)
 #' @param level A height above the ground of the sensor in metres,
@@ -42,13 +42,21 @@ compute_horizon <- function(stn = NULL,
                             f_plot_polygon = FALSE) {
 
   # Get centre and level
-  if (!is.matrix(centre)) {
-    if (terra::is.valid(centre)) {
-      centre <- terra::crds(centre)
+  if (!is.matrix(stn)) {
+    if (terra::is.valid(stn)) {
+      centre <- terra::crds(stn)
+      if (is.null(level)) {
+        level <- stn$level
+      }
     }
+  } else {
+    centre <- stn
   }
+  centre <- round(centre, 2)
+
+
   if (is.null(level)) {
-    level <- stn$level
+    level <- 0
   }
 
   # Adjust ground level to match real sensor height
@@ -61,28 +69,28 @@ compute_horizon <- function(stn = NULL,
   gisDbase <- "data/grassdata/"
 
   # Initialise GRASS and projection
-  initGRASS(gisBase = grasslib,
-            home = tempdir(),
-            SG = dem,
-            gisDbase = gisDbase,
-            mapset = "PERMANENT",
-            override = TRUE,
-            remove_GISRC = TRUE)
+  rgrass::initGRASS(gisBase = grasslib,
+                    home = tempdir(),
+                    SG = dem,
+                    gisDbase = gisDbase,
+                    mapset = "PERMANENT",
+                    override = TRUE,
+                    remove_GISRC = TRUE)
 
   # Load DEM
-  write_RAST(dem, "elev", flags = "o")
+  rgrass::write_RAST(dem, "elev", flags = "o")
 
   # Compute horizon
-  horizon <- execGRASS("r.horizon",
-                       flags = c("d", "c", "overwrite"),
-                       parameters = list(elevation = "elev",
-                                         coordinates = round(centre[1:2], 2),
-                                         direction = 90,
-                                         distance = 0.5,
-                                         step = step,
-                                         start = 0,
-                                         end = 360),
-                       intern = TRUE)
+  horizon <- rgrass::execGRASS("r.horizon",
+                               flags = c("d", "c", "overwrite"),
+                               parameters = list(elevation = "elev",
+                                                 coordinates = centre[1:2],
+                                                 direction = 90,
+                                                 distance = 0.5,
+                                                 step = step,
+                                                 start = 0,
+                                                 end = 360),
+                               intern = TRUE)
 
   # Construct data frame from GRASS output
   df <- data.frame(t(vapply(strsplit(horizon[2:length(horizon)],
@@ -108,8 +116,8 @@ compute_horizon <- function(stn = NULL,
   }
 
   # Clean up
-  unlink_.gislock()
-  remove_GISRC()
+  rgrass::unlink_.gislock()
+  rgrass::remove_GISRC()
   unlink(gisDbase, recursive = TRUE)
 
   # Return output
