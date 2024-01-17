@@ -10,9 +10,6 @@
 #'        \code{"get_latlon_frost"}
 #' @param landtype A SpatVector with landtype attributes from
 #'        \code{"compute_landtype"}
-#' @param dx A distance in metre or radius defining the extent of the
-#'        bounding box from the centre point
-#' @param resx A horizontal resolution in metre
 #' @param f_plot A boolean whether to plot figures
 #'
 #' @return A distance distribution per land cover type
@@ -21,32 +18,30 @@
 #'# Get station metadata
 #' stn <- get_metadata_frost(stationid = 18700)
 #'
+#' # Parameters
+#' stn$dx <- 100
+#' stn$resx <- 1
+#'
 #'# Compute land type
-#' landtype <- compute_landtype(stn, dx = 100, f_plot = TRUE)
+#' landtype <- compute_landtype(stn, f_plot = TRUE)
 #'
 #' # Compute land type distance to station
-#' landtype_dist <- compute_landtype_distance(stn, landtype, dx = 100,
-#'                                            f_plot = TRUE)
+#' landtype_dist <- compute_landtype_distance(stn, landtype, f_plot = TRUE)
 #'
-#' @importFrom terra crds vect mask
+#' @importFrom terra vect mask
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
 #' @export
 compute_landtype_distance <- function(stn = NULL,
                                       landtype = NULL,
-                                      dx = 100,
-                                      resx = 1,
                                       f_plot = FALSE) {
 
-  # Extract centre point of the station
-  centre <- terra::crds(stn)
-
   # Construct box to extract WMS tile
-  box <- make_bbox(centre, dx)
+  box <- make_bbox(stn)
 
   # Download DEMs to set raster reference
-  dem <- download_dem_kartverket(stn, name = "dtm", dx, resx)
+  dem <- download_dem_kartverket(stn, name = "dtm")
 
   # Compute distance from station
   r <- terra::rast(dem)
@@ -70,7 +65,10 @@ compute_landtype_distance <- function(stn = NULL,
       if (is.null(path)) {
         print(g)
       } else {
-        fname <- sprintf("%s/%i_landtype_map_orto_%04.0fm.png", path, stn$stationid, dx)
+        fname <- sprintf("%s/%i_landtype_map_orto_%04.0fm.png",
+                         path,
+                         stn$stationid,
+                         stn$dx)
         ggsave(fname, bg = "white", width = 7, height = 7)
       }
     }
@@ -80,7 +78,7 @@ compute_landtype_distance <- function(stn = NULL,
   type_array <- levels(landtype$landtype)
 
   # Make histogram breaks every 1 m first and then 2 m after 30m
-  distance_breaks <- c(0:29, seq(30, dx * 1.5, 2))
+  distance_breaks <- c(0:29, seq(30, stn$dx * 1.5, 2))
 
   # Compute histogram from distance raster for theoretical total area
   h <- terra::hist(dist_stn, plot = FALSE, breaks = distance_breaks)
@@ -121,7 +119,7 @@ compute_landtype_distance <- function(stn = NULL,
   rownames(h_all) <- distance_breaks[-1]
 
   # Keep only data inside the radius dx and avoid corner effect from bbox
-  h_all <- h_all[1:which(distance_breaks == dx), ]
+  h_all <- h_all[1:which(distance_breaks == stn$dx), ]
 
   return(h_all)
 }

@@ -100,10 +100,11 @@ centre <- terra::crds(stn)
 centre
 
 # Construct box to extract WMS tile
-dx <- 100
-box <- make_bbox(centre, dx)
+stn$dx <- 100
+stn$resx <- 1
+box <- make_bbox(centre, dx = stn$dx)
 # or
-box <- make_bbox(stn, dx)
+box <- make_bbox(stn)
 ```
 
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="A satellite image with the station location as a red dot."}
@@ -122,13 +123,9 @@ plot_tile_station(stn, box, tile_name = "esri")
 f_ow  <- FALSE 
 dem   <- download_dem_kartverket(stn,
                                  name = "dtm",
-                                 dx,
-                                 resx = 1,
                                  f_overwrite = f_ow)
 dsm   <- download_dem_kartverket(stn,
                                  name = "dom",
-                                 dx,
-                                 resx = 1,
                                  f_overwrite=f_ow)
 demkm <- download_dem_kartverket(stn,
                                  name = "dtm",

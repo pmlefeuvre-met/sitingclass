@@ -30,11 +30,13 @@
 #' @examples
 #' # Define parameters
 #' stn <- get_metadata_frost(stationid=18700)
+#' stn$dx <- 100
+#' stn$resx <- 1
 #' path   <- "data/dem"
 #'
 #' # Load data using ows4R ## WCSClient$new() getCapabilities()
-#' dem    <- download_dem_kartverket(stn,name="dtm",dx=100,resx=1,path=path)
-#' dsm    <- download_dem_kartverket(stn,name="dom",dx=100,resx=1,path=path)
+#' dem    <- download_dem_kartverket(stn,name="dtm",path=path)
+#' dsm    <- download_dem_kartverket(stn,name="dom",path=path)
 #' demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 #'
 #' @importFrom ows4R WCSClient
@@ -44,14 +46,19 @@
 
 download_dem_kartverket <- function(stn = NULL,
                                     name = "dom",
-                                    dx = 100,
-                                    resx = ifelse(dx > 200, dx / 100, 1),
+                                    dx = stn$dx,
+                                    resx = stn$resx,
                                     path = "data/dem",
                                     f_overwrite = FALSE) {
 
   # Extract stationID and centre point of the station
   stationid <- stn$stationid
   centre <- terra::crds(stn)
+
+  # Check if resx matches Kartverket's API requirements
+  if (resx < round(dx / 100)) {
+    resx = ifelse(dx > 200, round(dx / 100), 1)
+  }
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",

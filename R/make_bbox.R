@@ -2,7 +2,7 @@
 #'
 #' Construct boundary box from sf package
 #'
-#' @param centre An array of two coordinates in UTM 33 (epsg:25833)
+#' @param stn A SpatVector or an array of two coordinates in UTM 33 (epsg:25833)
 #' @param dx A distance in metre to compute the box boundary as a distance
 #'        from the centre point
 #'
@@ -22,14 +22,17 @@
 #' @importFrom terra is.valid crds ext
 #'
 #' @export
-make_bbox <- function(centre,
-                      dx) {
+make_bbox <- function(stn = NULL,
+                      dx = NULL) {
 
   # If object is not a matrix and is a SpatVector, then get its coordinates
-  if (!is.matrix(centre)) {
-    if (terra::is.valid(centre)) {
-      centre <- terra::crds(centre)
+  if (!is.matrix(stn)) {
+    if (terra::is.valid(stn)) {
+      centre <- terra::crds(stn)
+      dx <- stn$dx
     }
+  } else {
+    centre <- stn
   }
 
   # Set box boundary as a distance dx from the centre coordinates

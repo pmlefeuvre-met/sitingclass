@@ -84,10 +84,11 @@ centre <- terra::crds(stn)
 centre
 
 # Construct box to extract WMS tile
-dx <- 100
-box <- make_bbox(centre, dx)
+stn$dx <- 100
+stn$resx <- 1
+box <- make_bbox(centre, dx = stn$dx)
 # or
-box <- make_bbox(stn, dx)
+box <- make_bbox(stn)
 ```
 
 ```
@@ -104,9 +105,9 @@ plot_station_grid(stn, tile_name = "ortofoto")
 ```
 # Load Karverket's DEMs
 f_ow  <- FALSE #TRUE to overwrite files
-dem   <- download_dem_kartverket(stn,name="dtm",dx  ,resx=1 ,f_overwrite=f_ow)
-dsm   <- download_dem_kartverket(stn,name="dom",dx  ,resx=1 ,f_overwrite=f_ow)
-demkm <- download_dem_kartverket(stn,name="dtm",20e3,resx=20,f_overwrite=f_ow)
+dem   <- download_dem_kartverket(stn, name="dtm", f_overwrite=f_ow)
+dsm   <- download_dem_kartverket(stn, name="dom", f_overwrite=f_ow)
+demkm <- download_dem_kartverket(stn, name="dtm",20e3,resx=20,f_overwrite=f_ow)
 
 # Plot 100-m Digital Surface Model and 20-km Digital Terrain Model
 library(rayshader)

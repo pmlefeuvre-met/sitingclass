@@ -11,9 +11,6 @@
 #'
 #' @param stn A SpatVector with station attributes from
 #'        \code{"get_latlon_frost"}
-#' @param dx A distance in metre or radius defining the extent of the
-#'        bounding box from the centre point
-#' @param resx A horizontal resolution in metre
 #' @param f_plot A boolean whether to plot the land cover types
 #'
 #' @return A SpatVector of land cover types
@@ -22,8 +19,12 @@
 #'# Get station metadata
 #' stn <- get_metadata_frost(stationid=18700)
 #'
+#' # Parameters
+#' stn$dx <- 100
+#' stn$resx <- 1
+#'
 #'# Compute land cover
-#' compute_landtype(stn, dx=100, resx=1, f_plot=TRUE)
+#' compute_landtype(stn, f_plot=TRUE)
 #'
 #' @importFrom terra crds vect mask erase
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
@@ -32,23 +33,18 @@
 #' @export
 
 compute_landtype <- function(stn = NULL,
-                             dx = 100,
-                             resx = 1,
                              f_plot = FALSE,
                              path = NULL) {
 
   # Bind variable to function
   landtype <- NULL
 
-  # Extract centre point of the station
-  centre <- terra::crds(stn)
-
   # Construct box to extract WMS tile
-  box <- make_bbox(centre, dx)
+  box <- make_bbox(stn)
 
   # Download DEMs and compute difference to assess vegetation
-  dem <- download_dem_kartverket(stn, name = "dtm", dx, resx)
-  dsm <- download_dem_kartverket(stn, name = "dom", dx, resx)
+  dem <- download_dem_kartverket(stn, name = "dtm")
+  dsm <- download_dem_kartverket(stn, name = "dom")
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles
@@ -116,7 +112,10 @@ compute_landtype <- function(stn = NULL,
     if (is.null(path)) {
       print(g)
     } else {
-      fname <- sprintf("%s/%i_landtype_map_%04.0fm.png", path, stn$stationid, dx)
+      fname <- sprintf("%s/%i_landtype_map_%04.0fm.png",
+                       path,
+                       stn$stationid,
+                       stn$dx)
       ggsave(fname, bg = "white", width = 7, height = 7)
     }
 

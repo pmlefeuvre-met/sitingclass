@@ -26,22 +26,18 @@ Sys.setenv(TZ="UTC") # "Europe/Oslo"
   # # # Get station metadata
   # stn <- get_metadata_frost(stationid = 18700)
   # # Parameters
-  # dx   <- 100
-  # resx <- 1
+  # stn$dx <- 100
+  # stn$resx <- 1
   #
   # # Compute land type
-  # landtype <- compute_landtype(stn, dx, resx, f_plot = TRUE)
+  # landtype <- compute_landtype(stn, f_plot = TRUE)
   #
   # # Compute land type distance to station
   # landtype_dist <- compute_landtype_distance(stn,
   #                                            landtype,
-  #                                            dx,
-  #                                            resx,
   #                                            f_plot = TRUE)
   # # # Compute maximum horizon
   # horizon_max <- compute_horizon_max(stn,
-  #                                    dx,
-  #                                    resx,
   #                                    step = 1,
   #                                    f_plot_polygon = FALSE)
 # }

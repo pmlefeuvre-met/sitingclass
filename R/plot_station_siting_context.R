@@ -31,21 +31,21 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Get station coordinates and name
   stn <- get_metadata_frost(stationid, paramid)
-  centre <- terra::crds(stn)
+  stn$dx <- 100
+  stn$resx <- 1
 
   # To save files
   path <- sprintf("plot/output/%i", stationid)
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Construct box to extract WMS tile
-  dx <- 100
-  box <- make_bbox(centre, dx)
+  box <- make_bbox(stn)
 
   # Print
   if (f_verbose) {
     print(stn$stationid)
     print(stn$station.name)
-    print(centre)
+    print(terra::crds(stn))
     print(box)
   }
   # Plot ESRI imagery
@@ -58,13 +58,9 @@ plot_station_siting_context <- function(stationid = 18700,
   f_ow  <- FALSE
   dem   <- download_dem_kartverket(stn,
                                    name = "dtm",
-                                   dx,
-                                   resx = 1,
                                    f_overwrite = f_ow)
   dsm   <- download_dem_kartverket(stn,
                                    name = "dom",
-                                   dx,
-                                   resx = 1,
                                    f_overwrite = f_ow)
   demkm <- download_dem_kartverket(stn,
                                    name = "dtm",

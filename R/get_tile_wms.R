@@ -20,8 +20,8 @@
 #' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Construct box to extract WMS tile
-#' dx <- 100
-#' box <- make_bbox(stn, dx)
+#' stn$dx <- 100
+#' box <- make_bbox(stn)
 #'
 #' # Load tiles
 #' tile <- get_tile_wms(box, layer = "ar5")

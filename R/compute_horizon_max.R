@@ -8,9 +8,6 @@
 #'
 #' @param stn A SpatVector with station attributes from
 #' \code{"get_latlon_frost"}
-#' @param dx A distance in metre or radius defining the extent of the
-#'        bounding box from the centre point
-#' @param resx A horizontal resolution in metre
 #' @param step An interval in degrees at which the horizon will be computed,
 #'        default is every 10 deg.
 #' @param f_plot_polygon A boolean setting boundary values to -20 deg to
@@ -26,26 +23,24 @@
 #' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 #'
 #' # Parameters
-#' dx <- 100
-#' resx <- 1
+#' stn$dx <- 100
+#' stn$resx <- 1
 #'
 #' # Compute the maximum horizon
-#' compute_horizon_max(stn, dx, resx)
-#' compute_horizon_max(stn, dx, resx, step = 1, f_plot_polygon = FALSE)
+#' compute_horizon_max(stn)
+#' compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
 #'
 #' @export
 
 compute_horizon_max <- function(stn = NULL,
-                                dx = 100,
-                                resx = 1,
                                 step = 10,
                                 f_plot_polygon = FALSE) {
   # Get station metadata
   stn_level   <- stn$level
 
   # Load digital elevation models of the terrain and surface
-  dem   <- download_dem_kartverket(stn, name = "dtm", dx, resx)
-  dsm   <- download_dem_kartverket(stn, name = "dom", dx, resx)
+  dem   <- download_dem_kartverket(stn, name = "dtm")
+  dsm   <- download_dem_kartverket(stn, name = "dom")
   demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 
   # Compute horizon for three DEMs: DTM, DSM and DTM_20km
