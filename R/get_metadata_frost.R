@@ -120,8 +120,8 @@ get_metadata_frost <- function(stationid = 18700,
   return(stn)
 }
 ## Extra help
-library(listviewer)
-jsonedit(res)
+# library(listviewer)
+# jsonedit(res)
 # rapply(content, class, how="list") %>% jsonedit # to view types
 # df <- json_to_df(res$data$tseries[[1]])
 # rownames(df) <- sub(".*extra." , "", rownames(df))

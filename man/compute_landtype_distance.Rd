@@ -44,11 +44,6 @@ landtype <- compute_landtype(stn, dx = 100, f_plot = TRUE)
 landtype_dist <- compute_landtype_distance(stn, landtype, dx = 100,
                                            f_plot = TRUE)
 
-# Compare theoretical Area and from the output (Raster rounding error: 0\%)
-plot(rep(as.numeric(rownames(landtype_dist)), 2), landtype_dist[, 1:2])
-summary((landtype_dist[, 1] - landtype_dist[, 2]) / landtype_dist[, 2] * 100)
-
-
 }
 \references{
 \url{https://community.wmo.int/en/activity-areas/

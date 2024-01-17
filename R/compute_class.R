@@ -49,11 +49,12 @@
 #' @importFrom utils stack
 #'
 #' @export
-compute_class <- function(land = landtype_dist,
-                          horizon = horizon_max,
-                          dem = dem,
+compute_class <- function(land = NULL,
+                          horizon = NULL,
+                          dem = NULL,
                           test_type = "WMO",
-                          f_plot = TRUE) {
+                          f_plot = TRUE,
+                          path = NULL) {
 
   # Bind variable to function
   distance <- landtype <- NULL
@@ -81,7 +82,13 @@ compute_class <- function(land = landtype_dist,
       theme_minimal() +
       scale_fill_manual(values = fill_landtype) +
       scale_x_continuous(trans = "log10")
-    print(g)
+
+    if (is.null(path)) {
+      print(g)
+    } else {
+      fname <- sprintf("%s/%i_landtype_area_%04.0fm.png", path, stn$stationid, dx)
+      ggsave(fname, bg = "white", width = 7, height = 7)
+    }
   }
 
   # Compute area within an annular area 5-10m and 10-30m
@@ -181,6 +188,14 @@ compute_class <- function(land = landtype_dist,
   # Return assessed class name
   result <- apply(final[1:4, ], 1, FUN = function(x) names(x)[which.max(x)])
   result <- result[c(4, 2, 1, 3)]
+
+  # Save results
+  if (is.null(path)) {
+    fname <- sprintf("%s/%i_class_%04.0fm.csv", path, stn$stationid, dx)
+    write.csv(result, fname, row.names = FALSE)
+  }
+
+  # Print results
   print(" ")
   print("-------------------------------------------")
   print(result)

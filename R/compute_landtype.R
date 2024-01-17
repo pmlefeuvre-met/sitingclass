@@ -34,7 +34,8 @@
 compute_landtype <- function(stn = NULL,
                              dx = 100,
                              resx = 1,
-                             f_plot = FALSE) {
+                             f_plot = FALSE,
+                             path = NULL) {
 
   # Bind variable to function
   landtype <- NULL
@@ -55,7 +56,7 @@ compute_landtype <- function(stn = NULL,
   building  <- get_tile_wms(box, layer = "bygning", px = px)
   road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
   water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
-  print("Loaded WMS tiles")
+  #print("Loaded WMS tiles")
 
   # Convert raster tile to vector landcover
   v_building <- raster_to_vector(building,
@@ -68,7 +69,7 @@ compute_landtype <- function(stn = NULL,
                                  id = "water",
                                  mask_thr = 255)
   landtype <-  terra::vect(c(v_building, v_road, v_water))
-  print("Vectorised WMS tiles")
+  #print("Vectorised WMS tiles")
 
   # Mask already identified land cover
   dh_mask <- terra::mask(dh, landtype, inverse = TRUE, touches = FALSE)
@@ -86,7 +87,7 @@ compute_landtype <- function(stn = NULL,
   v_tree  <- raster_to_vector(dh_mask >= 3,
                               id = "tree",
                               mask_thr = FALSE)
-  print("Vectorised vegetation")
+  #print("Vectorised vegetation")
 
   # Merge all landcover vectors
   landtype <- terra::vect(c(landtype, v_grass, v_crop, v_bush, v_tree))
@@ -100,7 +101,7 @@ compute_landtype <- function(stn = NULL,
   landtype <- terra::erase(landtype[order(landtype$landtype,
                                           decreasing = TRUE), ],
                            sequential = TRUE)
-  print("Erased overlapping vectors")
+  #print("Erased overlapping vectors")
 
   # Plot vector result with fill specific to each factor
   if (f_plot) {
@@ -112,7 +113,13 @@ compute_landtype <- function(stn = NULL,
       theme_minimal() +
       theme(legend.position = "bottom")
 
-    print(g)
+    if (is.null(path)) {
+      print(g)
+    } else {
+      fname <- sprintf("%s/%i_landtype_map_%04.0fm.png", path, stn$stationid, dx)
+      ggsave(fname, bg = "white", width = 7, height = 7)
+    }
+
   }
 
   # Return merged landcover types as vector

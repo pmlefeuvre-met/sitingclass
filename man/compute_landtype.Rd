@@ -4,7 +4,7 @@
 \alias{compute_landtype}
 \title{Compute land cover types}
 \usage{
-compute_landtype(stn = NULL, dx = 100, resx = 1, f_plot = FALSE)
+compute_landtype(stn = NULL, dx = 100, resx = 1, f_plot = FALSE, path = NULL)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from

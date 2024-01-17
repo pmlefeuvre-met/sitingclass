@@ -66,7 +66,13 @@ compute_landtype_distance <- function(stn = NULL,
         scale_color_manual(values = fill_landtype) +
         theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
         theme(legend.position = "bottom")
-      print(g)
+
+      if (is.null(path)) {
+        print(g)
+      } else {
+        fname <- sprintf("%s/%i_landtype_map_orto_%04.0fm.png", path, stn$stationid, dx)
+        ggsave(fname, bg = "white", width = 7, height = 7)
+      }
     }
   }
 
@@ -84,7 +90,7 @@ compute_landtype_distance <- function(stn = NULL,
 
   # Loop through land types
   for (type in type_array) {
-    print(type)
+    #print(type)
     landtype_select <- landtype[landtype$landtype == type, ]
 
     # Check if vector is empty

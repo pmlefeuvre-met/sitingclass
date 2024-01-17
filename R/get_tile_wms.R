@@ -107,7 +107,7 @@ get_tile_wms <- function(box = NULL,
                      sep = "&"),
                sep = "?")
 
-  # Load WMS from request
+  # Load WMS from API request
   resp <- httr2::request(con) |>
     httr2::req_perform() |>
     httr2::resp_body_raw()

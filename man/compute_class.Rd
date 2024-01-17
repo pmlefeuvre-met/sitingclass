@@ -5,11 +5,12 @@
 \title{Compute station class}
 \usage{
 compute_class(
-  land = NULL,
-  horizon = NULL,
+  land = landtype_dist,
+  horizon = horizon_max,
   dem = dem,
   test_type = "WMO",
-  f_plot = TRUE
+  f_plot = TRUE,
+  path = path
 )
 }
 \arguments{
