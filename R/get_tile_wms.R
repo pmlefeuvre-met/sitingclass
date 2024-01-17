@@ -27,11 +27,11 @@
 #' tile <- get_tile_wms(box, layer = "ar5")
 #' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
 #' tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
+#' tile <- get_tile_wms(box, layer = "ortofoto" )
 #'
 #' @importFrom terra ext rast crs
-#' @importFrom httr GET content
-#' @importFrom httr2 request req_retry req_auth_basic
-#' @importFrom httr2 req_perform resp_body_json
+#' @importFrom httr2 request req_perform resp_body_raw
+#' @importFrom png readPNG
 #'
 #' @export
 
@@ -81,6 +81,12 @@ get_tile_wms <- function(box = NULL,
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a"
+  } else if (layer == "NP_Basiskart_Svalbard_WMS") { #NOT WORKING
+    layer   <- 2
+    url     <- "https://geodata.npolar.no/arcgis/services/Basisdata/NP_Basiskart_Svalbard_WMS/MapServer/WMSServer"
+    version <- "VERSION=1.3.0"
+    crs     <- "CRS=EPSG:25833"
+    ref     <- "https://geodata.npolar.no/"
   }
 
   # Set WMS connection
@@ -102,14 +108,11 @@ get_tile_wms <- function(box = NULL,
                sep = "?")
 
   # Load WMS from request
-  wms <- httr::content(httr::GET(con)) * 255
-  # resp <- httr2::request(con) |> httr2::req_perform()
-  # resp |> httr2::resp_encoding()
-  # resp |> httr2::resp_body_string()
-  # resp |> httr2::resp_content_type()
-  # resp |> httr2::resp_has_body()
-  # resp |> httr2::resp_body_raw()
-  # resp |> httr2::resp_body_string()
+  resp <- httr2::request(con) |>
+    httr2::req_perform() |>
+    httr2::resp_body_raw()
+  wms <- png::readPNG(resp) * 255
+
   # Convert to SpatRaster
   wms <- terra::rast(wms)
   if (dim(wms)[3] == 3) {
@@ -122,3 +125,4 @@ get_tile_wms <- function(box = NULL,
 
   return(wms)
 }
+
