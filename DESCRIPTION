@@ -9,7 +9,6 @@ URL: https://gitlab.met.no/pierreml/sitingclass
 License: GPL (>= 3)
 Depends: R (>= 3.6.0)
 Imports: ggplot2,
-         httr,
          httr2,
          magrittr,
          maptiles,
