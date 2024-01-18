@@ -4,10 +4,10 @@
 \alias{make_bbox}
 \title{Construct boundary box}
 \usage{
-make_bbox(centre, dx)
+make_bbox(stn = NULL, dx = NULL)
 }
 \arguments{
-\item{centre}{An array of two coordinates in UTM 33 (epsg:25833)}
+\item{stn}{A SpatVector or an array of two coordinates in UTM 33 (epsg:25833)}
 
 \item{dx}{A distance in metre to compute the box boundary as a distance
 from the centre point}

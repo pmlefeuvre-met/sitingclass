@@ -20,10 +20,9 @@
 #'
 #' @examples
 #' # Get station coordinates and name
-#' stn    <- get_metadata_frost(stationid = 18700)
+#' stn    <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 #'
 #' # Construct box to extract WMS tile
-#' stn$dx <- 100
 #' box <- make_bbox(stn)
 #'
 #' # Plot maps using plot_tile_station()
@@ -35,7 +34,7 @@
 #' plot_tile_station(stn, box, tile_name = "urban")
 #'
 #' # Include Digital Elevation Model as contour
-#' dsm   <- download_dem_kartverket(stn, name = "dom", resx = 1)
+#' dsm   <- download_dem_kartverket(stn, name = "dom")
 #' plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = "plot/map")
 #'
 #' @import ggplot2
@@ -49,7 +48,7 @@ plot_tile_station <- function(stn = NULL,
                               box = NULL,
                               tile_name = "osm",
                               dsm = NULL,
-                              path = NULL) {
+                              path = stn$path) {
 
   # Extract station name and latlon
   stn_name    <- str_to_title(stn$station.name)

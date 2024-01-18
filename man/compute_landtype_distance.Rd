@@ -4,13 +4,7 @@
 \alias{compute_landtype_distance}
 \title{Compute distance distribution of landcover types}
 \usage{
-compute_landtype_distance(
-  stn = NULL,
-  landtype = NULL,
-  dx = 100,
-  resx = 1,
-  f_plot = FALSE
-)
+compute_landtype_distance(stn = NULL, landtype = NULL, f_plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
@@ -18,11 +12,6 @@ compute_landtype_distance(
 
 \item{landtype}{A SpatVector with landtype attributes from
 \code{"compute_landtype"}}
-
-\item{dx}{A distance in metre or radius defining the extent of the
-bounding box from the centre point}
-
-\item{resx}{A horizontal resolution in metre}
 
 \item{f_plot}{A boolean whether to plot figures}
 }
@@ -37,12 +26,15 @@ the WMO siting class
 # Get station metadata
 stn <- get_metadata_frost(stationid = 18700)
 
+# Parameters
+stn$dx <- 100
+stn$resx <- 1
+
 # Compute land type
-landtype <- compute_landtype(stn, dx = 100, f_plot = TRUE)
+landtype <- compute_landtype(stn, f_plot = TRUE)
 
 # Compute land type distance to station
-landtype_dist <- compute_landtype_distance(stn, landtype, dx = 100,
-                                           f_plot = TRUE)
+landtype_dist <- compute_landtype_distance(stn, landtype, f_plot = TRUE)
 
 }
 \references{

@@ -7,8 +7,8 @@
 download_dem_kartverket(
   stn = NULL,
   name = "dom",
-  dx = 100,
-  resx = ifelse(dx > 200, dx/100, 1),
+  dx = stn$dx,
+  resx = stn$resx,
   path = "data/dem",
   f_overwrite = FALSE
 )
@@ -42,11 +42,13 @@ f_overwrite is set to TRUE
 \examples{
 # Define parameters
 stn <- get_metadata_frost(stationid=18700)
+stn$dx <- 100
+stn$resx <- 1
 path   <- "data/dem"
 
 # Load data using ows4R ## WCSClient$new() getCapabilities()
-dem    <- download_dem_kartverket(stn,name="dtm",dx=100,resx=1,path=path)
-dsm    <- download_dem_kartverket(stn,name="dom",dx=100,resx=1,path=path)
+dem    <- download_dem_kartverket(stn,name="dtm",path=path)
+dsm    <- download_dem_kartverket(stn,name="dom",path=path)
 demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 
 }

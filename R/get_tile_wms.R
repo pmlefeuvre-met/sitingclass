@@ -17,10 +17,9 @@
 #'
 #' @examples
 #' # Get station coordinates and name
-#' stn    <- get_metadata_frost(stationid = 18700)
+#' stn <- get_metadata_frost(stationid = 18700, dx = 100)
 #'
 #' # Construct box to extract WMS tile
-#' stn$dx <- 100
 #' box <- make_bbox(stn)
 #'
 #' # Load tiles

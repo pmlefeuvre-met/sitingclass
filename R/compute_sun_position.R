@@ -28,8 +28,8 @@
 compute_sun_position <- function(stn = NULL,
                                  f_hour = FALSE) {
 
-  # Extract timezone from System
-  tz <- Sys.timezone()
+  # Extract timezone from System # tz <- Sys.timezone()
+  tz <- "UTC"
 
   # Convert back to latlon
   latlon <- terra::crds(terra::project(stn, "epsg:4326"))

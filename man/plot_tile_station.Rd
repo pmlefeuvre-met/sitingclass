@@ -40,8 +40,8 @@ a weather station based on maptiles and custom-made \code{"get_tile_wms"}
 stn    <- get_metadata_frost(stationid = 18700)
 
 # Construct box to extract WMS tile
-dx <- 100
-box <- make_bbox(stn, dx)
+stn$dx <- 100
+box <- make_bbox(stn)
 
 # Plot maps using plot_tile_station()
 g <- plot_tile_station(stn, box, tile_name = "esri")
@@ -52,7 +52,7 @@ plot_tile_station(stn, box, tile_name = "clc")
 plot_tile_station(stn, box, tile_name = "urban")
 
 # Include Digital Elevation Model as contour
-dsm   <- download_dem_kartverket(stn, name = "dom", dx, resx = 1)
+dsm   <- download_dem_kartverket(stn, name = "dom", resx = 1)
 plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = "plot/map")
 
 }

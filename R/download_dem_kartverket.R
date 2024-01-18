@@ -29,9 +29,7 @@
 #'
 #' @examples
 #' # Define parameters
-#' stn <- get_metadata_frost(stationid=18700)
-#' stn$dx <- 100
-#' stn$resx <- 1
+#' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 #' path   <- "data/dem"
 #'
 #' # Load data using ows4R ## WCSClient$new() getCapabilities()

@@ -25,13 +25,13 @@
 
 plot_station_grid <- function(stn = NULL,
                               tile_name = "ortofoto",
-                              path = NULL) {
+                              path = stn$path) {
 
   # Get coordinates
   centre <- terra::crds(stn)
 
   # Directory to save plots
-  if (!is.null(path)) {
+  if (!is.null(path) ) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 

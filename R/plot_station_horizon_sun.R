@@ -17,11 +17,11 @@
 #'
 #' @examples
 #' # Load the station metadata and location
-#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
-#'
-#' # Parameters
-#' stn$dx <- 100
-#' stn$resx <- 1
+#' stn <- get_metadata_frost(stationid = 18700,
+#'                           paramid = 211,
+#'                           dx = 100,
+#'                           resx = 1,
+#'                           path = 'plot/horizon')
 #'
 #' # Load DEM data
 #' dem   <- download_dem_kartverket(stn, name = "dtm")
@@ -29,7 +29,6 @@
 #' demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 #'
 #' # Plot sun diagram and save
-#' path <- 'plot/horizon'
 #' plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
 #'
 #' @importFrom terra crds project
@@ -41,7 +40,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                                      dem = NULL,
                                      dsm = NULL,
                                      demkm = NULL,
-                                     path = NULL) {
+                                     path = stn$path) {
 
   # Extract timezone from System and assign variables
   tz <- Sys.timezone()

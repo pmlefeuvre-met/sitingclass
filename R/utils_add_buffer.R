@@ -13,14 +13,14 @@
 #'
 #' @examples
 #' # Get station metadata
-#' stn <- get_metadata_frost(stationid=18700)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
 #' # Get coordinates and define boundary box
 #' centre <- terra::crds(stn)
-#' box <- make_bbox(centre,1600)
+#' box <- make_bbox(centre, 1600)
 #'
 #' # Plot map tile
-#' g <- plot_tile_station(stn, box, tile_name="ortofoto")
+#' g <- plot_tile_station(stn, box, tile_name = "ortofoto")
 #'
 #' # Add grid and buffer
 #' nx <- 200

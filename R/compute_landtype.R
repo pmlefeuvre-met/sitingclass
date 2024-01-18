@@ -17,11 +17,7 @@
 #'
 #' @examples
 #'# Get station metadata
-#' stn <- get_metadata_frost(stationid=18700)
-#'
-#' # Parameters
-#' stn$dx <- 100
-#' stn$resx <- 1
+#' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
 #'
 #'# Compute land cover
 #' compute_landtype(stn, f_plot=TRUE)
@@ -33,8 +29,7 @@
 #' @export
 
 compute_landtype <- function(stn = NULL,
-                             f_plot = FALSE,
-                             path = NULL) {
+                             f_plot = FALSE) {
 
   # Bind variable to function
   landtype <- NULL
@@ -109,11 +104,11 @@ compute_landtype <- function(stn = NULL,
       theme_minimal() +
       theme(legend.position = "bottom")
 
-    if (is.null(path)) {
+    if (is.null(stn$path)) {
       print(g)
     } else {
       fname <- sprintf("%s/%i_landtype_map_%04.0fm.png",
-                       path,
+                       stn$path,
                        stn$stationid,
                        stn$dx)
       ggsave(fname, bg = "white", width = 7, height = 7)

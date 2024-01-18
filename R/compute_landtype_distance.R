@@ -16,11 +16,7 @@
 #'
 #' @examples
 #'# Get station metadata
-#' stn <- get_metadata_frost(stationid = 18700)
-#'
-#' # Parameters
-#' stn$dx <- 100
-#' stn$resx <- 1
+#' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
 #'
 #'# Compute land type
 #' landtype <- compute_landtype(stn, f_plot = TRUE)
@@ -49,7 +45,7 @@ compute_landtype_distance <- function(stn = NULL,
 
   if (f_plot) {
     # Plot ortophoto and classification (limit to areas < 500m)
-    if (dx < 500) {
+    if (stn$dx < 500) {
       # Get WMS tile and plot
       tile <- get_tile_wms(box, layer = "ortofoto")
       g <- ggplot() +
@@ -62,11 +58,11 @@ compute_landtype_distance <- function(stn = NULL,
         theme_minimal() + coord_sf(datum = tidyterra::pull_crs(r)) +
         theme(legend.position = "bottom")
 
-      if (is.null(path)) {
+      if (is.null(stn$path)) {
         print(g)
       } else {
         fname <- sprintf("%s/%i_landtype_map_orto_%04.0fm.png",
-                         path,
+                         stn$path,
                          stn$stationid,
                          stn$dx)
         ggsave(fname, bg = "white", width = 7, height = 7)

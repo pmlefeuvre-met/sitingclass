@@ -8,12 +8,17 @@
 #'
 #' @param stationid A station number as integer and defined by met.no
 #' @param paramid A parameter number as integer and defined by met.no
+#' @param dx A distance in metre or radius defining the extent of the
+#'        bounding box from the centre point
+#' @param resx A horizontal resolution in metre
+#' @param path A directory path defining where will be saved project plots/data
 #'
 #' @return Station metadata
 #'
 #' @examples
-#' get_metadata_frost(stationid=18700)
-#' get_metadata_frost(stationid=18700,paramid=211)
+#' get_metadata_frost(stationid = 18700)
+#' get_metadata_frost(stationid = 18700, paramid = 211)
+#' get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
 #'
 #' @importFrom httr2 request req_retry req_auth_basic
 #' @importFrom httr2 req_perform resp_body_json
@@ -23,7 +28,13 @@
 #' @export
 
 get_metadata_frost <- function(stationid = 18700,
-                               paramid = NULL) {
+                               paramid = NULL,
+                               dx = 100,
+                               resx = 1,
+                               path = sprintf("output/%i", stationid)) {
+
+  # Create output directory
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
   # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
@@ -106,7 +117,10 @@ get_metadata_frost <- function(stationid = 18700,
                       name,
                       orgs,
                       quality,
-                      loc)
+                      loc,
+                      dx,
+                      resx,
+                      path)
 
   # Convert to SpatVector from Lat-Lon to UTM
   #-- 4326  WGS 84 / Lat Lon

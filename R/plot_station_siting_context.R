@@ -30,13 +30,11 @@ plot_station_siting_context <- function(stationid = 18700,
                                         f_pdf = FALSE) {
 
   # Get station coordinates and name
-  stn <- get_metadata_frost(stationid, paramid)
-  stn$dx <- 100
-  stn$resx <- 1
-
-  # To save files
-  path <- sprintf("plot/output/%i", stationid)
-  dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  stn <- get_metadata_frost(stationid,
+                            paramid,
+                            dx = 100,
+                            resx = 1,
+                            path = sprintf("output/%i", stationid))
 
   # Construct box to extract WMS tile
   box <- make_bbox(stn)
@@ -49,10 +47,10 @@ plot_station_siting_context <- function(stationid = 18700,
     print(box)
   }
   # Plot ESRI imagery
-  g0  <- plot_tile_station(stn, box, tile_name = "esri", path = path)
-  g10 <- plot_tile_station(stn, box, tile_name = "ar5", path = path)
-  g11 <- plot_tile_station(stn, box, tile_name = "clc", path = path)
-  g12 <- plot_tile_station(stn, box, tile_name = "urban", path = path)
+  g0  <- plot_tile_station(stn, box, tile_name = "esri", path = stn$path)
+  g10 <- plot_tile_station(stn, box, tile_name = "ar5", path = stn$path)
+  g11 <- plot_tile_station(stn, box, tile_name = "clc", path = stn$path)
+  g12 <- plot_tile_station(stn, box, tile_name = "urban", path = stn$path)
 
   # Load data
   f_ow  <- FALSE
@@ -69,7 +67,11 @@ plot_station_siting_context <- function(stationid = 18700,
                                    f_overwrite = f_ow)
 
   # Plot OpenStreetMap
-  g2 <- plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = path)
+  g2 <- plot_tile_station(stn,
+                          box,
+                          tile_name = "osm",
+                          dsm = dsm,
+                          path = stn$path)
 
   # Print
   if (f_verbose) {
@@ -77,14 +79,14 @@ plot_station_siting_context <- function(stationid = 18700,
     print(dsm)
   }
   # Plot
-  g3 <- plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
+  g3 <- plot_station_horizon_sun(stn, dem, dsm, demkm, path = stn$path)
 
   # Plot DEM with rayshader
-  g4 <- plot_dem_rayshader(stn, dsm, path = path)
+  g4 <- plot_dem_rayshader(stn, dsm, path = stn$path)
 
   # Save pdf
   if (f_pdf) {
-    fname <- sprintf("%s/%i_infos.pdf", path, stationid)
+    fname <- sprintf("%s/%i_infos.pdf", stn$path, stationid)
     pdf(fname)
     invisible(lapply(list(g0, g2, g10, g3, g4, g11, g12), print))
     dev.off()

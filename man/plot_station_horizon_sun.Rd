@@ -36,9 +36,13 @@ and regional digital terrain model with infos from the weather station.
 # Load the station metadata and location
 stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
+# Parameters
+stn$dx <- 100
+stn$resx <- 1
+
 # Load DEM data
-dem   <- download_dem_kartverket(stn, name = "dtm", dx = 100, resx = 1)
-dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
+dem   <- download_dem_kartverket(stn, name = "dtm")
+dsm   <- download_dem_kartverket(stn, name = "dom")
 demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 
 # Plot sun diagram and save

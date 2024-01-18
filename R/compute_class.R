@@ -19,11 +19,7 @@
 #'
 #' @examples
 #'# Get station metadata
-#' stn <- get_metadata_frost(stationid = 18700)
-#'
-#' # Parameters
-#' stn$dx <- 100
-#' stn$resx <- 1
+#' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 #'
 #' # Load a digital elevation model
 #' dem   <- download_dem_kartverket(stn, name = "dtm")
@@ -38,7 +34,7 @@
 #' horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
 #'
 #' # Compute class
-#' compute_class(landtype_dist, horizon_max, dem, test_type = "WMO",
+#' compute_class(stn, landtype_dist, horizon_max, dem, test_type = "WMO",
 #'               f_plot = TRUE)
 #'
 #'
@@ -47,12 +43,12 @@
 #' @importFrom utils stack
 #'
 #' @export
-compute_class <- function(land = NULL,
+compute_class <- function(stn = NULL,
+                          land = NULL,
                           horizon = NULL,
                           dem = NULL,
                           test_type = "WMO",
-                          f_plot = TRUE,
-                          path = NULL) {
+                          f_plot = TRUE) {
 
   # Bind variable to function
   distance <- landtype <- NULL
@@ -81,11 +77,11 @@ compute_class <- function(land = NULL,
       scale_fill_manual(values = fill_landtype) +
       scale_x_continuous(trans = "log10")
 
-    if (is.null(path)) {
+    if (is.null(stn$path)) {
       print(g)
     } else {
       fname <- sprintf("%s/%i_landtype_area_%04.0fm.png",
-                       path,
+                       stn$path,
                        stn$stationid,
                        stn$dx)
       ggsave(fname, bg = "white", width = 7, height = 7)
@@ -191,9 +187,9 @@ compute_class <- function(land = NULL,
   result <- result[c(4, 2, 1, 3)]
 
   # Save results
-  if (is.null(path)) {
+  if (is.null(stn$path)) {
     fname <- sprintf("%s/%i_class_%04.0fm.csv",
-                     path,
+                     stn$path,
                      stn$stationid,
                      stn$dx)
     write.csv(result, fname, row.names = FALSE)

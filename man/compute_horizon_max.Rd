@@ -4,22 +4,11 @@
 \alias{compute_horizon_max}
 \title{Maximum horizon height around a station}
 \usage{
-compute_horizon_max(
-  stn = NULL,
-  dx = 100,
-  resx = 1,
-  step = 10,
-  f_plot_polygon = FALSE
-)
+compute_horizon_max(stn = NULL, step = 10, f_plot_polygon = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
 \code{"get_latlon_frost"}}
-
-\item{dx}{A distance in metre or radius defining the extent of the
-bounding box from the centre point}
-
-\item{resx}{A horizontal resolution in metre}
 
 \item{step}{An interval in degrees at which the horizon will be computed,
 default is every 10 deg.}
@@ -41,12 +30,12 @@ and based on three DEMs: Digital Terrain Model, Digital Surface Model and
 stn <- get_metadata_frost(stationid = 18700, paramid = 211)
 
 # Parameters
-dx <- 100
-resx <- 1
+stn$dx <- 100
+stn$resx <- 1
 
 # Compute the maximum horizon
-compute_horizon_max(stn, dx, resx)
-compute_horizon_max(stn, dx, resx, step = 1, f_plot_polygon = FALSE)
+compute_horizon_max(stn)
+compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
 
 }
 \references{
