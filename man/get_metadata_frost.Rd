@@ -4,12 +4,25 @@
 \alias{get_metadata_frost}
 \title{Get station and sensor metadata from Frost API}
 \usage{
-get_metadata_frost(stationid = 18700, paramid = NULL)
+get_metadata_frost(
+  stationid = 18700,
+  paramid = NULL,
+  dx = 100,
+  resx = 1,
+  path = sprintf("output/\%i", stationid)
+)
 }
 \arguments{
 \item{stationid}{A station number as integer and defined by met.no}
 
 \item{paramid}{A parameter number as integer and defined by met.no}
+
+\item{dx}{A distance in metre or radius defining the extent of the
+bounding box from the centre point}
+
+\item{resx}{A horizontal resolution in metre}
+
+\item{path}{A directory path defining where will be saved project plots/data}
 }
 \value{
 Station metadata
@@ -20,8 +33,9 @@ The function gets station name, location and sensor details such as level,
 exposure and performance
 }
 \examples{
-get_metadata_frost(stationid=18700)
-get_metadata_frost(stationid=18700,paramid=211)
+get_metadata_frost(stationid = 18700)
+get_metadata_frost(stationid = 18700, paramid = 211)
+get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
 
 }
 \references{

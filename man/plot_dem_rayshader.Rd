@@ -4,7 +4,7 @@
 \alias{plot_dem_rayshader}
 \title{Plot digital surface/elevation model in 3D with shadow rendering}
 \usage{
-plot_dem_rayshader(stn = NULL, dsm = NULL, path = NULL)
+plot_dem_rayshader(stn = NULL, dsm = NULL, path = stn$path)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
@@ -24,10 +24,10 @@ four cardinal angles
 }
 \examples{
 # Load the station metadata and location
-stn <- get_metadata_frost(stationid = 18700, paramid = 211)
+stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Load a digital elevation model
-dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)
+dsm   <- download_dem_kartverket(stn, name = "dom")
 
 # Plot 3D DEM with rayshader
 plot_dem_rayshader(stn, dsm, path = 'plot/dem3D')

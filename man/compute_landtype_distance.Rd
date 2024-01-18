@@ -24,11 +24,7 @@ the WMO siting class
 }
 \examples{
 # Get station metadata
-stn <- get_metadata_frost(stationid = 18700)
-
-# Parameters
-stn$dx <- 100
-stn$resx <- 1
+stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
 
 # Compute land type
 landtype <- compute_landtype(stn, f_plot = TRUE)

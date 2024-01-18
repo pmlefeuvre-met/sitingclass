@@ -10,11 +10,13 @@ compute_class(
   horizon = NULL,
   dem = NULL,
   test_type = "WMO",
-  f_plot = TRUE,
-  path = NULL
+  f_plot = TRUE
 )
 }
 \arguments{
+\item{stn}{A SpatVector with station attributes from
+\code{"get_latlon_frost"}}
+
 \item{land}{A data.frame with land type distribution from
 \code{"compute_landtype_distance"}}
 
@@ -37,11 +39,7 @@ using the requirements set by WMO and Met
 }
 \examples{
 # Get station metadata
-stn <- get_metadata_frost(stationid = 18700)
-
-# Parameters
-stn$dx <- 100
-stn$resx <- 1
+stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Load a digital elevation model
 dem   <- download_dem_kartverket(stn, name = "dtm")

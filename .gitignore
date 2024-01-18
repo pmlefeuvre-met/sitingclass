@@ -11,6 +11,7 @@
 # Output directory
 plot/*
 data/*
+output/*
 vignettes/plot/*
 vignettes/data/*
 tests/testthat/data/*

@@ -34,7 +34,9 @@ get_metadata_frost <- function(stationid = 18700,
                                path = sprintf("output/%i", stationid)) {
 
   # Create output directory
-  dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  if (!is.null(path)) {
+    dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  }
 
   # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
@@ -87,11 +89,11 @@ get_metadata_frost <- function(stationid = 18700,
   print(" ")
   print("-------------------------------------------")
   print(sprintf("station %s: %s -- %s -- %s: %s",
-              orgs["organisation.value"],
-              ids["stationid"],
-              name["station.name"],
-              names(ids_alt),
-              ids_alt))
+                orgs["organisation.value"],
+                ids["stationid"],
+                name["station.name"],
+                names(ids_alt),
+                ids_alt))
   print("-------------------------------------------")
   print(" ")
 
@@ -119,8 +121,10 @@ get_metadata_frost <- function(stationid = 18700,
                       quality,
                       loc,
                       dx,
-                      resx,
-                      path)
+                      resx)
+  if (!is.null(path)) {
+    stn_attrib <- cbind(stn_attrib, path)
+  }
 
   # Convert to SpatVector from Lat-Lon to UTM
   #-- 4326  WGS 84 / Lat Lon

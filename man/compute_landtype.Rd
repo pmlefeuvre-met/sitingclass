@@ -4,7 +4,7 @@
 \alias{compute_landtype}
 \title{Compute land cover types}
 \usage{
-compute_landtype(stn = NULL, f_plot = FALSE, path = NULL)
+compute_landtype(stn = NULL, f_plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
@@ -24,11 +24,7 @@ of the tile of the topographic data.
 }
 \examples{
 # Get station metadata
-stn <- get_metadata_frost(stationid=18700)
-
-# Parameters
-stn$dx <- 100
-stn$resx <- 1
+stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
 
 # Compute land cover
 compute_landtype(stn, f_plot=TRUE)

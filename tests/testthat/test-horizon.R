@@ -5,6 +5,7 @@ testthat::test_that("compute horizon works", {
   colnames(centre) <- c("x", "y")
   stn_test <- terra::vect(centre, "points", crs = "epsg:25833")
   stn_test$stationid <- 18700
+  stn_test$path <- "tests/testthat/data"
 
   # Set expected horizon
   horizon_expected <- data.frame(azimuth = c(0, 350, 340, 330, 320, 310, 300,

@@ -21,7 +21,7 @@
 #'                           paramid = 211,
 #'                           dx = 100,
 #'                           resx = 1,
-#'                           path = 'plot/horizon')
+#'                           path = "plot/horizon")
 #'
 #' # Load DEM data
 #' dem   <- download_dem_kartverket(stn, name = "dtm")
@@ -29,7 +29,7 @@
 #' demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 #'
 #' # Plot sun diagram and save
-#' plot_station_horizon_sun(stn, dem, dsm, demkm, path = path)
+#' plot_station_horizon_sun(stn, dem, dsm, demkm, path  = "plot/horizon")
 #'
 #' @importFrom terra crds project
 #' @import ggplot2
@@ -55,7 +55,6 @@ plot_station_horizon_sun <- function(stn = NULL,
     stn_wmoid   <- stn$WIGOS
   }
   stn_level   <- stn$level
-  stn_centre  <- terra::crds(stn)
   stn_latlon  <- terra::crds(terra::project(stn,"epsg:4326"))
   stn_param   <- stn$parameterid
   stn_expos   <- stn$exposure.value
@@ -78,17 +77,17 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Compute horizon view from location
   step <- 0.01
-  horizon_dem   <- compute_horizon(stn_centre,
+  horizon_dem   <- compute_horizon(stn,
                                    dem,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = TRUE)
-  horizon_dsm   <- compute_horizon(stn_centre,
+  horizon_dsm   <- compute_horizon(stn,
                                    dsm,
                                    level = stn_level,
                                    step = step,
                                    f_plot_polygon = TRUE)
-  horizon_demkm <- compute_horizon(stn_centre,
+  horizon_demkm <- compute_horizon(stn,
                                    demkm,
                                    level = stn_level,
                                    step = step,

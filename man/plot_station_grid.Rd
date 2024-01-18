@@ -4,7 +4,7 @@
 \alias{plot_station_grid}
 \title{Plot station with Ortophoto, grid and buffers}
 \usage{
-plot_station_grid(stn = NULL, tile_name = "ortofoto", path = NULL)
+plot_station_grid(stn = NULL, tile_name = "ortofoto", path = stn$path)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from

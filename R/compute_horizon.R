@@ -104,7 +104,7 @@ compute_horizon <- function(stn = NULL,
 
   # Create directory and save file
   if (is.null(stn$path)) {
-    dir.create(path, showWarnings = FALSE, recursive = TRUE)
+    dir.create(stn$path, showWarnings = FALSE, recursive = TRUE)
     file_horizon <- sprintf("%s/horizon_%s.csv", stn$path, names(dem))
     write.csv(df, file_horizon, row.names = FALSE)
   }

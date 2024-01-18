@@ -7,6 +7,8 @@
 #' @references \url{https://community.wmo.int/en/activity-areas/
 #' imop/siting-classification}
 #'
+#' @param stn A SpatVector with station attributes from
+#' \code{"get_latlon_frost"}
 #' @param land A data.frame with land type distribution from
 #' \code{"compute_landtype_distance"}
 #' @param horizon A data.frame with horizon distribution from

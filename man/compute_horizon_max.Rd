@@ -27,11 +27,7 @@ and based on three DEMs: Digital Terrain Model, Digital Surface Model and
 }
 \examples{
 # Load the station metadata including location and level
-stn <- get_metadata_frost(stationid = 18700, paramid = 211)
-
-# Parameters
-stn$dx <- 100
-stn$resx <- 1
+stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Compute the maximum horizon
 compute_horizon_max(stn)
