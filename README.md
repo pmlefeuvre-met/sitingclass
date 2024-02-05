@@ -74,7 +74,7 @@ library(sitingclass)
 stationid <- 18700
 
 # Get station metadata
-stn <- get__latlon_metadata_frost(stationid)
+stn <- get_metadata_frost(stationid)
 stn
 ```
 ### Construct the coordinate box
