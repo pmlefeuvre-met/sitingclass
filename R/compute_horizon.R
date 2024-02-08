@@ -106,7 +106,7 @@ compute_horizon <- function(stn = NULL,
   if (is.null(stn$path)) {
     dir.create(stn$path, showWarnings = FALSE, recursive = TRUE)
     file_horizon <- sprintf("%s/horizon_%s.csv", stn$path, names(dem))
-    write.csv(df, file_horizon, row.names = FALSE)
+    utils::write.csv(df, file_horizon, row.names = FALSE)
   }
   # Reformat start point and add end point to plot as polygon
   if (f_plot_polygon) {

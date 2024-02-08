@@ -16,9 +16,9 @@
 #' @examples
 #' # Plot sun diagram and map infos for a weather station
 #' plot_station_siting_context(stationid = 18700)
-#' plot_station_siting_context(stationid = 18700,
-#'                             paramid = 211,
-#'                             f_verbose = TRUE)
+#' #plot_station_siting_context(stationid = 18700,
+#'  #                           paramid = 211,
+#'   #                          f_verbose = TRUE)
 #'
 #' @importFrom terra crds
 #' @importFrom grDevices dev.off pdf

@@ -33,7 +33,7 @@
 #' @importFrom tidyterra geom_spatvector
 #'
 #' @export
-#'
+
 raster_to_vector <- function(raster,
                              id = "undefined",
                              mask_thr = 255,

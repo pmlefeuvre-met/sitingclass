@@ -57,12 +57,6 @@ get_metadata_frost <- function(stationid = 18700,
     httr2::resp_body_json()
   res_1 <- res$data$tseries[[1]]
 
-  # Function to convert json to dataframe
-  json_to_df <- function(json) {
-    df <- as.data.frame(t(as.matrix(unlist(json))))
-    return(df)
-  }
-
   # Extract ids, names and organisation
   ids  <- json_to_df(res_1$header$id)
 
@@ -70,7 +64,7 @@ get_metadata_frost <- function(stationid = 18700,
   ids_alt <- json_to_df(res_1$header$extra$station$alternateids)
   ids_alt_names <- ids_alt[, names(ids_alt) == "key"]
   ids_alt_names <- ids_alt_names[ids_alt_names != "N-dagl"]
-  ids_alt <- ids_alt[, names(ids_alt) == "id", drop = F]
+  ids_alt <- ids_alt[, names(ids_alt) == "id", drop = FALSE]
   colnames(ids_alt) <- ids_alt_names
 
   # Extract names
@@ -110,8 +104,8 @@ get_metadata_frost <- function(stationid = 18700,
   loc <- loc[c(grep("lat", names(loc))[1],
                grep("lon", names(loc))[1],
                grep("value.elev", names(loc))[1])]
-  loc <- as.data.frame(t(apply(loc, 1,as.numeric)))
-  names(loc) <- c("lat","lon","elev")
+  loc <- as.data.frame(t(apply(loc, 1, as.numeric)))
+  names(loc) <- c("lat", "lon", "elev")
 
   # Build data.frame with station attributes
   stn_attrib <- cbind(ids,
@@ -144,4 +138,3 @@ get_metadata_frost <- function(stationid = 18700,
 # df <- json_to_df(res$data$tseries[[1]])
 # rownames(df) <- sub(".*extra." , "", rownames(df))
 # rownames(df) <- sub(".*header.", "", rownames(df))
-

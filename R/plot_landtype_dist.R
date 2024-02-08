@@ -14,7 +14,8 @@
 #'# Example of input to plot
 #'# plot_landtype_dist(stn, landtype_dist)
 #'
-#' @importFrom ggplot2 ggplot geom_area
+#' @importFrom ggplot2 ggplot geom_area xlab ylab theme_minimal
+#' @importFrom ggplot2 scale_fill_manual scale_x_continuous ggsave
 #' @importFrom utils stack
 #'
 #' @export
@@ -46,7 +47,7 @@ plot_landtype_dist <- function(stn = NULL,
     theme_minimal() +
     scale_fill_manual(values = fill_landtype) +
     scale_x_continuous(trans = "log10",
-                       minor_breaks = c(1:9, 1:9*10, 1:9*100, 1:9*1000))
+                       minor_breaks = c(1:9, 1:9 * 10, 1:9 * 100, 1:9 * 1000))
   if (is.null(stn$path)) {
     print(g)
   } else {
@@ -59,7 +60,3 @@ plot_landtype_dist <- function(stn = NULL,
 
   return(g)
 }
-
-
-
-

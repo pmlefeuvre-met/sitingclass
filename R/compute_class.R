@@ -40,11 +40,11 @@
 #'               f_plot = TRUE)
 #'
 #'
-#' @importFrom ggplot2 ggplot geom_area
 #' @importFrom stats quantile
-#' @importFrom utils stack
+#' @importFrom utils stack write.csv
 #'
 #' @export
+
 compute_class <- function(stn = NULL,
                           land = NULL,
                           horizon = NULL,
@@ -70,24 +70,7 @@ compute_class <- function(stn = NULL,
                         area = values))
 
   if (f_plot) {
-    # Plot area distribution per land type in percentage and log10 x-axis
-    g <- ggplot(df, aes(x = distance, y = area, fill = landtype)) +
-      geom_area(position = "stack", stat = "identity") +
-      xlab("Distance in metre (log10 scale)") +
-      ylab("Area in percentage") +
-      theme_minimal() +
-      scale_fill_manual(values = fill_landtype) +
-      scale_x_continuous(trans = "log10")
-
-    if (is.null(stn$path)) {
-      print(g)
-    } else {
-      fname <- sprintf("%s/%i_landtype_area_%04.0fm.png",
-                       stn$path,
-                       stn$stationid,
-                       stn$dx)
-      ggsave(fname, bg = "white", width = 7, height = 7)
-    }
+    plot_landtype_dist(stn, land = land)
   }
 
   # Compute area within an annular area 5-10m and 10-30m
@@ -208,7 +191,7 @@ compute_class <- function(stn = NULL,
                      stn$path,
                      stn$stationid,
                      stn$dx)
-    write.csv(result, fname, row.names = FALSE)
+    utils::write.csv(result, fname, row.names = FALSE)
   }
 
   # Print results

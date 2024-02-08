@@ -36,7 +36,7 @@ get_metadata_pagination <- function(
 
   # Bind variables to function
   level <- parameterid <- sensor <- stationid  <- NULL
-  WIGOS <- lat <-lon <- elev <- NULL
+  wigos <- lat <- lon <- elev <- NULL
 
   # Create output directory
   if (!is.null(path)) {
@@ -44,7 +44,8 @@ get_metadata_pagination <- function(
   }
 
   # ----------------------------------------------
-  # API request with pagination #test_server: "https://v1.frost-dev.k8s.met.no/api/v1/obs/met.no/filter/get"
+  # API request with pagination
+  # Test_server: "https://v1.frost-dev.k8s.met.no/api/v1/obs/met.no/filter/get"
   url <-  "https://frost-beta.met.no/api/v1/obs/met.no/filter/get"
   resp <- httr2::request(url) |>
     httr2::req_url_query(
@@ -70,7 +71,7 @@ get_metadata_pagination <- function(
                                  parameterid,
                                  sensor,
                                  stationid,
-                                 WIGOS,
+                                 wigos,
                                  lat,
                                  lon,
                                  elev))
@@ -83,7 +84,8 @@ get_metadata_pagination <- function(
   #-- 4326  WGS 84 / Lat Lon
   #-- 32633 WGS 84 / UTM zone 33N
   #-- 25833 ETRS89 / UTM zone 33N
-  proj_lcc <- "+proj=lcc +lat_0=63 +lon_0=15 +lat_1=63 +lat_2=63 +no_defs +R=6.371e+06"
+  proj_lcc <- paste("+proj=lcc +lat_0=63 +lon_0=15 +lat_1=63 +lat_2=63",
+                    "+no_defs +R=6.371e+06")
   stn <- terra::vect(meta,
                      geom = c("lon", "lat"),
                      crs = "epsg:4326")
@@ -92,20 +94,23 @@ get_metadata_pagination <- function(
 
   # Remove Antarctic stations
   coord <- terra::crds(stn)
-  stn <- stn[coord[,2] > (-2e6) & coord[,2] < 1.5e6,]
+  stn <- stn[coord[, 2] > (-2e6) & coord[, 2] < 1.5e6, ]
 
   # Save vector - Can also use GPKG format
   terra::writeVector(stn,
                      filename = sprintf("%s/%s.shp",
-                             path,
-                             rev(strsplit(path, "/")[[1]])[1]),
+                                        path,
+                                        rev(strsplit(path, "/")[[1]])[1]),
                      filetype = "ESRI Shapefile",
                      overwrite = TRUE)
 
   return(stn)
 }
 
+
 #' Pagination protocol for API request
+#'
+#' Fetch URL request headers to reassign them with the next request infos
 #'
 #' @param resp A request response
 #' @param req A request to update
@@ -116,6 +121,9 @@ get_metadata_pagination <- function(
 #'
 #' @examples
 #' #No example
+#'
+#' @export
+
 next_req <- function(resp,
                      req) {
   # Fetch header from response
@@ -133,92 +141,4 @@ next_req <- function(resp,
     "X-Frost-Ptime" = httr2::resp_header(resp, "X-Frost-Nextptsptime"))
 
   return(req)
-}
-
-
-
-#' Convert JSON to dataframe
-#'
-#' @param json A JSON object
-#'
-#' @return A data.frame
-#'
-#' @examples
-#' #No example
-json_to_df <- function(json) {
-  df <- as.data.frame(t(as.matrix(unlist(json))))
-  return(df)
-}
-
-
-#' Extract and format JSON metadata
-#'
-#' @param res_1 A JSON object from an individual station or parameterid
-#'
-#' @return A data.frame
-#'
-#' @examples
-#' #No example
-format_resp <- function(res_1){
-
-  ## Extract id infos: level, parameterid, sensor, stationid
-  ids  <- json_to_df(res_1$header$id)
-
-  ## Extract alternative ids (WIGOS, ...)
-  # Check if alternateids is not empty and contains WIGOS key
-  if(!is.null(res_1$header$extra$station$alternateids) &
-     any("WIGOS" %in% unlist(res_1$header$extra$station$alternateids))){
-
-    # Convert to dataframe and format: key as name and id as value
-    ids_alt <- json_to_df(res_1$header$extra$station$alternateids)
-    ids_alt_names <- ids_alt[, names(ids_alt) == "key"]
-    ids_alt <- ids_alt[, names(ids_alt) == "id", drop = F]
-    colnames(ids_alt) <- ids_alt_names
-  } else {
-    # Assign empty dataframe if there are no values
-    ids_alt <- data.frame(WIGOS="NA")
-  }
-
-  ## Extract latest coordinates, hence rev()
-  loc <- rev(json_to_df(res_1$header$extra$station$location))
-  loc <- loc[c(grep("lat", names(loc))[1],
-               grep("lon", names(loc))[1],
-               grep("value.elev", names(loc))[1])]
-  loc <- as.data.frame(t(apply(loc, 1,as.numeric)))
-  names(loc) <- c("lat","lon","elev")
-
-  # Build data.frame with station attributes
-  stn_attrib <- cbind(ids,
-                      ids_alt['WIGOS'],
-                      loc)
-
-  return(stn_attrib)
-}
-
-
-
-#' Loop through request responses from pagination
-#'
-#' @param resp A request response
-#'
-#' @return A matrix
-#'
-#' @importFrom httr2 resp_body_json
-#'
-#' @examples
-#' #No example
-extract_resp <- function(resp) {
-
-  # Convert response to json
-  res <- httr2::resp_body_json(resp)
-
-  # Extract the number of elements, i.e. metadata/time series in the response
-  n.paramid <- length(res$data$tseries)
-
-  # Loop through each response element
-  dat <- t(sapply(1:n.paramid,
-                  function(x) format_resp(res$data$tseries[[x]]),
-                  simplify = "matrix"))
-
-  return(dat)
 }

@@ -14,11 +14,12 @@ fill_corine
 Vector of CORINE land cover colors and types
 }
 \examples{
-col2rgb(fill_corine)
+fill_corine
+# col2rgb(fill_corine)
 
 }
 \references{
-\ref{"https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/"}
-\ref{"https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf"}
+\url{https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/} and
+\url{https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf}
 }
 \keyword{datasets}

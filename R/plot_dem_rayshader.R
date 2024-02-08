@@ -90,7 +90,7 @@ plot_dem_rayshader <- function(stn = NULL,
       Sys.sleep(0.2)
       rayshader::render_camera(theta = theta[cardinal])
       rayshader::render_snapshot(fname, title_text = title,
-                                 instant_capture=T, width = 2100,
+                                 instant_capture = TRUE, width = 2100,
                                  height = 2100, title_size = 60)
       # #render_highquality(fname, clear = TRUE, title_text = stn_name,
       #                   width = 400, height = 400)
@@ -98,9 +98,12 @@ plot_dem_rayshader <- function(stn = NULL,
   }
 
   #Add a title and vignette effect.
-  #render_camera(theta=0,zoom=0.4,phi=30)
-  #render_depth(title_text = "Blindern", bokehshape = "circle",focallength = 200, aberration = 0.3,
-  #            title_size = 20, title_color = "white", title_bar_color = "black", vignette = TRUE)
-  #render_highquality(samples=256, line_radius = 1, text_size = 18, text_offset = c(0,12,0),
-  #                   clamp_value=10, clear = TRUE)
+  # render_camera(theta = 0, zoom = 0.4, phi = 30)
+  # render_depth(title_text = "Blindern", bokehshape = "circle",
+  #              focallength = 200, aberration = 0.3,
+  #            title_size = 20, title_color = "white",
+  #            title_bar_color = "black", vignette = TRUE)
+  # render_highquality(samples=256, line_radius = 1,
+  #                    text_size = 18, text_offset = c(0,12,0),
+  #                    clamp_value=10, clear = TRUE)
 }

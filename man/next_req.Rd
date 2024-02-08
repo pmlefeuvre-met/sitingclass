@@ -15,8 +15,9 @@ next_req(resp, req)
 Updated request headers
 }
 \description{
-Pagination protocol for API request
+Fetch URL request headers to reassign them with the next request infos
 }
 \examples{
 #No example
+
 }

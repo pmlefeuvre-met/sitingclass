@@ -55,16 +55,16 @@ plot_station_horizon_sun <- function(stn = NULL,
     stn_wmoid   <- stn$WIGOS
   }
   stn_level   <- stn$level
-  stn_latlon  <- terra::crds(terra::project(stn,"epsg:4326"))
+  stn_latlon  <- terra::crds(terra::project(stn, "epsg:4326"))
   stn_param   <- stn$parameterid
   stn_expos   <- stn$exposure.value
   stn_perf    <- stn$performance.value
   if (stn_expos == "unknown") {
     stn_expos <- NA
-    }
+  }
   if (stn_perf  == "unknown") {
     stn_perf  <- NA
-    }
+  }
 
   # Set cardinals (North position is edited to be visible on the plot)
   cardinals <- data.frame(azimuth = c(0 + 15, 90, 180, 260, 360 - 15),

@@ -53,9 +53,9 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` then s
 `sitingclass` depends on the following packages:
 
 * Data and metadata retrieval:
-  + [httr](https://httr.r-lib.org/)/[httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost)
-  + [maptiles](https://github.com/riatelab/maptiles): to get tiles from available map provides
-  + [ows4R](https://github.com/eblondel/ows4R): to download DEMs using **WCS getCoverage** (Web Coverage Service)
+  + [httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost) and
+  to download DEMs using **WCS getCoverage** (Web Coverage Service)
+  + [maptiles](https://github.com/riatelab/maptiles): to get tiles from available map providers
 * Geospatial processing:
   + [terra](https://github.com/rspatial/terra): SpatRaster and SpatVector processing and conversion
 * Computing horizon and sun position:
@@ -120,13 +120,13 @@ plot_tile_station(stn, box, tile_name = "esri")
 ### Download Digital Elevation Models
 ```{r,fig.dim = c(10, 8), out.width="80%", fig.cap="Hillshade of the digital surface model.", results = 'hide'}
 # Load Karverket's DEMs -f_ow = TRUE to overwrite files
-f_ow  <- FALSE 
+f_ow  <- FALSE
 dem   <- download_dem_kartverket(stn,
                                  name = "dtm",
                                  f_overwrite = f_ow)
 dsm   <- download_dem_kartverket(stn,
                                  name = "dom",
-                                 f_overwrite=f_ow)
+                                 f_overwrite = f_ow)
 demkm <- download_dem_kartverket(stn,
                                  name = "dtm",
                                  20e3,
@@ -138,7 +138,7 @@ library(rayshader)
 elmat   <- raster_to_matrix(dsm)
 elmatkm <- raster_to_matrix(demkm)
 
-# Shaded relief for the 100-m Digital Surface Model 
+# Shaded relief for the 100-m Digital Surface Model
 elmat %>%
   sphere_shade(texture = "desert") %>%
   plot_map()
@@ -158,14 +158,13 @@ The function `plot_station_siting_context()` will compute all the code chunks fr
 
 ```{r}
 # Set timezone to avoid time shift between winter and summer time
-Sys.setenv(TZ="UTC") # "Europe/Oslo"
+Sys.setenv(TZ = "UTC") # "Europe/Oslo"
 
-# The main function plotting sun diagram and context for a weather station 
+# The main function plotting sun diagram and context for a weather station
 plot_station_siting_context(stationid = 18700,
                             paramid = 211,
                             f_verbose = FALSE,
-                            f_pdf=FALSE)
-
+                            f_pdf = FALSE)
 ```
 
 

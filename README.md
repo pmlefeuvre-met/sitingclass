@@ -38,9 +38,9 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` then s
 `sitingclass` depends on the following packages:
 
 * Data and metadata retrieval:
-  + [httr](https://httr.r-lib.org/)/[httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost)
+  + [httr2](https://httr2.r-lib.org/): to get station metadata using **URL get request** (i.e. Frost) and
+  to download DEMs using **WCS getCoverage** (Web Coverage Service)
   + [maptiles](https://github.com/riatelab/maptiles): to get tiles from available map providers
-  + [ows4R](https://github.com/eblondel/ows4R): to download DEMs using **WCS getCoverage** (Web Coverage Service)
 * Geospatial processing:
   + [terra](https://github.com/rspatial/terra): SpatRaster and SpatVector processing and conversion
 * Computing horizon and sun position:

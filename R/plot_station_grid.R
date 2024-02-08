@@ -17,7 +17,7 @@
 #' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Plot grid and buffers on four different scales
-#' plot_station_grid(stn, path = "plot/map")
+#' #plot_station_grid(stn, path = "plot/map")
 #'
 #' @importFrom terra crds
 #'
@@ -31,7 +31,7 @@ plot_station_grid <- function(stn = NULL,
   centre <- terra::crds(stn)
 
   # Directory to save plots
-  if (!is.null(path) ) {
+  if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 

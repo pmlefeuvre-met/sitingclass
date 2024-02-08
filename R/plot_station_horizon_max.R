@@ -1,7 +1,8 @@
 #' Plot max horizon with sun height
 #'
-#' Plot sun position and maximum horizon from local terrain model, local surface model
-#' and regional digital terrain model with infos from the weather station.
+#' Plot sun position and maximum horizon from local terrain model,
+#' local surface model and regional digital terrain model with infos
+#' from the weather station.
 #'
 #' @references \url{https://frost-beta.met.no/docs/codeexamples}
 #'
@@ -29,7 +30,10 @@
 #' plot_station_horizon_max(stn, horizon_max)
 #'
 #' @importFrom terra crds project
-#' @import ggplot2
+#' @importFrom ggplot2 ggplot geom_hline geom_text geom_polygon geom_line
+#' @importFrom ggplot2 geom_path scale_color_viridis_d theme_minimal theme
+#' @importFrom ggplot2 labs xlab ylab scale_x_continuous scale_y_continuous
+#' @importFrom ggplot2 coord_cartesian annotate ggsave
 #'
 #' @export
 
@@ -56,7 +60,6 @@ plot_station_horizon_max <- function(stn = NULL,
   sun_hour  <- compute_sun_position(stn, f_hour = TRUE)
 
   # Compute horizon view from location
-  step <- 0.01
   skyviewfactor <- compute_skyviewfactor(horizon_max)
 
   # Plot init

@@ -32,19 +32,18 @@ bounding box from the centre point}
 A Digital Elevation Model
 }
 \description{
-Define a GetCapabilities request URL using OSW4R and Kartverket's Web
-Coverage Service that downloads a DEM from a bounding box and a DEM type
-(i.e. "dom" or "dtm"). The bounding box is centered to a parsed location
-and a parsed radius set the extent. The downloaded DEM is a SpatRaster
-object. If the DEM file already exists, it is loaded by default unless
-f_overwrite is set to TRUE
+Build a WCS URL request with `httr2` to download Kartverket's DEM with
+`terra::rast()` from a bounding box and a DEM type (i.e. "dom" or "dtm").
+The bounding box is centered to a parsed location and a parsed radius set
+the extent. The downloaded DEM is a SpatRaster object. If the DEM file
+already exists, it is loaded by default unless f_overwrite is set to TRUE
 }
 \examples{
 # Define parameters
 stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 path   <- "data/dem"
 
-# Load data using ows4R ## WCSClient$new() getCapabilities()
+# Load data using httr2 and terra
 dem    <- download_dem_kartverket(stn,name="dtm",path=path)
 dsm    <- download_dem_kartverket(stn,name="dom",path=path)
 demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
@@ -58,7 +57,4 @@ nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/
 \url{https://kartkatalog.geonorge.no/metadata/
 nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/
 e36ea427-13a1-4d7c-be82-977068dfc3e3}
-
-\url{https://cran.r-project.org/web/packages/ows4R/
-vignettes/wcs.html}
 }

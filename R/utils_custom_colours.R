@@ -18,7 +18,8 @@ fill_landtype <- c("building" = "skyblue3",
 #' \url{https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf}
 #'
 #' @examples
-#' col2rgb(fill_corine)
+#' fill_corine
+#' # col2rgb(fill_corine)
 #'
 #' @export
 fill_corine <- c(
@@ -42,7 +43,8 @@ fill_corine <- c(
   "231" = "#e6e64d",  #"Pastures"
   "241" = "#ffe6a6",  #"Annual crops associated with permanent crops"
   "242" = "#ffe64d",  #"Complex cultivation patterns"
-  "243" = "#e6cc4d",  #"Land principally occupied by agriculture with significant areas of natural vegetation"
+  "243" = "#e6cc4d",  #"Land principally occupied by agriculture with
+  #                     significant areas of natural vegetation"
   "244" = "#f2cca6",  #"Agro-forestry areas"
   "311" = "#80ff00",  #"Broad-leaved forest"
   "312" = "#00a600",  #"Coniferous forest"
@@ -96,7 +98,8 @@ fill_corine <- c(
 #   18, "#e6e64d", 231 , "Pastures",
 #   19, "#ffe6a6", 241 , "Annual crops associated with permanent crops",
 #   20, "#ffe64d", 242 , "Complex cultivation patterns",
-#   21, "#e6cc4d", 243 , "Land principally occupied by agriculture with significant areas of natural vegetation",
+#   21, "#e6cc4d", 243 , "Land principally occupied by agriculture with
+#                         significant areas of natural vegetation",
 #   22, "#f2cca6", 244 , "Agro-forestry areas",
 #   23, "#80ff00", 311 , "Broad-leaved forest",
 #   24, "#00a600", 312 , "Coniferous forest",

@@ -1,11 +1,10 @@
 #' Download digital elevation models from Kartverket's WCS API
 #'
-#' Define a GetCapabilities request URL using OSW4R and Kartverket's Web
-#' Coverage Service that downloads a DEM from a bounding box and a DEM type
-#' (i.e. "dom" or "dtm"). The bounding box is centered to a parsed location
-#' and a parsed radius set the extent. The downloaded DEM is a SpatRaster
-#' object. If the DEM file already exists, it is loaded by default unless
-#' f_overwrite is set to TRUE
+#' Build a WCS URL request with `httr2` to download Kartverket's DEM with
+#' `terra::rast()` from a bounding box and a DEM type (i.e. "dom" or "dtm").
+#' The bounding box is centered to a parsed location and a parsed radius set
+#' the extent. The downloaded DEM is a SpatRaster object. If the DEM file
+#' already exists, it is loaded by default unless f_overwrite is set to TRUE
 #'
 #' @references \url{https://kartkatalog.geonorge.no/metadata/
 #' nasjonal-hoeydemodell-digital-terrengmodell-25833-wcs/
@@ -13,8 +12,6 @@
 #' @references \url{https://kartkatalog.geonorge.no/metadata/
 #' nasjonal-hoeydemodell-digital-overflatemodell-25833-wcs/
 #' e36ea427-13a1-4d7c-be82-977068dfc3e3}
-#' @references \url{https://cran.r-project.org/web/packages/ows4R/
-#' vignettes/wcs.html}
 #'
 #' @param stn A SpatVector with station attribute `stationid` from
 #'        \code{"get_latlon_frost"}
@@ -32,13 +29,13 @@
 #' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 #' path   <- "data/dem"
 #'
-#' # Load data using ows4R ## WCSClient$new() getCapabilities()
+#' # Load data using httr2 and terra
 #' dem    <- download_dem_kartverket(stn,name="dtm",path=path)
 #' dsm    <- download_dem_kartverket(stn,name="dom",path=path)
 #' demkm  <- download_dem_kartverket(stn,name="dtm",dx=20e3,resx=20,path=path)
 #'
-#' @importFrom ows4R WCSClient
-#' @importFrom terra crds rast setMinMax
+#' @importFrom httr2 request req_url_query
+#' @importFrom terra crds rast writeRaster setMinMax
 #'
 #' @export
 
@@ -55,16 +52,15 @@ download_dem_kartverket <- function(stn = NULL,
 
   # Check if resx matches Kartverket's API requirements
   if (resx < round(dx / 500)) {
-    resx = ifelse(dx > 500, round(dx / 500), 1)
+    resx <- ifelse(dx > 500, round(dx / 500), 1)
   }
 
   # Print input parameters
   print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",
                 stationid, centre[1], centre[2], name, dx, resx, path))
 
-  # Compute bounding box
-  box <- round(c(c(centre[1], centre[2]) - dx,
-                 c(centre[1], centre[2]) + dx))
+  # Construct box to extract WMS tile
+  box <- make_bbox(stn)
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
@@ -87,25 +83,27 @@ download_dem_kartverket <- function(stn = NULL,
     return(dem)
   }
 
-  # Get WCS info from an URL request with the layer name (i.e. DEM name)
+  # Build URL request with the layer name (i.e. DEM name)
   url  <- sprintf("https://wcs.geonorge.no/skwms1/wcs.hoyde-%s-nhm-25833",
                   name)
-  WCS  <- ows4R::WCSClient$new(url,
-                               serviceVersion = "1.0.0",
-                               logger = "INFO")
-  caps <- WCS$getCapabilities()
-  chla <- caps$findCoverageSummaryById(sprintf("nhm_%s_topo_25833", name),
-                                       exact = TRUE)
+  req <- httr2::request(url) |>
+    httr2::req_url_query(
+      service = "WCS",
+      version = "1.0.0",
+      request = "GetCoverage",
+      format = "GeoTIFF",
+      crs = "EPSG:25833",
+      coverage = sprintf("nhm_%s_topo_25833", name),
+      bbox = paste(box[1],
+                   box[3],
+                   box[2],
+                   box[4], sep = ","),
+      RESX = resx,
+      RESY = resx)
 
-  # Send URL request to download the DEM data.
-  dem <- chla$getCoverage(crs = "EPSG:25833",
-                          RESX = resx,
-                          RESY = resx,
-                          bbox = ows4R::OWSUtils$toBBOX(box[1],
-                                                        box[3],
-                                                        box[2],
-                                                        box[4]),
-                          filename = fname_out)
+  # Get the DEM from the URL
+  dem <- terra::rast(req$url)
+  terra::writeRaster(dem, filename = fname_out, overwrite = TRUE)
 
   # Assign Not-A-Number values and compute MinMax of the DEM
   dem[dem == 0] <- NA

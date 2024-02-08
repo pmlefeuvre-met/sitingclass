@@ -83,22 +83,25 @@ plot_tile_station <- function(stn = NULL,
   } else if (tile_name == "ar5") {
     tile <- get_tile_wms(box, layer = tile_name)
     credit <- "FKB-AR5 \uA9 Nibio"
-    legend <- paste0("https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&",
-    "service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png")
+    legend <- paste0(
+      "https://wms.nibio.no/cgi-bin/ar5?version=1.1.1&",
+      "service=WMS&request=GetLegendGraphic&layer=Arealtype&format=image/png")
 
   } else if (tile_name == "clc") {
     tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012")
     credit <- "CORINE LC 2012 \uA9 Nibio"
-    legend <- paste0("https://wms.nibio.no/cgi-bin/clc?version=1.1.1&",
-    "service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&",
-    "format=image/png")
+    legend <- paste0(
+      "https://wms.nibio.no/cgi-bin/clc?version=1.1.1&",
+      "service=WMS&request=GetLegendGraphic&layer=CORINE_Land_Cover_2012&",
+      "format=image/png")
 
   } else if (tile_name == "urban") {
     tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012")
     credit <- "Urban Atlas 2012 \uA9 Nibio"
-    legend <- paste0("https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&",
-                     "service=WMS&request=GetLegendGraphic&",
-                     "layer=Urban_Atlas_Lu_Lc_2012&format=image/png")
+    legend <- paste0(
+      "https://wms.nibio.no/cgi-bin/urban_atlas?version=1.1.1&",
+      "service=WMS&request=GetLegendGraphic&",
+      "layer=Urban_Atlas_Lu_Lc_2012&format=image/png")
 
   } else if (tile_name == "toporaster") {
     tile <- get_tile_wms(box, layer = tile_name)

@@ -19,8 +19,9 @@ if path is NULL the plots are printed to the console}
 A figure
 }
 \description{
-Plot sun position and maximum horizon from local terrain model, local surface model
-and regional digital terrain model with infos from the weather station.
+Plot sun position and maximum horizon from local terrain model,
+local surface model and regional digital terrain model with infos
+from the weather station.
 }
 \examples{
 # Load the station metadata and location

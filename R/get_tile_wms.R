@@ -125,4 +125,3 @@ get_tile_wms <- function(box = NULL,
 
   return(wms)
 }
-

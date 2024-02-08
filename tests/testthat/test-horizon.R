@@ -5,6 +5,8 @@ testthat::test_that("compute horizon works", {
   colnames(centre) <- c("x", "y")
   stn_test <- terra::vect(centre, "points", crs = "epsg:25833")
   stn_test$stationid <- 18700
+  stn_test$dx <- 100
+  stn_test$resx <- 1
   stn_test$path <- "tests/testthat/data"
 
   # Set expected horizon
@@ -23,7 +25,7 @@ testthat::test_that("compute horizon works", {
                                                     18.4, 17.7, 9.9))
 
   # Load a digital elevation model
-  dsm   <- download_dem_kartverket(stn_test, name = "dom", dx = 100, resx = 1)
+  dsm   <- download_dem_kartverket(stn_test, name = "dom")
 
   # Compute the horizon
   horizon_computed <- compute_horizon(stn_test, dsm)
