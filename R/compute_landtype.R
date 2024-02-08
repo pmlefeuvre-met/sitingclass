@@ -32,7 +32,7 @@ compute_landtype <- function(stn = NULL,
                              f_plot = FALSE) {
 
   # Bind variable to function
-  landtype <- NULL
+  landtype <- landtype_artificial <- NULL
 
   # Construct box to extract WMS tile
   box <- make_bbox(stn)
@@ -43,7 +43,7 @@ compute_landtype <- function(stn = NULL,
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles
-  px    <- dim(dh)[1]
+  px    <- dim(dh)[1] #*4
   building  <- get_tile_wms(box, layer = "bygning", px = px)
   road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
   water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
@@ -59,11 +59,11 @@ compute_landtype <- function(stn = NULL,
   v_water    <- raster_to_vector(water,
                                  id = "water",
                                  mask_thr = 255)
-  landtype <-  terra::vect(c(v_building, v_road, v_water))
+  landtype_artificial <-  terra::vect(c(v_building, v_road, v_water))
   #print("Vectorised WMS tiles")
 
   # Mask already identified land cover
-  dh_mask <- terra::mask(dh, landtype, inverse = TRUE, touches = FALSE)
+  dh_mask <- terra::mask(dh, landtype_artificial, inverse = TRUE, touches = FALSE)
 
   # Classify vegetation based on dh thresholds in metre
   v_grass <- raster_to_vector(dh_mask <= .10,
@@ -81,7 +81,7 @@ compute_landtype <- function(stn = NULL,
   #print("Vectorised vegetation")
 
   # Merge all landcover vectors
-  landtype <- terra::vect(c(landtype, v_grass, v_crop, v_bush, v_tree))
+  landtype <- terra::vect(c(landtype_artificial, v_grass, v_crop, v_bush, v_tree))
 
   # Convert landcover type values to factors
   levels <-  c("building", "road", "water", "grass", "crop", "bush", "tree")
@@ -119,3 +119,4 @@ compute_landtype <- function(stn = NULL,
   # Return merged landcover types as vector
   return(landtype)
 }
+

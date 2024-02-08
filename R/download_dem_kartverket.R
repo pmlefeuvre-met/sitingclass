@@ -54,8 +54,8 @@ download_dem_kartverket <- function(stn = NULL,
   centre <- terra::crds(stn)
 
   # Check if resx matches Kartverket's API requirements
-  if (resx < round(dx / 100)) {
-    resx = ifelse(dx > 200, round(dx / 100), 1)
+  if (resx < round(dx / 1000)) {
+    resx = ifelse(dx > 2000, round(dx / 1000), 1)
   }
 
   # Print input parameters

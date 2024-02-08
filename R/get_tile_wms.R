@@ -108,7 +108,7 @@ get_tile_wms <- function(box = NULL,
 
   # Load WMS from API request # httr2::req_throttle(rate = 30 / 60)
   resp <- httr2::request(con) |>
-    httr2::req_retry(max_tries = 5) |>
+    # httr2::req_retry(max_tries = 5) |>
     httr2::req_perform() |>
     httr2::resp_body_raw()
   wms <- png::readPNG(resp) * 255

@@ -135,6 +135,20 @@ compute_class <- function(stn = NULL,
     params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  5, 19,
                        NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
                        NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
+                       30, NA, NA, 50, NA, NA, NA, 99, 99, 20, 99,
+                       NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
+                     nrow = length(class_names),
+                     ncol = length(type_names),
+                     byrow = TRUE,
+                     dimnames = list(class_names,
+                                     type_names))
+  } else if (test_type == "MET") {
+    class_names <- c("class1", "class2", "class3", "class4", "class5")
+    type_names  <- c(names(landtypes), names(vegetation),
+                     names(shade), names(slope))
+    params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  7, 19,
+                       NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
+                       NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
                        30, NA, NA, 50, NA, NA, NA, 99, 51, 20, 99,
                        NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
                      nrow = length(class_names),
