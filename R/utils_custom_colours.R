@@ -14,8 +14,8 @@ fill_landtype <- c("building" = "skyblue3",
 
 #' Vector of CORINE land cover colors and types
 #'
-#' @references \ref{"https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/"}
-#' \ref{"https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf"}
+#' @references \url{https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/} and
+#' \url{https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf}
 #'
 #' @examples
 #' col2rgb(fill_corine)
@@ -74,7 +74,7 @@ fill_corine <- c(
 #                411:412,421:423,
 #                511:512,521:523,
 #                999)
-
+#
 # fill_corine <- c(
 #   1, "#e6004d",  111 , "Continuous urban fabric",
 #   2, "#ff0000",  112 , "Discontinuous urban fabric",

@@ -22,8 +22,7 @@ plot_landtype_dist <- function(stn = NULL,
                                land = NULL) {
 
   # Bind variable to function
-  distance <- landtype <- NULL
-  land <- landtype_dist
+  distance <- landtype <- area <- NULL
 
   # Extract column and land type names
   colname <- colnames(land)

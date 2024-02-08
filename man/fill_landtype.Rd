@@ -3,7 +3,7 @@
 \docType{data}
 \name{fill_landtype}
 \alias{fill_landtype}
-\title{Vector of custom colors}
+\title{Vector of custom colors for land type classification}
 \format{
 An object of class \code{character} of length 7.
 }
@@ -11,7 +11,7 @@ An object of class \code{character} of length 7.
 fill_landtype
 }
 \description{
-Vector of custom colors
+Vector of custom colors for land type classification
 }
 \examples{
 fill_landtype
