@@ -119,4 +119,3 @@ compute_landtype <- function(stn = NULL,
   # Return merged landcover types as vector
   return(landtype)
 }
-
