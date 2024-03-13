@@ -46,6 +46,9 @@ plot_station_grid <- function(stn = NULL,
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 300, buf2 = 1000, nx)
 
+  # Remove title and axis
+  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
+
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
@@ -65,6 +68,9 @@ plot_station_grid <- function(stn = NULL,
   nx <- 20
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 30, buf2 = 100, nx)
+
+  # Remove title and axis
+  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
 
   # Save plot
   if (!is.null(path)) {
@@ -86,6 +92,9 @@ plot_station_grid <- function(stn = NULL,
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 10, buf2 = 30, nx)
 
+  # Remove title and axis
+  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
+
   # Save plot
   if (!is.null(path)) {
     fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
@@ -106,6 +115,9 @@ plot_station_grid <- function(stn = NULL,
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 3, buf2 = 10, nx)
 
+  # Remove title and axis
+  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
+
   # 4b) 10-metre scale with 5-metre radius radius
   #-----------------------------
   dx <- 16
@@ -116,6 +128,9 @@ plot_station_grid <- function(stn = NULL,
   nx <- 2
   g <- add_grid(g, box, nx)
   g <- add_buffer(g, box, buf1 = 3, buf2 = 5, nx)
+
+  # Remove title and axis
+  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
 
   #-----------------------------
   # Save plot
