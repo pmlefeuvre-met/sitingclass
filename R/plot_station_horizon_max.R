@@ -157,7 +157,7 @@ plot_station_horizon_max <- function(stn = NULL,
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
     fname <- sprintf("%s/%i_sun_diagram_auto.png", path, stn$stationid)
-    ggsave(fname, bg = "white", width = 7, height = 7)
+    ggsave(fname, bg = "white", width = 10, height = 7)
   }
 
   return(g)
