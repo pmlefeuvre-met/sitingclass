@@ -17,7 +17,7 @@
 #' stn    <- get_metadata_frost(stationid = 18700)
 #'
 #' # Plot grid and buffers on four different scales
-#' #plot_station_grid(stn, path = "plot/map")
+#' #plot_station_grid(stn)
 #'
 #' @importFrom terra crds
 #'
@@ -43,8 +43,8 @@ plot_station_grid <- function(stn = NULL,
 
   # Add grid and buffer. dx and nx are in metre.
   nx <- 200
-  g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, buf1 = 300, buf2 = 1000, nx)
+  g <- add_grid(g, box, nx = nx)
+  g <- add_buffer(g, box, buf1 = 300, buf2 = 1000, nx = nx)
 
   # Remove title and axis
   g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
@@ -66,8 +66,8 @@ plot_station_grid <- function(stn = NULL,
 
   # Add grid and buffer. dx and nx are in metre.
   nx <- 20
-  g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, buf1 = 30, buf2 = 100, nx)
+  g <- add_grid(g, box, nx = nx)
+  g <- add_buffer(g, box, buf1 = 30, buf2 = 100, nx = nx)
 
   # Remove title and axis
   g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
@@ -89,8 +89,8 @@ plot_station_grid <- function(stn = NULL,
 
   # Add grid and buffer. dx and nx are in metre.
   nx <- 5 # metre
-  g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, buf1 = 10, buf2 = 30, nx)
+  g <- add_grid(g, box, nx = nx)
+  g <- add_buffer(g, box, buf1 = 10, buf2 = 30, nx = nx)
 
   # Remove title and axis
   g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
@@ -112,8 +112,8 @@ plot_station_grid <- function(stn = NULL,
 
   # Add grid and buffer. dx and nx are in metre.
   nx <- 2
-  g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, buf1 = 3, buf2 = 10, nx)
+  g <- add_grid(g, box, nx = nx)
+  g <- add_buffer(g, box, buf1 = 3, buf2 = 10, nx = nx)
 
   # Remove title and axis
   g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
@@ -126,8 +126,10 @@ plot_station_grid <- function(stn = NULL,
 
   # Add grid and buffer. dx and nx are in metre.
   nx <- 2
-  g <- add_grid(g, box, nx)
-  g <- add_buffer(g, box, buf1 = 3, buf2 = 5, nx)
+  g <- add_grid(g, box, nx = nx)
+  g <- add_buffer(g, box, buf1 = 10, nx = nx)
+  g <- add_buffer(g, box, buf1 = 3, buf2 = 5, nx = nx)
+
 
   # Remove title and axis
   g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
