@@ -28,6 +28,6 @@ Four different scales are plotted: 10 m, 30 m, 100 m and 1000 m.
 stn    <- get_metadata_frost(stationid = 18700)
 
 # Plot grid and buffers on four different scales
-#plot_station_grid(stn, path = "plot/map")
+#plot_station_grid(stn)
 
 }
