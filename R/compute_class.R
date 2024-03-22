@@ -191,7 +191,7 @@ compute_class <- function(stn = NULL,
                      stn$path,
                      stn$stationid,
                      stn$dx)
-    utils::write.csv(result, fname, row.names = FALSE)
+    utils::write.csv(result, fname)
   }
 
   # Print results
