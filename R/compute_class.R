@@ -186,7 +186,7 @@ compute_class <- function(stn = NULL,
   result <- result[c(4, 2, 1, 3)]
 
   # Save results
-  if (is.null(stn$path)) {
+  if (!is.null(stn$path)) {
     fname <- sprintf("%s/%i_class_%04.0fm.csv",
                      stn$path,
                      stn$stationid,
