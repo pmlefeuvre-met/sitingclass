@@ -60,7 +60,7 @@ download_dem_kartverket <- function(stn = NULL,
                 stationid, centre[1], centre[2], name, dx, resx, path))
 
   # Construct box to extract WMS tile
-  box <- make_bbox(stn)
+  box <- make_bbox(stn, dx = dx)
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)

@@ -23,13 +23,12 @@
 #'
 #' @export
 make_bbox <- function(stn = NULL,
-                      dx = NULL) {
+                      dx = stn$dx) {
 
   # If object is not a matrix and is a SpatVector, then get its coordinates
   if (!is.matrix(stn)) {
     if (terra::is.valid(stn)) {
       centre <- terra::crds(stn)
-      dx <- stn$dx
     }
   } else {
     centre <- stn

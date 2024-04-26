@@ -6,7 +6,7 @@
 #' @references \url{https://frost-beta.met.no/docs/codeexamples}
 #'
 #' @param stn A SpatVector with station attributes from
-#'        \code{"get_latlon_frost"}
+#'        \code{"get_metadata_frost"}
 #' @param dem A SpatRaster of a digital terrain model around the station
 #' @param dsm A SpatRaster of a digital surface model around the station
 #' @param demkm A SpatRaster of a wider digital terrain model around the station
@@ -47,7 +47,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   azimuth <- day <- horizon_height <- hour <- inclination <- NULL
   ymax <- 80
 
-  # Extract station name, latlon and level
+  # Extract station name, lonlat and level
   stn_name    <- str_to_title(stn$station.name)
   stn_id      <- stn$stationid
   stn_wmoid   <- stn$WMO
@@ -55,7 +55,7 @@ plot_station_horizon_sun <- function(stn = NULL,
     stn_wmoid   <- stn$WIGOS
   }
   stn_level   <- stn$level
-  stn_latlon  <- terra::crds(terra::project(stn, "epsg:4326"))
+  stn_lonlat  <- terra::crds(terra::project(stn, "epsg:4326"))
   stn_param   <- stn$parameterid
   stn_expos   <- stn$exposure.value
   stn_perf    <- stn$performance.value
@@ -191,8 +191,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   label <- sprintf("Norwegian Meteorological Institute\n")
   label <- sprintf("%slat: %02.2f - long: %02.2f - elev: %1.0f m\n",
                    label,
-                   stn_latlon[1],
-                   stn_latlon[2],
+                   stn_lonlat[2],
+                   stn_lonlat[1],
                    stn$elev)
   label <- sprintf("%sparamid: %i - exp.: %s - perf.: %s\n",
                    label,

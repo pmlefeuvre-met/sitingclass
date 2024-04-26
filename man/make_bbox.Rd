@@ -4,7 +4,7 @@
 \alias{make_bbox}
 \title{Construct boundary box}
 \usage{
-make_bbox(stn = NULL, dx = NULL)
+make_bbox(stn = NULL, dx = stn$dx)
 }
 \arguments{
 \item{stn}{A SpatVector or an array of two coordinates in UTM 33 (epsg:25833)}

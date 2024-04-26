@@ -14,7 +14,7 @@ plot_station_horizon_sun(
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
-\code{"get_latlon_frost"}}
+\code{"get_metadata_frost"}}
 
 \item{dem}{A SpatRaster of a digital terrain model around the station}
 
