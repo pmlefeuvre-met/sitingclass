@@ -48,7 +48,7 @@ plot_station_horizon_max <- function(stn = NULL,
 
   # Extract station name and coordinates
   stn_name    <- str_to_title(stn$station.name)
-  stn_latlon  <- terra::crds(terra::project(stn, "epsg:4326"))
+  stn_lonlat  <- terra::crds(terra::project(stn, "epsg:4326"))
 
   # Set cardinals (North position is edited to be visible on the plot)
   cardinals <- data.frame(azimuth = c(0 + 15, 90, 180, 260, 360 - 15),
@@ -138,8 +138,8 @@ plot_station_horizon_max <- function(stn = NULL,
   label <- sprintf("Norwegian Meteorological Institute\n")
   label <- sprintf("%slat: %02.2f - long: %02.2f - elev: %1.0f m\n",
                    label,
-                   stn_latlon[1],
-                   stn_latlon[2],
+                   stn_lonlat[2],
+                   stn_lonlat[1],
                    stn$elev)
   label <- sprintf("%stime_zone: %s+1 - svf: %02.2f\n",
                    label,

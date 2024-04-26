@@ -43,7 +43,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                                      path = stn$path) {
 
   # Extract timezone from System and assign variables
-  tz <- Sys.timezone()
+  tz <- "UTC" #Sys.timezone()
   azimuth <- day <- horizon_height <- hour <- inclination <- NULL
   ymax <- 80
 
