@@ -63,7 +63,7 @@ get_metadata_frost <- function(stationid = 18700,
   # Extract alternative ids (WMO,...)
   ids_alt <- json_to_df(res_1$header$extra$station$alternateids)
   ids_alt_names <- ids_alt[, names(ids_alt) == "key"]
-  ids_alt_names <- ids_alt_names[ids_alt_names != "N-dagl"]
+  # ids_alt_names <- ids_alt_names[ids_alt_names != "N-dagl"] # Most likely fixed in stinfo-Facade
   ids_alt <- ids_alt[, names(ids_alt) == "id", drop = FALSE]
   colnames(ids_alt) <- ids_alt_names
 
@@ -72,9 +72,14 @@ get_metadata_frost <- function(stationid = 18700,
                 json_to_df(res_1$header$extra$station$name))
   colnames(name) <- paste0(c("element", "station"), ".", "name")
 
-  # Extract organisation
+  # Extract organisation selecting the latest owner(s)
   orgs <- json_to_df(res_1$header$extra$station$organisation)
   colnames(orgs) <- paste0("organisation", ".", names(orgs))
+  # orgs <- matrix(orgs, ncol=3, byrow=TRUE)
+  # orgs <- orgs[orgs[,3] == "0001-01-01T00:00:00Z",]
+  # orgs_names <- paste0("organisation", ".", names(orgs)[1:3])
+  # colnames(orgs) <- orgs_names
+
 
   # Extract quality
   quality <- json_to_df(res_1$header$extra$timeseries$quality)
