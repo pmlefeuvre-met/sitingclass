@@ -81,7 +81,7 @@ plot_dem_rayshader <- function(stn = NULL,
 
     for (cardinal in cardinal_array) {
       dir.create(path, showWarnings = FALSE, recursive = TRUE)
-      fname <- sprintf("%s/%i_terrain3D_%s.png",
+      fname <- sprintf("%s/%1.0f_terrain3D_%s.png",
                        path,
                        stn$stationid,
                        cardinal)

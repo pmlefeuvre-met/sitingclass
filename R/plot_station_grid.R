@@ -51,7 +51,7 @@ plot_station_grid <- function(stn = NULL,
 
   # Save plot
   if (!is.null(path)) {
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
                      stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
@@ -74,7 +74,7 @@ plot_station_grid <- function(stn = NULL,
 
   # Save plot
   if (!is.null(path)) {
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
                      stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
@@ -97,7 +97,7 @@ plot_station_grid <- function(stn = NULL,
 
   # Save plot
   if (!is.null(path)) {
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
                      stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {
@@ -137,7 +137,7 @@ plot_station_grid <- function(stn = NULL,
   #-----------------------------
   # Save plot
   if (!is.null(path)) {
-    fname <- sprintf("%s/%i_map_grid_%s_%04.0fm.png", path,
+    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
                      stn$stationid, tile_name, dx)
     ggsave(fname, bg = "white", width = 7, height = 7)
   } else {

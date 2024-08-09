@@ -56,7 +56,7 @@ plot_tile_station <- function(stn = NULL,
 
   # Reformat name for title in annotate
   stn_title     <- sprintf("station: %s", stn_name)
-  stn_subtitle  <- sprintf("id: %i - lat: %02.2f - long: %02.2f - elev: %1.0f",
+  stn_subtitle  <- sprintf("id: %1.0f - lat: %02.2f - long: %02.2f - elev: %1.0f",
                            stn$stationid,
                            stn_latlon[1],
                            stn_latlon[2],
@@ -160,7 +160,7 @@ plot_tile_station <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_map_%s.png", path, stn$stationid, tile_name)
+    fname <- sprintf("%s/%1.0f_map_%s.png", path, stn$stationid, tile_name)
     ggsave(fname, bg = "white", width = 7, height = 7)
   }
 

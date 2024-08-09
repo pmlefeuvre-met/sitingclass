@@ -34,7 +34,7 @@ plot_station_siting_context <- function(stationid = 18700,
                             paramid,
                             dx = 100,
                             resx = 1,
-                            path = sprintf("output/%i", stationid))
+                            path = sprintf("output/%1.0f", stationid))
 
   # Construct box to extract WMS tile
   box <- make_bbox(stn)
@@ -86,7 +86,7 @@ plot_station_siting_context <- function(stationid = 18700,
 
   # Save pdf
   if (f_pdf) {
-    fname <- sprintf("%s/%i_infos.pdf", stn$path, stationid)
+    fname <- sprintf("%s/%1.0f_infos.pdf", stn$path, stationid)
     pdf(fname)
     invisible(lapply(list(g0, g2, g10, g3, g4, g11, g12), print))
     dev.off()

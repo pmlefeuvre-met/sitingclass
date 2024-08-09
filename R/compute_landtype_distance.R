@@ -61,7 +61,7 @@ compute_landtype_distance <- function(stn = NULL,
       if (is.null(stn$path)) {
         print(g)
       } else {
-        fname <- sprintf("%s/%i_landtype_map_orto_%04.0fm.png",
+        fname <- sprintf("%s/%1.0f_landtype_map_orto_%04.0fm.png",
                          stn$path,
                          stn$stationid,
                          stn$dx)

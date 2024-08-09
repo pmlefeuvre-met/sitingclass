@@ -56,7 +56,7 @@ download_dem_kartverket <- function(stn = NULL,
   }
 
   # Print input parameters
-  print(sprintf("Process: %i - %1.1f/%1.1f - %s - %i/%i - path: %s",
+  print(sprintf("Process: %1.0f - %1.1f/%1.1f - %s - %i/%i - path: %s",
                 stationid, centre[1], centre[2], name, dx, resx, path))
 
   # Construct box to extract WMS tile
@@ -64,7 +64,7 @@ download_dem_kartverket <- function(stn = NULL,
 
   # Set DEM file name
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
-  fname_out <- sprintf("%s/%i_%s_25833_d%05.0fm_%02.1fm.tif",
+  fname_out <- sprintf("%s/%1.0f_%s_25833_d%05.0fm_%02.1fm.tif",
                        path,
                        stationid,
                        name,

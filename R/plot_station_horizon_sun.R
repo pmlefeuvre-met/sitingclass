@@ -203,7 +203,7 @@ plot_station_horizon_sun <- function(stn = NULL,
                    label,
                    tz,
                    skyviewfactor)
-  label <- sprintf("%sstation_id: %i - level: %i\n",
+  label <- sprintf("%sstation_id: %1.0f - level: %i\n",
                    label,
                    stn_id,
                    stn_level)
@@ -218,7 +218,7 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%i_sun_diagram_auto.png", path, stn$stationid)
+    fname <- sprintf("%s/%1.0f_sun_diagram_auto.png", path, stn$stationid)
     ggsave(fname, bg = "white", width = 10, height = 7)
   }
 
