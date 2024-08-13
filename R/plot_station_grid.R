@@ -25,7 +25,8 @@
 
 plot_station_grid <- function(stn = NULL,
                               tile_name = "ortofoto",
-                              path = stn$path) {
+                              path = stn$path,
+                              grid_scale = c(10, 50, 100, 1000)) {
 
   # Get coordinates
   centre <- terra::crds(stn)
@@ -35,113 +36,61 @@ plot_station_grid <- function(stn = NULL,
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 
-  # 1) 1000-metre scale
-  #-----------------------------
-  dx <- 1600
-  box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name, path=NULL)
+  for (gscale in grid_scale){
+    print(sprintf("grid: %s --- %i-m scale", tile_name, gscale))
 
-  # Add grid and buffer. dx and nx are in metre.
-  nx <- 200
-  g <- add_grid(g, box, nx = nx)
-  g <- add_buffer(g, box, buf1 = 300, buf2 = 1000, nx = nx)
+    if (1000 == gscale) {
+      # 1) 1000-metre scale
+      dx   <- 1600
+      nx   <- 200
+      buf1 <- 300
+      buf2 <- 1000
 
-  # Remove title and axis
-  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
+    } else if (100 == gscale) {
+      # 2) 100-metre scale
+      dx   <- 160
+      nx   <- 20
+      buf1 <- 30
+      buf2 <- 100
 
-  # Save plot
-  if (!is.null(path)) {
-    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
-                     stn$stationid, tile_name, dx)
-    ggsave(fname, bg = "white", width = 7, height = 7)
-  } else {
-    print(g)
+    } else if (50 == gscale) {
+      # 3) 50-metre scale
+      dx   <- 50
+      nx   <- 5
+      buf1 <- 10
+      buf2 <- 30
+
+    } else if (10 == gscale) {
+      # 4) 10-metre scale with 5- and 10-metre radius
+      dx   <- 16
+      nx   <- 2
+      buf1 <- 3
+      buf2 <- 5
+    }
+
+    #-----------------------------
+    box <- make_bbox(centre, dx)
+    g <- plot_tile_station(stn, box, tile_name, path=NULL)
+
+    # Add grid and buffer. dx and nx are in metre.
+    g <- add_grid(g, box, nx = nx)
+    if (10  == gscale) {g <- add_buffer(g, box, buf1 = 10, nx = nx)}
+    g <- add_buffer(g, box, buf1 = buf1, buf2 = buf2, nx = nx)
+
+    # Remove title and axis
+    g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
+
+    #-----------------------------
+    # Save plot
+    if (!is.null(path)) {
+      fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
+                       stn$stationid, tile_name, dx)
+      ggsave(fname, bg = "white", width = 7, height = 7)
+    } else {
+      print(g)
+    }
+
+    # END LOOP
   }
-
-  # 2) 100-metre scale
-  #-----------------------------
-  dx <- 160
-  box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name, path=NULL)
-
-  # Add grid and buffer. dx and nx are in metre.
-  nx <- 20
-  g <- add_grid(g, box, nx = nx)
-  g <- add_buffer(g, box, buf1 = 30, buf2 = 100, nx = nx)
-
-  # Remove title and axis
-  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
-
-  # Save plot
-  if (!is.null(path)) {
-    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
-                     stn$stationid, tile_name, dx)
-    ggsave(fname, bg = "white", width = 7, height = 7)
-  } else {
-    print(g)
-  }
-
-  # 3) 50-metre scale
-  #-----------------------------
-  dx <- 50
-  box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name, path=NULL)
-
-  # Add grid and buffer. dx and nx are in metre.
-  nx <- 5 # metre
-  g <- add_grid(g, box, nx = nx)
-  g <- add_buffer(g, box, buf1 = 10, buf2 = 30, nx = nx)
-
-  # Remove title and axis
-  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
-
-  # Save plot
-  if (!is.null(path)) {
-    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
-                     stn$stationid, tile_name, dx)
-    ggsave(fname, bg = "white", width = 7, height = 7)
-  } else {
-    print(g)
-  }
-
-  # # 4a) 10-metre scale
-  # #-----------------------------
-  # dx <- 16
-  # box <- make_bbox(centre, dx)
-  # g <- plot_tile_station(stn, box, tile_name, path=NULL)
-  #
-  # # Add grid and buffer. dx and nx are in metre.
-  # nx <- 2
-  # g <- add_grid(g, box, nx = nx)
-  # g <- add_buffer(g, box, buf1 = 3, buf2 = 10, nx = nx)
-  #
-  # # Remove title and axis
-  # g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
-
-  # 4b) 10-metre scale with 5-metre radius radius
-  #-----------------------------
-  dx <- 16
-  box <- make_bbox(centre, dx)
-  g <- plot_tile_station(stn, box, tile_name, path=NULL)
-
-  # Add grid and buffer. dx and nx are in metre.
-  nx <- 2
-  g <- add_grid(g, box, nx = nx)
-  g <- add_buffer(g, box, buf1 = 10, nx = nx)
-  g <- add_buffer(g, box, buf1 = 3, buf2 = 5, nx = nx)
-
-
-  # Remove title and axis
-  g <- g + theme_void() + labs(title = NULL, subtitle = NULL)
-
-  #-----------------------------
-  # Save plot
-  if (!is.null(path)) {
-    fname <- sprintf("%s/%1.0f_map_grid_%s_%04.0fm.png", path,
-                     stn$stationid, tile_name, dx)
-    ggsave(fname, bg = "white", width = 7, height = 7)
-  } else {
-    print(g)
-  }
-
+  # END FUNCTION
 }
