@@ -52,12 +52,12 @@ add_buffer <- function(g = NULL,
 
   # Add buffers
   bbuf1 <- terra::buffer(v, buf1)
-  g <- g + geom_sf(data = bbuf1, fill = NA, color = "black")
-  g <- g + geom_sf(data = bbuf1, fill = NA, color = "white", linetype = 2)
+  g <- g + geom_sf(data = bbuf1, fill = NA, color = "black", linewidth=2)
+  g <- g + geom_sf(data = bbuf1, fill = NA, color = "white", linetype = c(800, 600), linewidth=2)
   if (!is.null(buf2)) {
     bbuf2 <- terra::buffer(v, buf2)
-    g <- g + geom_sf(data = bbuf2, fill = NA, color = "black")
-    g <- g + geom_sf(data = bbuf2, fill = NA, color = "white", linetype = 2)
+    g <- g + geom_sf(data = bbuf2, fill = NA, color = "black", linewidth=2)
+    g <- g + geom_sf(data = bbuf2, fill = NA, color = "white", linetype = c(800, 600), linewidth=2)
   }
 
   # Add buffer legend as arrow segments
