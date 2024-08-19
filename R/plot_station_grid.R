@@ -39,28 +39,28 @@ plot_station_grid <- function(stn = NULL,
   for (gscale in grid_scale){
     print(sprintf("grid: %s --- %i-m scale", tile_name, gscale))
 
-    if (1000 == gscale) {
+    if (gscale == 1000 ) {
       # 1) 1000-metre scale
-      dx   <- 1600
-      nx   <- 200
-      buf1 <- 300
-      buf2 <- 1000
+      dx   <- 1600 # Radius in metre for map extent
+      nx   <- 200  # Interval between grid lines in metre
+      buf1 <- 300  # Radius in metre for inner circle
+      buf2 <- 1000 # Radius in metre for outer circle
 
-    } else if (100 == gscale) {
+    } else if (gscale == 100) {
       # 2) 100-metre scale
       dx   <- 160
       nx   <- 20
       buf1 <- 30
       buf2 <- 100
 
-    } else if (50 == gscale) {
+    } else if (gscale == 50) {
       # 3) 50-metre scale
       dx   <- 50
       nx   <- 5
       buf1 <- 10
       buf2 <- 30
 
-    } else if (10 == gscale) {
+    } else if (gscale == 10) {
       # 4) 10-metre scale with 5- and 10-metre radius
       dx   <- 16
       nx   <- 2
@@ -92,5 +92,6 @@ plot_station_grid <- function(stn = NULL,
 
     # END LOOP
   }
+  return(g)
   # END FUNCTION
 }
