@@ -114,11 +114,12 @@ get_metadata_frost <- function(stationid = 18700,
 
   # Build data.frame with station attributes
   stn_attrib <- cbind(ids,
-                      ids_alt,
+                      loc,
+                      loc,
                       name,
                       orgs,
+                      ids_alt,
                       quality,
-                      loc,
                       dx,
                       resx)
   if (!is.null(path)) {

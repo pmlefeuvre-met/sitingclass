@@ -76,6 +76,9 @@ get_metadata_pagination <- function(
                                  lon,
                                  elev))
 
+  # Duplicate lat and lon to preserve original coordinates
+  meta <- cbind(meta,meta[,c("lat","lon")])
+
   # Select and sort stations that in qc_stats for KVALOBS
   meta <- meta[order(meta$stationid), ]
 
