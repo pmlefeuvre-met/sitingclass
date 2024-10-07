@@ -75,7 +75,9 @@ get_metadata_frost <- function(stationid = 18700,
   # Extract organisation selecting the latest owner(s)
   if (!is.null(res_1$header$extra$station$organisation)){
     orgs <- json_to_df(res_1$header$extra$station$organisation)
-  } else {orgs <- data.frame(value = NULL)}
+  } else {
+    orgs <- data.frame(value = "NULL")
+  }
   colnames(orgs) <- paste0("organisation", ".", names(orgs))
 
   # orgs <- matrix(orgs, ncol=3, byrow=TRUE)
