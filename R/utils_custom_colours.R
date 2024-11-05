@@ -12,6 +12,25 @@ fill_landtype <- c("building" = "skyblue3",
                    "bush" = "darkolivegreen3",
                    "tree" = "chartreuse4")
 
+#' Vector of custom colors for equipmenttype type classification
+#'
+#' @examples
+#' colour_equipmenttype
+#'
+#' @export
+colour_equipmenttype <- c("Nedbørmåler" = "skyblue3",
+                          "Fuktmåler" = "skyblue1",
+                          "Vindmåler" = "orchid",
+                          "Lufttemperaturmåler" = "coral",
+                          "Snødybdemåler" = "khaki",
+                          "Trykkmåler" = "red",
+                          "Trykk-, temperatur- og fuktmåler" = "chartreuse4",
+                          "Present-weather-sensor" = "azure3",
+                          "Strålingsmåler" = "gold1",
+                          "Nedbørindikator" = "cadetblue2",
+                          "Flatetemperaturmåler" = "chocolate")
+
+
 #' Vector of CORINE land cover colors and types
 #'
 #' @references \url{https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/} and
