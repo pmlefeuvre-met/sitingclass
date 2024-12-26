@@ -18,17 +18,17 @@ fill_landtype <- c("building" = "skyblue3",
 #' colour_equipmenttype
 #'
 #' @export
-colour_equipmenttype <- c("Nedbørmåler" = "skyblue3",
-                          "Fuktmåler" = "skyblue1",
-                          "Vindmåler" = "orchid",
-                          "Lufttemperaturmåler" = "coral",
-                          "Snødybdemåler" = "khaki",
-                          "Trykkmåler" = "red",
-                          "Trykk-, temperatur- og fuktmåler" = "chartreuse4",
+colour_equipmenttype <- c("Nedb\u00f8rm\u00e5ler" = "skyblue3",
+                          "Fuktm\u00e5ler" = "skyblue1",
+                          "Vindm\u00e5ler" = "orchid",
+                          "Lufttemperaturm\u00e5ler" = "coral",
+                          "Sn\u00f8dybdem\u00e5ler" = "khaki",
+                          "Trykkm\u00e5ler" = "red",
+                          "Trykk-, temperatur- og fuktm\u00e5ler" = "chartreuse4",
                           "Present-weather-sensor" = "azure3",
-                          "Strålingsmåler" = "gold1",
-                          "Nedbørindikator" = "cadetblue2",
-                          "Flatetemperaturmåler" = "chocolate")
+                          "Str\u00e5lingsm\u00e5ler" = "gold1",
+                          "Nedb\u00f8rindikator" = "cadetblue2",
+                          "Flatetemperaturm\u00e5ler" = "chocolate")
 
 
 #' Vector of CORINE land cover colors and types
