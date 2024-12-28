@@ -2,6 +2,7 @@
 
 export(add_buffer)
 export(add_grid)
+export(colour_equipmenttype)
 export(compute_class)
 export(compute_horizon)
 export(compute_horizon_max)
