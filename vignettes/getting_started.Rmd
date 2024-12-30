@@ -1,0 +1,186 @@
+---
+title: "Getting started with sitingclass"
+author: "Pierre-Marie Lefeuvre"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{getting_started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r init,echo=FALSE}
+knitr::opts_chunk$set(collapse=FALSE, #True
+                      comment=NA, #"#>"
+                      warning=FALSE,
+                      message=FALSE,
+                      cache=FALSE,
+                      verbose=TRUE,
+                      fig.width=4,
+                      fig.height=4,
+                      fig.align='center',
+                      fig.cap='center',
+                      out.width='50%',
+                      dev='jpeg',
+                      dev.args=list(quality=25,
+                                    type='cairo'))
+```
+
+# Getting started with `sitingclass`
+The `sitingclass` package computes the exposure of a weather station. Currently, the package is built for Norwegian weather stations that are maintained by the Norwegian Meteorological Institute (https://www.met.no/). 
+
+Check the README for information on this R package's installation, authentication, dependencies, as well as the source of used data and metadata.
+
+From R, get the following examples by loading the library and running: 
+```{r, eval=FALSE}
+vignette("getting_started", package = "sitingclass")
+```
+
+# Plot the station with background imagery
+## Get the station's metadata
+Load the library and extract the metadata for a given station using the Met's stationid
+
+```{r}
+library(sitingclass)
+
+# Define station ID as used by other functions below
+stationid <- 18700
+
+# Get station metadata
+stn <- get_metadata_frost(stationid)
+```
+
+The result is a SpatVector with coordinates in UTM33 (unit: metre) and metadata: 
+
+* the station: name, coordinates (lat/lon), alternative ids, exposure, organisation, 
+* the physical parameter: name, id, level, sensor, performance,
+* the processing parameters: 
+  + `dx`: the radius in metre (default: 1) of the boundary box that defines the area to download
+  + `resx`: the spatial resolution in metre (default: 100)for the data to download
+  + `path`: where to save the output figures (default: output/_stationid_)
+
+```{r}
+stn
+as.data.frame(stn[c("dx","resx","path")])
+```
+## Construct a boundary box
+
+### From SpatVector
+The easiest method is to use the default processing parameters that are contained in the SpatVector. One could edit their values directly during loading of the metadata with:
+`get_metadata_frost(stationid, dx=1, resx=100, path="output/stationid"`
+
+```{r}
+box <- make_bbox(stn)
+box
+```
+
+### From coordinates
+
+The other method is to manually extract the coordinates from the SpatVector and set manually the radius `dx`
+```{r}
+# Get coordinates
+centre <- terra::crds(stn)
+centre
+
+# Define radius
+dx <- 100
+
+# Construct box to extract WMS tile
+box <- make_bbox(centre, dx = dx)
+box
+```
+
+## Plot background tile with station
+
+The boundary box is then used to get background maps from WMS layers, in this case `"esri"` satellite imagery. The list of all available layers is found in the function documentation.
+```{r, fig.cap="A satellite image with the station location as a red dot."}
+# Plot ESRI imagery tile
+plot_tile_station(stn, box, tile_name = "esri")
+```
+
+## Plot station, tile and grid
+The function `plot_station_grid()` adds a grid and circles to the image. The grid/circle size and interval are defined by the radius of the image with default 10-m, 50-m, 100-m and 1000-m.
+
+In this example, the tile name `"ortofoto"` gets aerial imagery from _Kartverket_, the Norwegian Mapping Authority. 
+```{r, fig.cap="Grid and buffer with 'Norge i bilder' imagery."}
+# Plot tile with grid and proximity circles
+plot_station_grid(stn, tile_name = "ortofoto", grid_scale = 10)
+```
+
+# Plot Digital Elevation Models (DEM)
+## Download DEMs from Kartverket
+The area of the DEM is defined by the boundary box set above in addition to the spatial resolution `resx` that is required by Kartverket's Web Coverage Service (WCS). 
+
+Two types of models are available:
+
+* DTM: Digital Terrain Model that represents the ground elevation (`"dtm"` in Norwegian)
+* DSM: Digital Surface Model that represents the surface elevation including trees and buildings (`"dom"` in Norwegian)
+
+The function fetches already downloaded and stored locally DTMs if the flag `f_overwrite` is set to `FALSE`, otherwise it overwrites the file, the default behaviour.
+```{r, results = 'hide'}
+f_ow  <- FALSE
+dem   <- download_dem_kartverket(stn,
+                                 name = "dtm",
+                                 f_overwrite = f_ow)
+dsm   <- download_dem_kartverket(stn,
+                                 name = "dom",
+                                 f_overwrite = f_ow)
+```
+
+## Plot DEMs with `rayshader`
+The package `rayshader` is used here to produce 2D and 3D visualisations of the DEMs with shaded relief. Here is an example where the 100-m DSM raster is converted to a matrix and then plotted with a shaded relief.
+```{r, fig.cap="Hillshade of the 100-m digital surface model."}
+library(rayshader)
+elmat   <- raster_to_matrix(dsm)
+elmat %>%
+  sphere_shade(texture = "desert") %>%
+  plot_map()
+```
+
+## Example for larger areas
+For larger areas, one can also set the boundary box manually in `download_dem_kartverket()` with `stn` being the centre, `dx` the radius of the boundary box and `resx` the horizontal resolution of the model. In this example, a  20-km radius, 20-m resolution DEM is downloaded and plotted.
+```{r, fig.cap="Hillshade of the 20-km digital elevation model.", results = 'hide'}
+demkm <- download_dem_kartverket(stn,
+                                 name = "dtm",
+                                 dx = 20e3,
+                                 resx = 20,
+                                 f_overwrite = f_ow)
+elmatkm <- raster_to_matrix(demkm)
+elmatkm %>%
+  sphere_shade(texture = "desert") %>%
+  plot_map()
+```
+
+# Plot a sun diagram
+The function `plot_station_horizon_sun()` computes and plots sun diagram and requires the following input:
+
+* the station location (`stn`)
+* a local and regional Digital Elevation Model  (`dem` and `demkm`) to show shading from the landscape
+* a local Digital Surface Model (`dsm`) to show shading from local buildings or trees. 
+
+```{r, fig.dim=c(6,4), fig.cap=paste("Horizon and sun diagram for the station ",stationid), results = 'hide'}
+plot_station_horizon_sun(stn, dem, dsm, demkm)
+```
+
+# Compute the final siting class
+The function `plot_station_siting_context()` eventually contains a workflow producing the figures necessary for station inspections and estimate the final siting class:
+
+* Gets the metadata of a Met weather station
+* Plot station with grid and circles covering the area with the radii 10-m, 50-m, 100-m, 1000-m
+* Plot the sun diagram
+* Compute the siting class of the station
+```{r, eval=FALSE}
+# Set timezone to avoid time shift between winter and summer time
+Sys.setenv(TZ = "UTC") # "Europe/Oslo"
+
+# The main function plotting sun diagram and context for a weather station
+plot_station_siting_context(stationid = 18700,
+                            paramid = 211,
+                            f_verbose = FALSE,
+                            f_pdf = FALSE)
+```
+
+
