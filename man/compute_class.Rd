@@ -21,7 +21,7 @@ compute_class(
 \code{"compute_landtype_distance"}}
 
 \item{horizon}{A data.frame with horizon distribution from
-\code{"compute_horizon"}}
+\code{"compute_horizon_max"}}
 
 \item{dem}{A SpatRaster terrain model}
 
