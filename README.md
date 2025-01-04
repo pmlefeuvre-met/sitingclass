@@ -126,7 +126,7 @@ elmatkm %>%
 ```
 ### Compute and plot the horizon and sun diagram
 ```
-plot_station_horizon_sun(stn, dem, dsm, demkm)
+plot_station_horizon_sun(stn)
 ```
 
 ## `plot_station_siting_context()`

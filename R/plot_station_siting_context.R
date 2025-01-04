@@ -15,10 +15,10 @@
 #'
 #' @examples
 #' # Plot sun diagram and map infos for a weather station
-#' plot_station_siting_context(stationid = 18700)
+#' #plot_station_siting_context(stationid = 18700)
 #' #plot_station_siting_context(stationid = 18700,
-#'  #                           paramid = 211,
-#'   #                          f_verbose = TRUE)
+#' #                            paramid = 211,
+#' #                            f_verbose = TRUE)
 #'
 #' @importFrom terra crds
 #' @importFrom grDevices dev.off pdf
@@ -60,11 +60,6 @@ plot_station_siting_context <- function(stationid = 18700,
   dsm   <- download_dem_kartverket(stn,
                                    name = "dom",
                                    f_overwrite = f_ow)
-  demkm <- download_dem_kartverket(stn,
-                                   name = "dtm",
-                                   dx = 20e3,
-                                   resx = 20,
-                                   f_overwrite = f_ow)
 
   # Plot OpenStreetMap
   g2 <- plot_tile_station(stn,
@@ -79,7 +74,7 @@ plot_station_siting_context <- function(stationid = 18700,
     print(dsm)
   }
   # Plot
-  g3 <- plot_station_horizon_sun(stn, dem, dsm, demkm, path = stn$path)
+  g3 <- plot_station_horizon_sun(stn, path = stn$path)
 
   # Plot DEM with rayshader
   g4 <- plot_dem_rayshader(stn, dsm, path = stn$path)
