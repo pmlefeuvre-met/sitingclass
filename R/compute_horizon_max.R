@@ -30,7 +30,8 @@
 
 compute_horizon_max <- function(stn = NULL,
                                 step = 10,
-                                f_plot_polygon = FALSE) {
+                                f_plot_polygon = FALSE,
+                                f_output_all = FALSE) {
   # Get station metadata
   stn_level   <- stn$level
 
@@ -58,13 +59,25 @@ compute_horizon_max <- function(stn = NULL,
                                    step = step,
                                    f_plot_polygon = f_plot_polygon)
   Sys.sleep(0.1)
+
   # Compute highest horizon
   horizon_max   <- data.frame(azimuth = horizon_dem[, 1],
                               horizon_height = apply(cbind(horizon_dem[, 2],
                                                            horizon_dsm[, 2],
                                                            horizon_demkm[, 2]),
                                                      1, max))
+  if(!f_output_all){
+    # Return output
+    return(horizon_max)
+  }else{
+    # Combine
+    horizons <- data.frame(azimuth = horizon_dem[, 1],
+                           horizon_max = horizon_max[, 2],
+                           horizon_dem = horizon_dem[, 2],
+                           horizon_dsm = horizon_dsm[, 2],
+                           horizon_demkm = horizon_demkm[, 2])
 
-  # Return output
-  return(horizon_max)
+    # Return output
+    return(horizons)
+  }
 }
