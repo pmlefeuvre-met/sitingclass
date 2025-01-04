@@ -20,6 +20,8 @@ default is every 10 deg.}
 
 \item{f_plot_polygon}{A boolean setting boundary values to -20 deg to
 facilitate plotting as polygon}
+
+\item{f_output_all}{A boolean to export all horizons: dem, dsm, demkm & max}
 }
 \value{
 A dataframe with `horizon_height` in degrees and `azimuth` angle in

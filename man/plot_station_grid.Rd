@@ -19,6 +19,9 @@ plot_station_grid(
 
 \item{path}{A directory path defining where will be saved the plots,
 if path is NULL the plots are printed to the console}
+
+\item{grid_scale}{A value or array setting plot extent and grid parameters
+that would be looped through if `grid_scale` is an array}
 }
 \value{
 A ggplot2 object
