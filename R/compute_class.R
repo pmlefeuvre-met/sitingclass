@@ -103,7 +103,7 @@ compute_class <- function(stn = NULL,
   vegetation[2, ] <- colSums(vegetation)
   vegetation      <- round(rowMeans(vegetation))
   # 3) Projected shade limits
-  shade <- stats::quantile(horizon[, "horizon_height"], .90)
+  shade <- max(compute_horizon_rollmean(stn, horizon))
   names(shade) <- "shade"
   # 4) Compute median slope
   slope <- terra::global(terra::terrain(dem),
