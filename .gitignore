@@ -14,6 +14,7 @@ data/*
 output/*
 vignettes/plot/*
 vignettes/data/*
+vignettes/output/*
 tests/testthat/data/*
 /doc/
 /Meta/
