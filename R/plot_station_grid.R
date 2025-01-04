@@ -9,6 +9,9 @@
 #' @param tile_name A string naming a tile to pass to \code{"get_tile_wms"}
 #' @param path A directory path defining where will be saved the plots,
 #'        if path is NULL the plots are printed to the console
+#' @param grid_scale A value or array setting plot extent and grid parameters
+#'        that would be looped through if `grid_scale` is an array
+#'
 #'
 #' @return A ggplot2 object
 #'
