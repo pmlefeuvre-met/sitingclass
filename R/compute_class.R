@@ -12,7 +12,7 @@
 #' @param land A data.frame with land type distribution from
 #' \code{"compute_landtype_distance"}
 #' @param horizon A data.frame with horizon distribution from
-#' \code{"compute_horizon"}
+#' \code{"compute_horizon_max"}
 #' @param dem A SpatRaster terrain model
 #' @param test_type A string defining a type of tests to apply: "WMO" or "Met"
 #' @param f_plot A boolean whether to plot figures
