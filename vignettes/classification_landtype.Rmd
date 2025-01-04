@@ -1,18 +1,37 @@
 ---
 title: "Classification of landtypes"
-output: rmarkdown::html_vignette
+author: "Pierre-Marie Lefeuvre"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Classification of landtypes}
+  %\VignetteIndexEntry{getting_started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r init,echo=FALSE}
+knitr::opts_chunk$set(collapse=FALSE, #True
+                      comment=NA, #"#>"
+                      warning=FALSE,
+                      message=FALSE,
+                      cache=FALSE,
+                      verbose=TRUE,
+                      fig.width=4,
+                      fig.height=4,
+                      fig.align='center',
+                      fig.cap='center',
+                      out.width='50%',
+                      dev='jpeg',
+                      dev.args=list(quality=25,
+                                    type='cairo'))
 ```
+
+# Classification of artificial and vegetation landtypes
+Following the WMO 
+
+Sources: - Temperature siting classification in Nordic Countries from [Met's 2016 reports](https://www.met.no/publikasjoner/met-report/met-report-2016)
 
 ```{r setup}
 library(sitingclass)
