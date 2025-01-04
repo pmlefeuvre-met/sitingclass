@@ -4,23 +4,11 @@
 \alias{plot_station_horizon_sun}
 \title{Plot horizon with sun positions for a given station location}
 \usage{
-plot_station_horizon_sun(
-  stn = NULL,
-  dem = NULL,
-  dsm = NULL,
-  demkm = NULL,
-  path = stn$path
-)
+plot_station_horizon_sun(stn = NULL, path = stn$path)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
 \code{"get_metadata_frost"}}
-
-\item{dem}{A SpatRaster of a digital terrain model around the station}
-
-\item{dsm}{A SpatRaster of a digital surface model around the station}
-
-\item{demkm}{A SpatRaster of a wider digital terrain model around the station}
 
 \item{path}{A directory path defining where will be saved the plots,
 if path is NULL the plots are printed to the console}
@@ -34,19 +22,10 @@ and regional digital terrain model with infos from the weather station.
 }
 \examples{
 # Load the station metadata and location
-stn <- get_metadata_frost(stationid = 18700,
-                          paramid = 211,
-                          dx = 100,
-                          resx = 1,
-                          path = "plot/horizon")
-
-# Load DEM data
-dem   <- download_dem_kartverket(stn, name = "dtm")
-dsm   <- download_dem_kartverket(stn, name = "dom")
-demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
+stn <- get_metadata_frost(stationid = 18700)
 
 # Plot sun diagram and save
-plot_station_horizon_sun(stn, dem, dsm, demkm, path  = "plot/horizon")
+plot_station_horizon_sun(stn, path  = "plot/horizon")
 
 }
 \references{

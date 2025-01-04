@@ -155,14 +155,14 @@ elmatkm %>%
 ```
 
 # Plot a sun diagram
-The function `plot_station_horizon_sun()` computes and plots sun diagram and requires the following input:
+The function `plot_station_horizon_sun()` computes and plots sun diagram from the following inputs:
 
 * the station location (`stn`)
 * a local and regional Digital Elevation Model  (`dem` and `demkm`) to show shading from the landscape
 * a local Digital Surface Model (`dsm`) to show shading from local buildings or trees. 
 
 ```{r, fig.dim=c(6,4), fig.cap=paste("Horizon and sun diagram for the station ",stationid), results = 'hide'}
-plot_station_horizon_sun(stn, dem, dsm, demkm)
+plot_station_horizon_sun(stn)
 ```
 
 # Compute the final siting class

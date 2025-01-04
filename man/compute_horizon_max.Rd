@@ -4,7 +4,12 @@
 \alias{compute_horizon_max}
 \title{Maximum horizon height around a station}
 \usage{
-compute_horizon_max(stn = NULL, step = 10, f_plot_polygon = FALSE)
+compute_horizon_max(
+  stn = NULL,
+  step = 10,
+  f_plot_polygon = FALSE,
+  f_output_all = FALSE
+)
 }
 \arguments{
 \item{stn}{A SpatVector with station attributes from
