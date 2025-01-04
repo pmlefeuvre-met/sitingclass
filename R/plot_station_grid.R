@@ -28,9 +28,6 @@ plot_station_grid <- function(stn = NULL,
                               path = stn$path,
                               grid_scale = c(10, 50, 100, 1000)) {
 
-  # Bind variable to function
-  grid_scale <- NULL
-
   # Get coordinates
   centre <- terra::crds(stn)
 
