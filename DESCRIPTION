@@ -21,7 +21,8 @@ Imports: ggplot2,
          terra,
          tidyr,
          tidyterra,
-         utils
+         utils,
+         zoo
 Suggests: 
     magick,
     knitr,
