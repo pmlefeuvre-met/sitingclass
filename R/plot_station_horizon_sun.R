@@ -7,9 +7,6 @@
 #'
 #' @param stn A SpatVector with station attributes from
 #'        \code{"get_metadata_frost"}
-#' @param dem A SpatRaster of a digital terrain model around the station
-#' @param dsm A SpatRaster of a digital surface model around the station
-#' @param demkm A SpatRaster of a wider digital terrain model around the station
 #' @param path A directory path defining where will be saved the plots,
 #'        if path is NULL the plots are printed to the console
 #'
@@ -17,19 +14,10 @@
 #'
 #' @examples
 #' # Load the station metadata and location
-#' stn <- get_metadata_frost(stationid = 18700,
-#'                           paramid = 211,
-#'                           dx = 100,
-#'                           resx = 1,
-#'                           path = "plot/horizon")
-#'
-#' # Load DEM data
-#' dem   <- download_dem_kartverket(stn, name = "dtm")
-#' dsm   <- download_dem_kartverket(stn, name = "dom")
-#' demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
 #' # Plot sun diagram and save
-#' plot_station_horizon_sun(stn, dem, dsm, demkm, path  = "plot/horizon")
+#' plot_station_horizon_sun(stn, path  = "plot/horizon")
 #'
 #' @importFrom terra crds project
 #' @import ggplot2
@@ -37,9 +25,6 @@
 #' @export
 
 plot_station_horizon_sun <- function(stn = NULL,
-                                     dem = NULL,
-                                     dsm = NULL,
-                                     demkm = NULL,
                                      path = stn$path) {
 
   # Extract timezone from System and assign variables
@@ -77,26 +62,21 @@ plot_station_horizon_sun <- function(stn = NULL,
 
   # Compute horizon view from location
   step <- 0.01
-  horizon_dem   <- compute_horizon(stn,
-                                   dem,
-                                   level = stn_level,
-                                   step = step,
-                                   f_plot_polygon = TRUE)
-  horizon_dsm   <- compute_horizon(stn,
-                                   dsm,
-                                   level = stn_level,
-                                   step = step,
-                                   f_plot_polygon = TRUE)
-  horizon_demkm <- compute_horizon(stn,
-                                   demkm,
-                                   level = stn_level,
-                                   step = step,
-                                   f_plot_polygon = TRUE)
-  horizon_max   <- data.frame(azimuth = horizon_dem[, 1],
-                              horizon_height = apply(cbind(horizon_dem[, 2],
-                                                           horizon_dsm[, 2],
-                                                           horizon_demkm[, 2]),
-                                                     1, max))
+  f_plot_polygon <- TRUE
+  horizons <- compute_horizon_max(stn,
+                                  step = step,
+                                  f_plot_polygon = f_plot_polygon,
+                                  f_output_all = TRUE)
+  # Reassign output
+  horizon_dem   <- data.frame(azimuth = horizons[, "azimuth"],
+                              horizon_height = horizons[, "horizon_dem"])
+  horizon_dsm   <- data.frame(azimuth = horizons[, "azimuth"],
+                              horizon_height = horizons[, "horizon_dsm"])
+  horizon_demkm <- data.frame(azimuth = horizons[, "azimuth"],
+                              horizon_height = horizons[, "horizon_demkm"])
+  horizon_max   <- data.frame(azimuth = horizons[, "azimuth"],
+                              horizon_height = horizons[, "horizon_max"])
+
   skyviewfactor <- compute_skyviewfactor(horizon_max)
 
   # Plot init
