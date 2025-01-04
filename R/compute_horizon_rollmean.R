@@ -23,6 +23,7 @@
 #' horizon["horizon_mean"] <- compute_horizon_rollmean(stn, horizon)
 #'
 #' @importFrom zoo rollmean
+#' @importFrom stats median
 #'
 #' @export
 
@@ -49,7 +50,7 @@ compute_horizon_rollmean <- function(stn = NULL,
   azimuth_1hour <- round(median(sun_hour))
 
   # Compute azimuth interval from the horizon data
-  azimuth_interval <- abs(median(diff(horizon[, "azimuth"])))
+  azimuth_interval <- abs(stats::median(diff(horizon[, "azimuth"])))
 
   # Compute azimuth window for an hour normalised by the azimuth interval
   window <- azimuth_1hour / azimuth_interval
