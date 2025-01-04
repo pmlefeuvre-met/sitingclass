@@ -65,12 +65,12 @@ compute_horizon <- function(stn = NULL,
   dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
-  grasslib <- try(system("grass --config", intern = TRUE))[4]
+  grasslib <- "/usr/lib/grass78" #try(system("grass --config", intern = TRUE))[4]
   gisDbase <- "data/grassdata/"
 
   # Initialise GRASS and projection
   rgrass::initGRASS(gisBase = grasslib,
-                    home = tempdir(),
+                    home = tempdir(check = TRUE),
                     SG = dem,
                     gisDbase = gisDbase,
                     mapset = "PERMANENT",
@@ -78,8 +78,8 @@ compute_horizon <- function(stn = NULL,
                     remove_GISRC = TRUE)
 
   # Load DEM
-  rgrass::write_RAST(dem, "elev", flags = "o")
-
+  rgrass::write_RAST(dem, "elev", flags=c("o", "overwrite"), verbose=TRUE)
+  # execGRASS("g.list", parameters = list(type = "raster"))
   # Compute horizon
   horizon <- rgrass::execGRASS("r.horizon",
                                flags = c("d", "c", "overwrite"),
