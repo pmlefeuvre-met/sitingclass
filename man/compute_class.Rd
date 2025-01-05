@@ -2,14 +2,14 @@
 % Please edit documentation in R/compute_class.R
 \name{compute_class}
 \alias{compute_class}
-\title{Compute station class}
+\title{Compute siting class for a station measuring air temperature}
 \usage{
 compute_class(
   stn = NULL,
   land = NULL,
   horizon = NULL,
   dem = NULL,
-  test_type = "WMO",
+  test_type = "MET",
   f_plot = TRUE
 )
 }
