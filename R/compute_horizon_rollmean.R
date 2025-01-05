@@ -48,8 +48,9 @@ compute_horizon_rollmean <- function(stn = NULL,
   # expecting 10-25 degrees in azimuth for an hour
   sun_hour <- sun_hour[sun_hour > 0 & sun_hour < 60]
 
-  # Compute azimuth median for a theoretical hour at midday
-  azimuth_1hour <- round(median(sun_hour))
+  # Compute azimuth median for a theoretical hour at midday (add 30% padding)
+  azimuth_1hour <- median(sun_hour)
+  azimuth_1hour <- round(azimuth_1hour + azimuth_1hour*0.30)
 
   # Compute azimuth interval from the horizon data
   azimuth_interval <- abs(stats::median(diff(horizon[, "azimuth"])))
