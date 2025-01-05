@@ -30,17 +30,19 @@
 compute_horizon_rollmean <- function(stn = NULL,
                                      horizon = NULL) {
 
-  # Get sun position for each hour
+  # Get sun position for each hour and for summer solstice (highest sun)
   sun <- compute_sun_position(stn, f_hour = TRUE)
+  sun_day <- compute_sun_position(stn)
+  sun_day <- sun_day[sun_day[, "day"] == "21 juni", 1:2]
 
   # Remove inclinations that are below horizon and above max inclination
   # for class 4, extracting inlinations relevant for siting class.
   sun[,1:2] <- sun[, 1:2] * as.numeric(sun[, "inclination"] > 0 &
-                                       sun[, "inclination"] <= 20)
+                                         sun[, "inclination"] <= 20)
 
   # Compute the difference of the azimuth at 12:00 and 13:00
   sun_hour <- sun[sun[, "hour"] == 13, "azimuth"] -
-              sun[sun[, "hour"] == 12, "azimuth"]
+    sun[sun[, "hour"] == 12, "azimuth"]
 
   # Remove difference errors due to removed inclinations,
   # expecting 10-25 degrees in azimuth for an hour
@@ -59,6 +61,22 @@ compute_horizon_rollmean <- function(stn = NULL,
   horizon_mean <- zoo::rollmean(horizon[, "horizon_height"],
                                 window,
                                 fill = TRUE)
+
+  # Approximate sun inclination to same azimuth interval than horizon array
+  sun_day_approx <- approx(x = sun_day[, "azimuth"],
+                           y = sun_day[, "inclination"],
+                           xout = horizon[, "azimuth"],
+                           method = "linear",
+                           rule = 2)$y
+
+  # Remove sun inclinations below horizon
+  sun_day_approx <- sun_day_approx * as.numeric(sun_day_approx>0)
+
+  # Remove horizon above and beyond the sun inclination that do not impact
+  # temperature sensor like from, for instance, theoretical northern shadows
+  # AND Reassign horizon to max sun inclinations
+  horizon_mean <-  horizon_mean * (horizon_mean <= sun_day_approx) +
+    sun_day_approx * (horizon_mean > sun_day_approx)
 
   # Return horizon mean
   return(horizon_mean)
