@@ -1,4 +1,4 @@
-#' Compute station class
+#' Compute siting class for a station measuring air temperature
 #'
 #' Assess the class of a station from the type of surrounding land cover, slope,
 #' vegetation and shadowing as potential heat sources affecting sensors and
@@ -49,7 +49,7 @@ compute_class <- function(stn = NULL,
                           land = NULL,
                           horizon = NULL,
                           dem = NULL,
-                          test_type = "WMO",
+                          test_type = "MET",
                           f_plot = TRUE) {
 
   # Bind variable to function
