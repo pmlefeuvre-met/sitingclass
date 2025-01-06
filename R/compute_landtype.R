@@ -37,9 +37,21 @@ compute_landtype <- function(stn = NULL,
   # Construct box to extract WMS tile
   box <- make_bbox(stn)
 
-  # Download DEMs and compute difference to assess vegetation
+  # Download DEMs
   dem <- download_dem_kartverket(stn, name = "dtm")
   dsm <- download_dem_kartverket(stn, name = "dom")
+
+  # Verify extent match
+  if( ext(dem) != ext(dsm) ){
+    print("!! Mismatched extent !!")
+    print(ext(dem))
+    print(ext(dsm))
+  # Reload DEMs
+    dem <- download_dem_kartverket(stn, name = "dtm", f_overwrite = TRUE)
+    dsm <- download_dem_kartverket(stn, name = "dom", f_overwrite = TRUE)
+    }
+
+  # Compute difference to assess vegetation
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles
