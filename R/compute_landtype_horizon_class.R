@@ -32,7 +32,7 @@ compute_landtype_horizon_class <- function(stn) {
                                              f_plot = TRUE)
   # Compute maximum horizon
   horizon_max <- compute_horizon_max(stn,
-                                     step = 0.1,
+                                     step = 0.01,
                                      f_plot_polygon = FALSE)
 
   # Compute class
