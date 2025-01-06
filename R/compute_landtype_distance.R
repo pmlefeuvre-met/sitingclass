@@ -81,6 +81,7 @@ compute_landtype_distance <- function(stn = NULL,
 
   # Convert to area and assign array to store area distribution per land type
   h_all <- h$counts * prod(terra::res(r))
+  l_h <- length(h$counts)
 
   # Loop through land types
   for (type in type_array) {
@@ -89,6 +90,8 @@ compute_landtype_distance <- function(stn = NULL,
 
     # Check if vector is empty
     if (terra::is.empty(landtype_select)) {
+      # Merge with rest of distribution data
+      h_all <- cbind(h_all, rep(0,l_h))
       next
     }
 
@@ -102,16 +105,15 @@ compute_landtype_distance <- function(stn = NULL,
     # Convert count to area in square metre
     h$counts <- h$counts * prod(terra::res(r))
 
-    # Merge distributions
+    # Merge with rest of distribution data
     h_all <- cbind(h_all, h$counts)
   }
 
   # Compute total area from output and cumulative sums
   h_all <- apply(h_all, 2, cumsum)
 
-  # Set column (deal with empty vectors) and row names
-  type_names <- type_array[type_array %in% unique(landtype$landtype)]
-  colnames(h_all) <- c("total_area", type_names)
+  # Set column and row names
+  colnames(h_all) <- c("total_area", type_array)
   rownames(h_all) <- distance_breaks[-1]
 
   # Keep only data inside the radius dx and avoid corner effect from bbox
