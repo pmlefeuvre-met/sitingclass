@@ -35,8 +35,8 @@ make_bbox <- function(stn = NULL,
   }
 
   # Set box boundary as a distance dx from the centre coordinates
-  box <- round(c(c(centre[1], centre[2]) - dx,
-                 c(centre[1], centre[2]) + dx))
+  box <- c(floor(c(centre[1], centre[2]) - dx),
+           ceiling(c(centre[1], centre[2]) + dx))
 
   # Assign class SpatExtent
   box <- terra::ext(box[1], box[3], box[2], box[4])
