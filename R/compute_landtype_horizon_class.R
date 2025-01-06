@@ -20,7 +20,7 @@
 compute_landtype_horizon_class <- function(stn) {
 
   # Load a digital elevation model
-  dem <- download_dem_kartverket(stn, name = "dtm",f_overwrite = TRUE)
+  dem <- download_dem_kartverket(stn, name = "dtm")
 
   # Compute land type
   landtype <- compute_landtype(stn,
