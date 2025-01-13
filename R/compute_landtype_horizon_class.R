@@ -42,7 +42,7 @@ compute_landtype_horizon_class <- function(stn,
                          horizon_max,
                          dem,
                          test_type = "WMO",
-                         f_plot = TRUE)
+                         f_plot = f.plot)
 
   return(class)
 }
