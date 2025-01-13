@@ -4,11 +4,13 @@
 \alias{compute_landtype_horizon_class}
 \title{Pipeline to compute siting class}
 \usage{
-compute_landtype_horizon_class(stn)
+compute_landtype_horizon_class(stn, f.plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attribute `stationid` from
 \code{"get_latlon_frost"}}
+
+\item{f_plot}{A boolean whether to plot and save figures}
 }
 \value{
 None

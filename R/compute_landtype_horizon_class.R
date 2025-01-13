@@ -8,6 +8,7 @@
 #'
 #' @param stn A SpatVector with station attribute `stationid` from
 #'        \code{"get_latlon_frost"}
+#' @param f_plot A boolean whether to plot and save figures
 #'
 #' @return None
 #'
@@ -17,23 +18,23 @@
 #'
 #' @export
 
-compute_landtype_horizon_class <- function(stn) {
+compute_landtype_horizon_class <- function(stn,
+                                           f.plot = FALSE) {
 
   # Load a digital elevation model
   dem <- download_dem_kartverket(stn, name = "dtm")
 
   # Compute land type
   landtype <- compute_landtype(stn,
-                               f_plot = TRUE)
+                               f_plot = f.plot)
 
   # Compute land type distance to station
   landtype_dist <- compute_landtype_distance(stn,
                                              landtype,
-                                             f_plot = TRUE)
+                                             f_plot = f.plot)
   # Compute maximum horizon
   horizon_max <- compute_horizon_max(stn,
-                                     step = 0.01,
-                                     f_plot_polygon = FALSE)
+                                     step = 0.01)
 
   # Compute class
   class <- compute_class(stn,
