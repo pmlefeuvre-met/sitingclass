@@ -39,7 +39,7 @@ compute_horizon_max <- function(stn = NULL,
   # Load digital elevation models of the terrain and surface
   dem   <- download_dem_kartverket(stn, name = "dtm")
   dsm   <- download_dem_kartverket(stn, name = "dom")
-  demkm <- download_dem_kartverket(stn, name = "dtm", dx = 5e2, resx = 1)
+  demkm <- download_dem_kartverket(stn, name = "dtm", dx = 20e3, resx = 20)
 
   # Compute horizon for three DEMs: DTM, DSM and DTM_20km
   horizon_dem   <- compute_horizon(stn,
