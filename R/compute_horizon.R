@@ -65,7 +65,7 @@ compute_horizon <- function(stn = NULL,
   dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
-  grasslib <- "/usr/lib/grass78" #try(system("grass --config", intern = TRUE))[4]
+  grasslib <- try(system("grass --config", intern = TRUE))[4]
   gisDbase <- "data/grassdata/"
 
   # Initialise GRASS and projection
