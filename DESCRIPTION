@@ -8,21 +8,22 @@ Description: The package sitingclass evaluates the exposure of weather stations 
 URL: https://gitlab.met.no/pierreml/sitingclass
 License: GPL (>= 3)
 Depends: R (>= 3.6.0)
-Imports: ggplot2,
-         grDevices,
-         httr2,
-         magrittr,
-         maptiles,
-         png,
-         rayshader,
-         rgrass,
-         stats,
-         suntools,
-         terra,
-         tidyr,
-         tidyterra,
-         utils,
-         zoo
+Imports: 
+    ggplot2,
+    grDevices,
+    httr2,
+    magrittr,
+    maptiles,
+    png,
+    rayshader (>= 0.38.11),
+    rgrass,
+    stats,
+    suntools,
+    terra,
+    tidyr,
+    tidyterra,
+    utils,
+    zoo
 Suggests: 
     magick,
     knitr,
@@ -33,3 +34,5 @@ LazyData: true
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Remotes:  
+    tylermorganwall/rayshader
