@@ -4,7 +4,7 @@
 \alias{compute_landtype_horizon_class}
 \title{Pipeline to compute siting class}
 \usage{
-compute_landtype_horizon_class(stn, f.plot = FALSE)
+compute_landtype_horizon_class(stn, f_plot = FALSE)
 }
 \arguments{
 \item{stn}{A SpatVector with station attribute `stationid` from

@@ -23,7 +23,7 @@
 #' horizon["horizon_mean"] <- compute_horizon_rollmean(stn, horizon)
 #'
 #' @importFrom zoo rollmean
-#' @importFrom stats median
+#' @importFrom stats median approx
 #'
 #' @export
 

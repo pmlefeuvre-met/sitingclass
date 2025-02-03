@@ -19,19 +19,19 @@
 #' @export
 
 compute_landtype_horizon_class <- function(stn,
-                                           f.plot = FALSE) {
+                                           f_plot = FALSE) {
 
   # Load a digital elevation model
   dem <- download_dem_kartverket(stn, name = "dtm")
 
   # Compute land type
   landtype <- compute_landtype(stn,
-                               f_plot = f.plot)
+                               f_plot = f_plot)
 
   # Compute land type distance to station
   landtype_dist <- compute_landtype_distance(stn,
                                              landtype,
-                                             f_plot = f.plot)
+                                             f_plot = f_plot)
   # Compute maximum horizon
   horizon_max <- compute_horizon_max(stn,
                                      step = 0.01)
@@ -42,7 +42,7 @@ compute_landtype_horizon_class <- function(stn,
                          horizon_max,
                          dem,
                          test_type = "WMO",
-                         f_plot = f.plot)
+                         f_plot = f_plot)
 
   return(class)
 }
