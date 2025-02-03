@@ -65,7 +65,10 @@ compute_horizon <- function(stn = NULL,
   dem[c(loc)] <- dem[c(loc)] + level
 
   # Set GRASS path
-  grasslib <- try(system("grass --config", intern = TRUE))[4]
+  suppressWarnings({
+    # grasslib <- try(system("grass --config", intern = TRUE))[4]
+    grasslib <- "/home/pierreml/local/grass85"
+  })
   gisDbase <- "data/grassdata/"
 
   # Initialise GRASS and projection
@@ -82,7 +85,7 @@ compute_horizon <- function(stn = NULL,
   # execGRASS("g.list", parameters = list(type = "raster"))
   # Compute horizon
   horizon <- rgrass::execGRASS("r.horizon",
-                               flags = c("d", "c", "overwrite"),
+                               flags = c("d", "c", "l", "overwrite"),
                                parameters = list(elevation = "elev",
                                                  coordinates = centre[1:2],
                                                  direction = 90,
@@ -92,15 +95,18 @@ compute_horizon <- function(stn = NULL,
                                                  end = 360),
                                intern = TRUE)
 
+  # Extract column names
+  names <- unlist(strsplit(horizon[[1]], ","))
+  columns <- length(names)
+
   # Construct data frame from GRASS output
   df <- data.frame(t(vapply(strsplit(horizon[2:length(horizon)],
                                      ","),
                             as.numeric,
-                            numeric(2))))
-
+                            numeric(columns))))
 
   # Name columns
-  colnames(df) <- unlist(strsplit(horizon[[1]], ","))
+  colnames(df) <- names
 
   # Create directory and save file
   if (is.null(stn$path)) {
@@ -111,8 +117,15 @@ compute_horizon <- function(stn = NULL,
   # Reformat start point and add end point to plot as polygon
   if (f_plot_polygon) {
     ymin_polygon <- -20
-    df[1, ] <- c(360, ymin_polygon)
-    df      <- rbind(df, c(0, ymin_polygon))
+    # Number of element depends on the number of columns: azimuth, horizon and
+    # the newly added column: distance of the horizon
+    if(columns == 2){
+      df[1, ] <- c(360, ymin_polygon)
+      df      <- rbind(df, c(0, ymin_polygon))
+    }else if(columns == 3){
+      df[1, ] <- c(360, ymin_polygon, 0)
+      df      <- rbind(df, c(0, ymin_polygon, 0))
+    }
   }
 
   # Clean up

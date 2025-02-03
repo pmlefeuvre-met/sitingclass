@@ -25,7 +25,7 @@
 #'
 #' # Compute the maximum horizon
 #' compute_horizon_max(stn)
-#' compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+#' compute_horizon_max(stn, step = 1, f_output_all = TRUE)
 #'
 #' @export
 
@@ -61,22 +61,52 @@ compute_horizon_max <- function(stn = NULL,
                                    f_plot_polygon = f_plot_polygon)
   Sys.sleep(0.1)
 
-  # Compute highest horizon
-  horizon_max   <- data.frame(azimuth = horizon_dem[, 1],
-                              horizon_height = apply(cbind(horizon_dem[, 2],
-                                                           horizon_dsm[, 2],
-                                                           horizon_demkm[, 2]),
+  # Combine horizon output for processing
+  horizon_matrix <- cbind(horizon_dem[, "horizon_height"],
+                          horizon_dsm[, "horizon_height"],
+                          horizon_demkm[, "horizon_height"])
+
+  # Extract the column with the highest horizon height per row
+  max_col_index <- max.col(m = horizon_matrix, ties.method = 'first')
+
+  # Compute highest horizon (default output)
+  horizon_max   <- data.frame(azimuth = horizon_dem[, "azimuth"],
+                              horizon_height = apply(horizon_matrix,
                                                      1, max))
   if(!f_output_all){
-    # Return output
+    # Return simplified output
     return(horizon_max)
+
   }else{
-    # Combine
-    horizons <- data.frame(azimuth = horizon_dem[, 1],
-                           horizon_max = horizon_max[, 2],
-                           horizon_dem = horizon_dem[, 2],
-                           horizon_dsm = horizon_dsm[, 2],
-                           horizon_demkm = horizon_demkm[, 2])
+    # Construct dataframe with all horizon and distance output
+
+    # Combine horizon
+    horizons <- data.frame(azimuth = horizon_dem[, "azimuth"],
+                           horizon_max = horizon_max[, "horizon_height"],
+                           horizon_dem = horizon_dem[, "horizon_height"],
+                           horizon_dsm = horizon_dsm[, "horizon_height"],
+                           horizon_demkm = horizon_demkm[, "horizon_height"])
+
+    # Add Distance, renamed below range to refer to the line of sight
+    if(ncol(horizon_dem) == 3){
+      # Combine distance/range output for processing
+      range_matrix <- cbind(horizon_dem[, "horizon_distance"],
+                            horizon_dsm[, "horizon_distance"],
+                            horizon_demkm[, "horizon_distance"])
+
+  # Extract the distance/range with the highest horizon per row
+      range_max <- sapply(1:length(max_col_index),
+                          function(i) range_matrix[i, max_col_index[i]])
+
+      # Combine ranges
+      ranges <- data.frame(range_max = range_max,
+                           range_dem = horizon_dem[, "horizon_distance"],
+                           range_dsm = horizon_dsm[, "horizon_distance"],
+                           range_demkm = horizon_demkm[,"horizon_distance"])
+
+      # Combine horizon and ranges
+      horizons <- cbind(horizons, ranges)
+    }
 
     # Return output
     return(horizons)
