@@ -1,14 +1,13 @@
-#' Plot max horizon with sun height
+#' Plot max horizon and range from the station
 #'
-#' Plot sun position and maximum horizon from local terrain model,
-#' local surface model and regional digital terrain model with infos
+#' Plot maximum horizon and its range based on the local terrain model, the
+#' local surface model and the regional digital terrain model with infos
 #' from the weather station.
 #'
 #' @references \url{https://frost-beta.met.no/docs/codeexamples}
 #'
 #' @param stn A SpatVector with station attributes from
 #'        \code{"get_metadata_frost"}
-#' @param horizon_max A data.frame from \code{"compute_horizon_max"}
 #' @param path A directory path defining where will be saved the plots,
 #'        if path is NULL the plots are printed to the console
 #'
@@ -16,20 +15,14 @@
 #'
 #' @examples
 #' # Load the station metadata and location
-#' stn <- get_metadata_frost(stationid = 18700,
-#'                           paramid = 211,
-#'                           dx = 100,
-#'                           resx = 1,
-#'                           path = "plot/horizon")
-#'
-#' horizon_max <- compute_horizon_max(stn,
-#'                                    step = 1,
-#'                                    f_plot_polygon = TRUE)
+#' stn <- get_metadata_frost(stationid = 18700, path = "plot/horizon")
 #'
 #' # Plot sun diagram and save
-#' plot_station_horizon_max(stn, horizon_max)
+#' plot_station_horizon_range(stn)
 #'
 #' @importFrom terra crds project
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom scales pseudo_log_trans rescale
 #' @importFrom ggplot2 ggplot geom_hline geom_text geom_polygon geom_line
 #' @importFrom ggplot2 geom_path scale_color_viridis_d theme_minimal theme
 #' @importFrom ggplot2 labs xlab ylab scale_x_continuous scale_y_continuous
@@ -37,9 +30,8 @@
 #'
 #' @export
 
-plot_station_horizon_max <- function(stn = NULL,
-                                     horizon_max = NULL,
-                                     path = stn$path) {
+plot_station_horizon_range <- function(stn = NULL,
+                                       path = stn$path) {
 
   # Extract timezone from System and assign variables
   azimuth <- day <- horizon_height <- hour <- inclination <- NULL
@@ -55,13 +47,32 @@ plot_station_horizon_max <- function(stn = NULL,
                           inclination = rep((ymax - 0.05 * ymax), 5),
                           labels = c("North", "East", "South", "West", "North"))
 
-  # Compute sun position from station location
-  sun       <- compute_sun_position(stn)
-  sun_hour  <- compute_sun_position(stn, f_hour = TRUE)
+  # Compute horizon view from location
+  step <- 1
+  f_plot_polygon <- TRUE
+  horizons <- compute_horizon_max(stn,
+                                  step = step,
+                                  f_plot_polygon = f_plot_polygon,
+                                  f_output_all = TRUE)
+
+  # Reassign output
+  horizon_max   <- data.frame(azimuth = horizons[, "azimuth"],
+                              horizon_height = horizons[, "horizon_max"],
+                              range = horizons[, "range_max"])
 
   # Compute horizon view from location
   skyviewfactor <- compute_skyviewfactor(horizon_max)
 
+  ## Plot parameters for scale_fill_gradientn():
+  # 1. Colour palette for horizon range changing at 100 m
+  colours <- c(rev(RColorBrewer::brewer.pal(6, "Paired")),
+               RColorBrewer::brewer.pal(4, "Purples"))
+  values <- c(0, 5, 10, 30, 50, 70, 90, 100, 1000, 5000, 20000)
+
+  # 2. Log transform function for scale_fill and legend
+  trans <- scales::pseudo_log_trans()
+
+  ## Plot
   # Plot init
   g <- ggplot()
 
@@ -77,11 +88,18 @@ plot_station_horizon_max <- function(stn = NULL,
 
   # Plot horizon polygon
   g <- g +
-    geom_polygon(data = horizon_max,
-                 mapping = aes(x = azimuth,
-                               y = horizon_height),
-                 alpha = .6,
-                 fill = "gray")
+    geom_bar(stat="identity",
+             data =  horizon_max,
+             mapping = aes(x = azimuth,
+                           y = horizon_height,
+                           fill = range),
+             alpha = .6) +
+    scale_fill_gradientn(colours = colours,
+                         values = scales::rescale(trans$transform(values)),
+                         breaks = c(0, 3, 10, 30, 100, 1000, 5000, 20000),
+                         limits = c(0, 20000),
+                         transform = trans)
+
 
   # Plot horizon lines
   g <- g +
@@ -91,26 +109,6 @@ plot_station_horizon_max <- function(stn = NULL,
               linewidth = .6,
               colour = "gray50")
 
-  # Plot sun position from the station location
-  g <- g +
-    geom_path(data = sun_hour,
-              aes(x = azimuth,
-                  y = inclination,
-                  group = hour),
-              linewidth = .2,
-              color = "coral") +
-    geom_line(data = sun,
-              aes(x = azimuth,
-                  y = inclination,
-                  color = day)) +
-    scale_color_viridis_d(labels = c("21 jun.",
-                                     "21 jul.",
-                                     "21 aug.",
-                                     "21 sep.",
-                                     "21 oct.",
-                                     "21 nov.",
-                                     "21 dec."))
-
   # Set theme and legend
   g <- g +
     theme_minimal() +
@@ -119,8 +117,8 @@ plot_station_horizon_max <- function(stn = NULL,
           legend.justification = c("center", "top"),
           legend.background = element_rect(fill = "white",  linewidth = .2),
           legend.key.size = unit(1.2, "lines"),
-          legend.key.height = unit(.8, "lines"),
-          legend.margin = margin(.5, 2, 2, 3),
+          legend.key.height = unit(2, "lines"),
+          legend.margin = margin(5, 5, 8, 5),
           legend.spacing.y = unit(0, "lines"),
           legend.text = element_text(size = 8)) +
     labs(color = NULL, linetype = NULL) +
@@ -157,7 +155,7 @@ plot_station_horizon_max <- function(stn = NULL,
   # Save plot
   if (!is.null(path)) {
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
-    fname <- sprintf("%s/%1.0f_sun_diagram_auto_max.png", path, stn$stationid)
+    fname <- sprintf("%s/%1.0f_sun_diagram_auto_range.png", path, stn$stationid)
     ggsave(fname, bg = "white", width = 10, height = 7)
   }
 

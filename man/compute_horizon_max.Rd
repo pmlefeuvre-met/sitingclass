@@ -38,7 +38,7 @@ stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Compute the maximum horizon
 compute_horizon_max(stn)
-compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+compute_horizon_max(stn, step = 1, f_output_all = TRUE)
 
 }
 \references{

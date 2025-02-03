@@ -145,7 +145,8 @@ plot_station_horizon_sun <- function(stn = NULL,
   # Set theme and legend
   g <- g +
     theme_minimal() +
-    theme(legend.position = c(0.9, (ymax - 0.1 * ymax) / ymax),
+    theme(legend.position = "inside",
+          legend.position.inside =  c(0.9, (ymax - 0.1 * ymax) / ymax),
           legend.justification = c("center", "top"),
           legend.background = element_rect(fill = "white",  linewidth = .2),
           legend.key.size = unit(1.2, "lines"),
