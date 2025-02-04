@@ -24,9 +24,10 @@
 #'
 #' # Load tiles
 #' #tile <- get_tile_wms(box, layer = "ar5")
-#' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
-#' #tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
-#' #tile <- get_tile_wms(box, layer = "ortofoto" )
+#' tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012")
+#' #tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012")
+#' #tile <- get_tile_wms(box, layer = "ortofoto")
+#' tile <- get_tile_wms(box, layer = "fkb_vann")
 #'
 #' @importFrom terra ext rast crs
 #' @importFrom httr2 request req_perform resp_body_raw
@@ -76,7 +77,8 @@ get_tile_wms <- function(box = NULL,
                               "bygning",
                               "fkb_naturinfo",
                               "naturinfo"))) {
-    url     <- "https://openwms.statkart.no/skwms1/wms.fkb"
+    url     <- "https://wms.geonorge.no/skwms1/wms.fkb"
+    # url     <- "https://openwms.statkart.no/skwms1/wms.fkb" # Deprecated jan 2025?
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a"
