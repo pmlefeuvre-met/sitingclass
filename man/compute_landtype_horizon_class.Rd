@@ -20,10 +20,10 @@ The pipeline derives the exposure of a station based WMO/met.no siting
 classification and includes four input functions:
 \code{"download_dem_kartverket"}, \code{"compute_landtype"},
 \code{"compute_landtype_distance"} and \code{"compute_horizon_max"}.
-They provide the necessary input for \code{"compute_class"}
+They provide the necessary input for \code{"compute_class_air_temperature"}.
 }
 \examples{
-# Pipeline to compute necessary input for deriving temperature siting class
+# Pipeline to compute input for deriving air_temperature siting class
 # compute_landtype_horizon_class(stn)
 
 }

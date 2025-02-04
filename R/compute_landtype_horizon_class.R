@@ -4,7 +4,7 @@
 #' classification and includes four input functions:
 #'\code{"download_dem_kartverket"}, \code{"compute_landtype"},
 #' \code{"compute_landtype_distance"} and \code{"compute_horizon_max"}.
-#' They provide the necessary input for \code{"compute_class"}
+#' They provide the necessary input for \code{"compute_class_air_temperature"}.
 #'
 #' @param stn A SpatVector with station attribute `stationid` from
 #'        \code{"get_latlon_frost"}
@@ -13,7 +13,7 @@
 #' @return None
 #'
 #' @examples
-#' # Pipeline to compute necessary input for deriving temperature siting class
+#' # Pipeline to compute input for deriving air_temperature siting class
 #' # compute_landtype_horizon_class(stn)
 #'
 #' @export
@@ -37,12 +37,12 @@ compute_landtype_horizon_class <- function(stn,
                                      step = 0.01)
 
   # Compute class
-  class <- compute_class(stn,
-                         landtype_dist,
-                         horizon_max,
-                         dem,
-                         test_type = "WMO",
-                         f_plot = f_plot)
+  class <- compute_class_air_tamperature(stn,
+                                         landtype_dist,
+                                         horizon_max,
+                                         dem,
+                                         test_type = "WMO",
+                                         f_plot = f_plot)
 
   return(class)
 }

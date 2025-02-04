@@ -27,8 +27,10 @@ testthat::test_that("compute horizon works", {
   # Load a digital elevation model
   dsm   <- download_dem_kartverket(stn_test, name = "dom")
 
-  # Compute the horizon - Keep azimuth and height and Remove distance
+  # Compute the horizon
   horizon_computed <- compute_horizon(stn_test, dsm)
+
+  # Keep azimuth and height / Remove distance
   if("horizon_distance" %in% names(horizon_computed)){
     horizon_computed <- horizon_computed[, 1:2]
     }

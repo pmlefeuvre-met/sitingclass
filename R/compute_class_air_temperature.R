@@ -36,8 +36,12 @@
 #' horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
 #'
 #' # Compute class
-#' compute_class(stn, landtype_dist, horizon_max, dem, test_type = "WMO",
-#'               f_plot = TRUE)
+#' compute_class_air_temperature(stn,
+#'                               landtype_dist,
+#'                               horizon_max,
+#'                               dem,
+#'                               test_type = "WMO",
+#'                               f_plot = TRUE)
 #'
 #'
 #' @importFrom stats quantile
@@ -45,12 +49,12 @@
 #'
 #' @export
 
-compute_class <- function(stn = NULL,
-                          land = NULL,
-                          horizon = NULL,
-                          dem = NULL,
-                          test_type = "MET",
-                          f_plot = TRUE) {
+compute_class_air_temperature <- function(stn = NULL,
+                                          land = NULL,
+                                          horizon = NULL,
+                                          dem = NULL,
+                                          test_type = "MET",
+                                          f_plot = TRUE) {
 
   # Bind variable to function
   distance <- landtype <- NULL
