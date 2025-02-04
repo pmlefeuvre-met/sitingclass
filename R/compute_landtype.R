@@ -22,7 +22,7 @@
 #'# Compute land cover
 #' compute_landtype(stn, f_plot=TRUE)
 #'
-#' @importFrom terra crds vect mask erase
+#' @importFrom terra crds vect mask erase ext
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
@@ -42,10 +42,10 @@ compute_landtype <- function(stn = NULL,
   dsm <- download_dem_kartverket(stn, name = "dom")
 
   # Verify extent match
-  if( ext(dem) != ext(dsm) ){
+  if( terra::ext(dem) != terra::ext(dsm) ){
     print("!! Mismatched extent !!")
-    print(ext(dem))
-    print(ext(dsm))
+    print(terra::ext(dem))
+    print(terra::ext(dsm))
   # Reload DEMs
     dem <- download_dem_kartverket(stn, name = "dtm", f_overwrite = TRUE)
     dsm <- download_dem_kartverket(stn, name = "dom", f_overwrite = TRUE)
