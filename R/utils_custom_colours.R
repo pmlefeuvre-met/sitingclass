@@ -30,6 +30,33 @@ colour_equipmenttype <- c("Nedb\u00f8rm\u00e5ler" = "skyblue3",
                           "Nedb\u00f8rindikator" = "cadetblue2",
                           "Flatetemperaturm\u00e5ler" = "chocolate")
 
+#' Colours for scale_fill_gradientn() in \code{"plot_station_horizon_range"}
+#'
+#' Colour palette is attributed for a set of range values in metre and
+#' changes at 100 m corresponding to the default distance to download
+#' high resolution DEMs
+#'
+#' @examples
+#' colour_range
+#'
+#' ## Generated from
+#' # c(rev(RColorBrewer::brewer.pal(6, "Paired")),
+#'         RColorBrewer::brewer.pal(4, "Purples"))
+#'
+#' @export
+#'
+colour_range <- list(colour = c("#E31A1C",
+                                "#FB9A99",
+                                "#33A02C",
+                                "#B2DF8A",
+                                "#1F78B4",
+                                "#A6CEE3",
+                                "#F2F0F7",
+                                "#CBC9E2",
+                                "#9E9AC8",
+                                "#6A51A3"),
+                     range = c(0, 5, 10, 30, 50, 70, 90, 100,
+                               1000, 5000, 20000))
 
 #' Vector of CORINE land cover colors and types
 #'

@@ -16,7 +16,6 @@ Imports:
     maptiles,
     png,
     rayshader (>= 0.38.11),
-    RColorBrewer,
     rgrass,
     scales,
     stats,

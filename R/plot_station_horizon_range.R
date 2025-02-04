@@ -21,7 +21,6 @@
 #' plot_station_horizon_range(stn)
 #'
 #' @importFrom terra crds project
-#' @importFrom RColorBrewer brewer.pal
 #' @importFrom scales pseudo_log_trans rescale
 #' @importFrom ggplot2 ggplot geom_hline geom_text geom_polygon geom_line
 #' @importFrom ggplot2 geom_path scale_color_viridis_d theme_minimal theme
@@ -65,9 +64,8 @@ plot_station_horizon_range <- function(stn = NULL,
 
   ## Plot parameters for scale_fill_gradientn():
   # 1. Colour palette for horizon range changing at 100 m
-  colours <- c(rev(RColorBrewer::brewer.pal(6, "Paired")),
-               RColorBrewer::brewer.pal(4, "Purples"))
-  values <- c(0, 5, 10, 30, 50, 70, 90, 100, 1000, 5000, 20000)
+  colours <- colour_range$colour
+  values <- colour_range$range
 
   # 2. Log transform function for scale_fill and legend
   trans <- scales::pseudo_log_trans()
@@ -86,14 +84,17 @@ plot_station_horizon_range <- function(stn = NULL,
                             y = inclination,
                             label = labels))
 
-  # Plot horizon polygon
+  # Plot horizon bars
   g <- g +
     geom_bar(stat="identity",
              data =  horizon_max,
              mapping = aes(x = azimuth,
                            y = horizon_height,
                            fill = range),
-             alpha = .6) +
+             alpha = .6)
+
+  # Add colour gradient with defined breaks for the legend
+  g <- g +
     scale_fill_gradientn(colours = colours,
                          values = scales::rescale(trans$transform(values)),
                          breaks = c(0, 3, 10, 30, 100, 1000, 5000, 20000),
