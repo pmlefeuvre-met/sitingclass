@@ -23,9 +23,6 @@
 #'# Get station metadata
 #' stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 #'
-#' # Load a digital elevation model
-#' dem   <- download_dem_kartverket(stn, name = "dtm")
-#'
 #'# Compute land type
 #' landtype <- compute_landtype(stn, f_plot = TRUE)
 #'
@@ -34,6 +31,9 @@
 #'
 #' # Compute maximum horizon
 #' horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+#'
+#' # Load a digital elevation model
+#' dem   <- download_dem_kartverket(stn, name = "dtm")
 #'
 #' # Compute class
 #' compute_class_air_temperature(stn,
@@ -108,7 +108,21 @@ compute_class_air_temperature <- function(stn = NULL,
   vegetation[2, ] <- colSums(vegetation)
   vegetation      <- round(rowMeans(vegetation))
   # 3) Projected shade limits
-  shade <- max(compute_horizon_rollmean(stn, horizon))
+  height <- compute_horizon_rollmean(stn, horizon)
+  # Compute the percentage of terrain within 1500 m to assess if the station
+  # is in a valley or an open terrain, the threshold being 66.666%
+  range_valley <- (horizon[, "range"] > 100 & horizon[, "range"] <= 1500)
+  range_valley_tot <- sum(range_valley) / dim(horizon)[1] * 100
+  if (range_valley_tot < 66.666){
+    # 3.1) if station is in an open terrain, compute the max of the horizon
+    # (the default behaviour)
+    shade <- max(height)
+  }else{
+    # 3.2) if station is in a deep vally, set heights in the valley to 0 and
+    # compute the mean to sill get an evaluation of the close environment
+    height[range_valley] <- 0
+    shade <- mean(height)
+  }
   names(shade) <- "shade"
   # 4) Compute median slope
   slope <- terra::global(terra::terrain(dem),
