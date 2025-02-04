@@ -49,7 +49,7 @@ compute_horizon_rollmean <- function(stn = NULL,
   sun_hour <- sun_hour[sun_hour > 0 & sun_hour < 60]
 
   # Compute azimuth median for a theoretical hour at midday (add 30% padding)
-  azimuth_1hour <- median(sun_hour)
+  azimuth_1hour <- stats::median(sun_hour)
   azimuth_1hour <- round(azimuth_1hour + azimuth_1hour*0.30)
 
   # Compute azimuth interval from the horizon data
@@ -64,11 +64,11 @@ compute_horizon_rollmean <- function(stn = NULL,
                                 fill = TRUE)
 
   # Approximate sun inclination to same azimuth interval than horizon array
-  sun_day_approx <- approx(x = sun_day[, "azimuth"],
-                           y = sun_day[, "inclination"],
-                           xout = horizon[, "azimuth"],
-                           method = "linear",
-                           rule = 2)$y
+  sun_day_approx <- stats::approx(x = sun_day[, "azimuth"],
+                                  y = sun_day[, "inclination"],
+                                  xout = horizon[, "azimuth"],
+                                  method = "linear",
+                                  rule = 2)$y
 
   # Remove sun inclinations below horizon
   sun_day_approx <- sun_day_approx * as.numeric(sun_day_approx>0)

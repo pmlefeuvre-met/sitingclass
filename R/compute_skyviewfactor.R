@@ -22,6 +22,11 @@
 
 compute_skyviewfactor <- function(horizon = NULL) {
 
+  # Remove range
+  if ("horizon_range" %in% names(horizon)){
+    horizon <- horizon[, c("azimuth", "horizon_height")]
+  }
+
   # Load function
   deg2rad <- function(angle_in_degrees) {
     angle_in_radian <- (angle_in_degrees * pi) / 180
