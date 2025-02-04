@@ -41,9 +41,6 @@ using the requirements set by WMO and Met
 # Get station metadata
 stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
-# Load a digital elevation model
-dem   <- download_dem_kartverket(stn, name = "dtm")
-
 # Compute land type
 landtype <- compute_landtype(stn, f_plot = TRUE)
 
@@ -52,6 +49,9 @@ landtype_dist <- compute_landtype_distance(stn, landtype, f_plot = TRUE)
 
 # Compute maximum horizon
 horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+
+# Load a digital elevation model
+dem   <- download_dem_kartverket(stn, name = "dtm")
 
 # Compute class
 compute_class_air_temperature(stn,
