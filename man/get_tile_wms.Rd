@@ -33,9 +33,10 @@ box <- make_bbox(stn)
 
 # Load tiles
 #tile <- get_tile_wms(box, layer = "ar5")
-tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012" )
-#tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012" )
-#tile <- get_tile_wms(box, layer = "ortofoto" )
+tile <- get_tile_wms(box, layer = "CORINE_Land_Cover_2012")
+#tile <- get_tile_wms(box, layer = "Urban_Atlas_Lu_Lc_2012")
+#tile <- get_tile_wms(box, layer = "ortofoto")
+tile <- get_tile_wms(box, layer = "fkb_vann")
 
 }
 \references{

@@ -41,7 +41,7 @@ colour_equipmenttype <- c("Nedb\u00f8rm\u00e5ler" = "skyblue3",
 #'
 #' ## Generated from
 #' # c(rev(RColorBrewer::brewer.pal(6, "Paired")),
-#'         RColorBrewer::brewer.pal(4, "Purples"))
+#' #       RColorBrewer::brewer.pal(4, "Purples"))
 #'
 #' @export
 #'

@@ -20,7 +20,7 @@ colour_range
 
 ## Generated from
 # c(rev(RColorBrewer::brewer.pal(6, "Paired")),
-        RColorBrewer::brewer.pal(4, "Purples"))
+#       RColorBrewer::brewer.pal(4, "Purples"))
 
 }
 \keyword{datasets}

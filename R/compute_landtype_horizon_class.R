@@ -37,7 +37,7 @@ compute_landtype_horizon_class <- function(stn,
                                      step = 0.01)
 
   # Compute class
-  class <- compute_class_air_tamperature(stn,
+  class <- compute_class_air_temperature(stn,
                                          landtype_dist,
                                          horizon_max,
                                          dem,

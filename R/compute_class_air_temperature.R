@@ -97,6 +97,7 @@ compute_class_air_temperature <- function(stn = NULL,
   rownames(df_radius) <- colname[-1]
   colnames(df_radius) <- c("3m", "5m", "5-10m", "10m", "10-30m", "30m", "100m")
 
+  ## ------------------------------- ##
   ## List of parameters to be tested
   # 1) Sum area percentages of building, road and water (1:3 rows) for each
   # distance (columns)
@@ -113,6 +114,7 @@ compute_class_air_temperature <- function(stn = NULL,
   slope <- terra::global(terra::terrain(dem),
                          \(x) quantile(x, 0.5, na.rm = TRUE))
   names(slope) <- "slope"
+  ## ------------------------------- ##
 
   # Set matrix of class test parameters
   if (test_type == "WMO") {
