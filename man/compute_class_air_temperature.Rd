@@ -64,6 +64,5 @@ compute_class_air_temperature(stn,
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/
-imop/siting-classification}
+\url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 }
