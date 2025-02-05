@@ -4,8 +4,7 @@
 #' vegetation and shadowing as potential heat sources affecting sensors and
 #' using the requirements set by WMO and Met
 #'
-#' @references \url{https://community.wmo.int/en/activity-areas/
-#' imop/siting-classification}
+#' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 #'
 #' @param stn A SpatVector with station attributes from
 #' \code{"get_latlon_frost"}

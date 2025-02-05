@@ -46,6 +46,5 @@ compute_class_precipitation(stn,
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/
-imop/siting-classification}
+\url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 }
