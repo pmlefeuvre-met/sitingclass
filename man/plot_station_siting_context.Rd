@@ -36,6 +36,5 @@ the exposure of a station and to compute its WMO/met.no siting classification
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/
-imop/siting-classification#MembersTools}
+\url{https://community.wmo.int/en/activity-areas/imop/siting-classification#MembersTools}
 }
