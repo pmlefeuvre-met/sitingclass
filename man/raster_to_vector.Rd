@@ -39,6 +39,5 @@ v_building <- raster_to_vector(building, id = "building", mask_thr = 255)
 
 }
 \references{
-\url{https://rspatial.r-universe.dev/terra/
-doc/manual.html#as.polygons}
+\url{https://rspatial.r-universe.dev/terra/doc/manual.html#as.polygons}
 }

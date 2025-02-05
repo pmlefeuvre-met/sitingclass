@@ -4,8 +4,7 @@
 #' (white for image, FALSE for mask),
 #' aggregate single polygons and set vector values as a single id.
 #'
-#' @references \url{https://rspatial.r-universe.dev/terra/
-#' doc/manual.html#as.polygons}
+#' @references \url{https://rspatial.r-universe.dev/terra/doc/manual.html#as.polygons}
 #'
 #' @param raster A SpatRaster image or mask
 #' @param id A string or number defining a common factor for all generated
