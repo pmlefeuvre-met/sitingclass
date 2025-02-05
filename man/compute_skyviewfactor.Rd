@@ -26,6 +26,5 @@ compute_skyviewfactor(horizon)
 
 }
 \references{
-\url{https://github.com/OSGeo/grass-addons/blob/grass8/src/
-raster/r.skyview/r.skyview.py}
+\url{https://github.com/OSGeo/grass-addons/blob/grass8/src/raster/r.skyview/r.skyview.py}
 }
