@@ -57,46 +57,46 @@ The area of reference or bounding box is set using `make_bbox(stn)` but the squa
 
 Eventually, the dimension of the returned DEM difference is extracted (i.e. the number of pixel) as it sets the image resolution that I will obtain from the WMS query in the next part.
 ```{r}
-  # Construct box to extract WMS tile
-  box <- make_bbox(stn)
+# Construct box to extract WMS tile
+box <- make_bbox(stn)
 
-  # Download DEMs
-  dem <- download_dem_kartverket(stn, name = "dtm")
-  dsm <- download_dem_kartverket(stn, name = "dom")
-  
-  # Verify extent match
-  if( terra::ext(dem) != terra::ext(dsm) ){
-    print("!! Mismatched extent !!")
-    print(terra::ext(dem))
-    print(terra::ext(dsm))
+# Download DEMs
+dem <- download_dem_kartverket(stn, name = "dtm")
+dsm <- download_dem_kartverket(stn, name = "dom")
+
+# Verify extent match
+if( terra::ext(dem) != terra::ext(dsm) ){
+  print("!! Mismatched extent !!")
+  print(terra::ext(dem))
+  print(terra::ext(dsm))
   # Reload DEMs
-    dem <- download_dem_kartverket(stn, name = "dtm", f_overwrite = TRUE)
-    dsm <- download_dem_kartverket(stn, name = "dom", f_overwrite = TRUE)
-  }
-  
-  # Compute difference to assess vegetation
-  dh  <- dsm - dem
-  
-  # The number of pixels to extract from the WMS
-  px    <- dim(dh)[1] #*4
-  print(sprintf("Pixel number: %i", px))
+  dem <- download_dem_kartverket(stn, name = "dtm", f_overwrite = TRUE)
+  dsm <- download_dem_kartverket(stn, name = "dom", f_overwrite = TRUE)
+}
+
+# Compute difference to assess vegetation
+dh  <- dsm - dem
+
+# The number of pixels to extract from the WMS
+px    <- dim(dh)[1] #*4
+print(sprintf("Pixel number: %i", px))
 ```
 
 Three specific layers are extracted from the FellesKartDatabase (FKB) maintained by Kartverket on their geonorge.no servers. The FKB registers buildings, roads and water bodies for official usage. Access to the vector version of these layers is restricted, therefore the vectors are recreated from the images they provide in their WMS distribution service.
 ```{r}
- # Load FKB-AR5 tiles
-  building  <- get_tile_wms(box, layer = "bygning", px = px)
-  road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
-  water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
-  
-  g1 <- ggplot() + geom_spatraster_rgb(data = building) + theme_void()
-  g2 <- ggplot() + geom_spatraster_rgb(data = road) + theme_void()
-  g3 <- ggplot() + geom_spatraster_rgb(data = water) + theme_void()
-  
-  # Load complete/original FKB data 
-  fkb  <- get_tile_wms(box, layer = "fkb", px = px)
-  g0 <- ggplot() + geom_spatraster_rgb(data = fkb) + theme_void()
-  (g0 + g1) / (g2 + g3)
+# Load FKB-AR5 tiles
+building  <- get_tile_wms(box, layer = "bygning", px = px)
+road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
+water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
+
+g1 <- ggplot() + geom_spatraster_rgb(data = building) + theme_void()
+g2 <- ggplot() + geom_spatraster_rgb(data = road) + theme_void()
+g3 <- ggplot() + geom_spatraster_rgb(data = water) + theme_void()
+
+# Load complete/original FKB data 
+fkb  <- get_tile_wms(box, layer = "fkb", px = px)
+g0 <- ggplot() + geom_spatraster_rgb(data = fkb) + theme_void()
+(g0 + g1) / (g2 + g3)
 ```
 The images are then:
 - converted from rasters to vector using `as.polygons()`, 
@@ -107,22 +107,22 @@ The images are then:
 - and plotted
 Finally all artificial land vectors are combined into one as shown in the final plot.
 ```{r}
-  # Convert raster tile to vector landcover
-  v_building <- raster_to_vector(building,
-                                 id = "building",
-                                 mask_thr = 255)
-  v_road     <- raster_to_vector(road,
-                                 id = "road",
-                                 mask_thr = 255)
-  v_water    <- raster_to_vector(water,
-                                 id = "water",
-                                 mask_thr = 255)
-  
-  # Combine and plot
-  landtype_artificial <-  terra::vect(c(v_building, v_road, v_water))
-  ggplot(data = landtype_artificial) +
-            tidyterra::geom_spatvector(aes(fill = value), linewidth = 0) +
-            theme_minimal()
+# Convert raster tile to vector landcover
+v_building <- raster_to_vector(building,
+                               id = "building",
+                               mask_thr = 255)
+v_road     <- raster_to_vector(road,
+                               id = "road",
+                               mask_thr = 255)
+v_water    <- raster_to_vector(water,
+                               id = "water",
+                               mask_thr = 255)
+
+# Combine and plot
+landtype_artificial <-  terra::vect(c(v_building, v_road, v_water))
+ggplot(data = landtype_artificial) +
+  tidyterra::geom_spatvector(aes(fill = value), linewidth = 0) +
+  theme_minimal()
 ```
 
 To retrieve the vegetation height and its land cover, the DEM difference `dh` is used, but first the artificial area are masked out.
@@ -134,25 +134,25 @@ To the masked difference `dh_mask`, a height threshold is applied following WMO'
 - tree: above and equal to 3 m
 
 ```{r}
-  # Mask already identified land cover
-  dh_mask <- terra::mask(dh,
-                         landtype_artificial,
-                         inverse = TRUE,
-                         touches = FALSE)
+# Mask already identified land cover
+dh_mask <- terra::mask(dh,
+                       landtype_artificial,
+                       inverse = TRUE,
+                       touches = FALSE)
 
-  # Classify vegetation based on dh thresholds in metre
-  v_grass <- raster_to_vector(dh_mask <= .10,
-                              id = "grass",
-                              mask_thr = FALSE)
-  v_crop  <- raster_to_vector((dh_mask > .10 & dh_mask <= .25),
-                              id = "crop",
-                              mask_thr = FALSE)
-  v_bush  <- raster_to_vector((dh_mask > .25 & dh_mask <= 3),
-                              id = "bush",
-                              mask_thr = FALSE)
-  v_tree  <- raster_to_vector(dh_mask >= 3,
-                              id = "tree",
-                              mask_thr = FALSE)
+# Classify vegetation based on dh thresholds in metre
+v_grass <- raster_to_vector(dh_mask <= .10,
+                            id = "grass",
+                            mask_thr = FALSE)
+v_crop  <- raster_to_vector((dh_mask > .10 & dh_mask <= .25),
+                            id = "crop",
+                            mask_thr = FALSE)
+v_bush  <- raster_to_vector((dh_mask > .25 & dh_mask <= 3),
+                            id = "bush",
+                            mask_thr = FALSE)
+v_tree  <- raster_to_vector(dh_mask >= 3,
+                            id = "tree",
+                            mask_thr = FALSE)
 ```
 
 Some work is still required to merge properly the layers together to avoid for instance overlap. After having set each layer a factor level with its name as a label, the overlaps are removed with the priority order set by the order of the factors/levels, such as:
@@ -164,34 +164,34 @@ Some work is still required to merge properly the layers together to avoid for i
 6. "bush"
 7. "tree"
 ```{r}
-  # Merge all landcover vectors
-  landtype <- terra::vect(c(landtype_artificial,
-                            v_grass,
-                            v_crop,
-                            v_bush,
-                            v_tree))
-  
-  # Convert landcover type values to factors
-  levels <-  c("building", "road", "water", "grass", "crop", "bush", "tree")
-  landtype$landtype <- factor(landtype$value, levels = levels)
-  landtype <- landtype[, 2]
-  
-  # Erase overlapping vectors with hierarchy defined by the order of levels
-  landtype <- terra::erase(landtype[order(landtype$landtype,
-                                          decreasing = TRUE), ],
-                           sequential = TRUE)
+# Merge all landcover vectors
+landtype <- terra::vect(c(landtype_artificial,
+                          v_grass,
+                          v_crop,
+                          v_bush,
+                          v_tree))
+
+# Convert landcover type values to factors
+levels <-  c("building", "road", "water", "grass", "crop", "bush", "tree")
+landtype$landtype <- factor(landtype$value, levels = levels)
+landtype <- landtype[, 2]
+
+# Erase overlapping vectors with hierarchy defined by the order of levels
+landtype <- terra::erase(landtype[order(landtype$landtype,
+                                        decreasing = TRUE), ],
+                         sequential = TRUE)
 ```
 ### Output
 A raster with the landcover nicely patched together ready to analyse.
 ```{r}
-  # Plot
-   ggplot(data = landtype) +
-      tidyterra::geom_spatvector(aes(fill = landtype),
-                                 linewidth = 0) +
-      scale_fill_manual(values = fill_landtype) +
-      coord_sf(datum = tidyterra::pull_crs(dem)) +
-      theme_minimal() +
-      theme(legend.position = "bottom")
+# Plot
+ggplot(data = landtype) +
+  tidyterra::geom_spatvector(aes(fill = landtype),
+                             linewidth = 0) +
+  scale_fill_manual(values = fill_landtype) +
+  coord_sf(datum = tidyterra::pull_crs(dem)) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
 
 ## Compute landtype_distance
@@ -206,20 +206,20 @@ landtype_dist <- compute_landtype_distance(stn, landtype_out, f_plot = TRUE)
 ### Getting started
 Running the function for a station is as follows:
 ```{r}
-  # Load a digital elevation model
-  dem <- download_dem_kartverket(stn, name = "dtm")
+# Load a digital elevation model
+dem <- download_dem_kartverket(stn, name = "dtm")
 
-  # Compute maximum horizon
-  horizon_max <- compute_horizon_max(stn,
-                                     step = 0.01)
+# Compute maximum horizon
+horizon_max <- compute_horizon_max(stn,
+                                   step = 0.01)
 
-  # Compute class
-  class <- compute_class_air_temperature(stn,
-                                         landtype_dist,
-                                         horizon_max,
-                                         dem,
-                                         test_type = "WMO",
-                                         f_plot = TRUE)
+# Compute class
+class <- compute_class_air_temperature(stn,
+                                       landtype_dist,
+                                       horizon_max,
+                                       dem,
+                                       test_type = "WMO",
+                                       f_plot = TRUE)
 ```
 
 To compute a class, one need to decide a few input parameters: 
@@ -229,67 +229,68 @@ To compute a class, one need to decide a few input parameters:
 - and whether to use the "MET" or "WMO" thresholds using `test_type`,
 ```{r}
 # Input
-  land <- landtype_dist
-  horizon <- horizon_max
-  dem <- dem
-  test_type <- "MET"
+land <- landtype_dist
+horizon <- horizon_max
+dem <- dem
+test_type <- "MET"
 
-  # Extract column and land type names
-  colname <- colnames(land)
-  landtype_name <- colname[-1]
+# Extract column and land type names
+colname <- colnames(land)
+landtype_name <- colname[-1]
 ```
 
 First the area percentage per landtype is computed and then converted into a dataframe for extracting the zones required in the tests (i.e. 3, 5, 10, 30, 100m), including the two rings: 5-10 m and 10-30 m.
 ```{r}
-  # Compute area percentage per land type
-  df <- land[, colname %in% landtype_name] /
-    land[, colname == "total_area"] * 100
+# Compute area percentage per land type
+df <- land[, colname %in% landtype_name] /
+  land[, colname == "total_area"] * 100
 
-  # Reshape data.frame, equivalent to pivot_longer()
-  df <- with(utils::stack(as.data.frame(t(df))),
-             data.frame(distance = as.numeric(as.character(ind)),
-                        landtype = factor(colnames(df), landtype_name),
-                        area = values))
-  
-  # Compute area within an annular area 5-10m and 10-30m
-  ring <- land[rownames(land) %in% c(10, 30), colname %in% landtype_name] -
-    land[rownames(land) %in% c(5, 10), colname %in% landtype_name]
-  ring_area <- land[rownames(land) %in% c(10, 30), colname == "total_area"] -
-    land[rownames(land) %in% c(5, 10), colname == "total_area"]
-  ring <- (ring / ring_area) * 100
+# Reshape data.frame, equivalent to pivot_longer()
+df <- with(utils::stack(as.data.frame(t(df))),
+           data.frame(distance = as.numeric(as.character(ind)),
+                      landtype = factor(colnames(df), landtype_name),
+                      area = values))
 
-  # Extract areas (%) at 3, 5, 5-10, 10, 10-30, 30, 100m radius for class tests
-  df_radius <- round(cbind(df[df$distance == 3, "area"],
-                           df[df$distance == 5, "area"],
-                           ring[rownames(ring) == 10],
-                           df[df$distance == 10, "area"],
-                           ring[rownames(ring) == 30],
-                           df[df$distance == 30, "area"],
-                           df[df$distance == 100, "area"]))
-  
-  # Assign names for rows and columns
-  rownames(df_radius) <- colname[-1]
-  colnames(df_radius) <- c("3m", "5m", "5-10m", "10m", "10-30m", "30m", "100m")
-  
-  df_radius
+# Compute area within an annular area 5-10m and 10-30m
+ring <- land[rownames(land) %in% c(10, 30), colname %in% landtype_name] -
+  land[rownames(land) %in% c(5, 10), colname %in% landtype_name]
+ring_area <- land[rownames(land) %in% c(10, 30), colname == "total_area"] -
+  land[rownames(land) %in% c(5, 10), colname == "total_area"]
+ring <- (ring / ring_area) * 100
+
+# Extract areas (%) at 3, 5, 5-10, 10, 10-30, 30, 100m radius for class tests
+df_radius <- round(cbind(df[df$distance == 3, "area"],
+                         df[df$distance == 5, "area"],
+                         ring[rownames(ring) == 10],
+                         df[df$distance == 10, "area"],
+                         ring[rownames(ring) == 30],
+                         df[df$distance == 30, "area"],
+                         df[df$distance == 100, "area"]))
+
+# Assign names for rows and columns
+rownames(df_radius) <- colname[-1]
+colnames(df_radius) <- c("3m", "5m", "5-10m", "10m", "10-30m", "30m", "100m")
+
+df_radius
 ```
 
 ### Class per category
 #### Artificial heat
 ```{r}
-  # 1) Sum area percentages of building, road and water (1:3 rows) for each
-  # distance (columns)
-  landtypes <- colSums(df_radius[colname[-1] %in%
-                                   c("building", "road", "water"), ])
+# 1) Sum area percentages of building, road and water (1:3 rows) for each
+# distance (columns)
+landtypes <- colSums(df_radius[colname[-1] %in%
+                                 c("building", "road", "water"), ])
 landtypes
 ```
 
 #### Vegetation
 ```{r}
-  # 2) Sum grass to crop area and compute mean over distance classes
-  vegetation      <- df_radius[colname[-1] %in% c("grass", "crop"), ]
-  vegetation[2, ] <- colSums(vegetation)
-  vegetation      <- round(rowMeans(vegetation))
+# 2) Sum grass to crop area and compute mean over distance classes
+vegetation      <- df_radius[colname[-1] %in% c("grass", "crop"), ]
+vegetation[2, ] <- colSums(vegetation)
+vegetation      <- round(rowMeans(vegetation))
+vegetation
 ```
 
 #### Shade
@@ -298,64 +299,65 @@ Shade algorithm was recently edited to account for narrow valleys and assign a k
 Otherwise it smoothes out the horizon with an hour time window.
 ```{r}
 # 3) Projected shade limits
-  height <- compute_horizon_rollmean(stn, horizon)
-  # Compute the percentage of terrain within 1500 m to assess if the station
-  # is in a valley or an open terrain, the threshold being 66.666%
-  range_valley <- (horizon[, "range"] > 100 & horizon[, "range"] <= 1500)
-  range_valley_tot <- sum(range_valley) / dim(horizon)[1] * 100
-  if (range_valley_tot < 66.666){
-    # 3.1) if station is in an open terrain, compute the max of the horizon
-    # (the default behaviour)
-    shade <- max(height)
-  }else{
-    # 3.2) if station is in a deep vally, set heights in the valley to 0 and
-    # compute the mean to sill get an evaluation of the close environment
-    height[range_valley] <- 0
-    shade <- mean(height)
-  }
-  names(shade) <- "shade"
+height <- compute_horizon_rollmean(stn, horizon)
+# Compute the percentage of terrain within 1500 m to assess if the station
+# is in a valley or an open terrain, the threshold being 66.666%
+range_valley <- (horizon[, "range"] > 100 & horizon[, "range"] <= 1500)
+range_valley_tot <- sum(range_valley) / dim(horizon)[1] * 100
+if (range_valley_tot < 66.666){
+  # 3.1) if station is in an open terrain, compute the max of the horizon
+  # (the default behaviour)
+  shade <- max(height)
+}else{
+  # 3.2) if station is in a deep vally, set heights in the valley to 0 and
+  # compute the mean to sill get an evaluation of the close environment
+  height[range_valley] <- 0
+  shade <- mean(height)
+}
+names(shade) <- "shade"
+shade
 ```
 
 #### Slope
 ```{r}
-  # 4) Compute median slope
-  slope <- terra::global(terra::terrain(dem),
-                         \(x) quantile(x, 0.5, na.rm = TRUE))
-  names(slope) <- "slope"
+# 4) Compute median slope
+slope <- terra::global(terra::terrain(dem),
+                       \(x) quantile(x, 0.5, na.rm = TRUE))
+names(slope) <- "slope"
+slope
 ```
 
 ### WMO vs MET class
 ```{r}
-
 # Set matrix of class test parameters
-  if (test_type == "WMO") {
-    class_names <- c("class1", "class2", "class3", "class4", "class5")
-    type_names  <- c(names(landtypes), names(vegetation),
-                     names(shade), names(slope))
-    params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  5, 19,
-                       NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
-                       NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
-                       30, NA, NA, 50, NA, NA, NA, 99, 99, 20, 99,
-                       NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
-                     nrow = length(class_names),
-                     ncol = length(type_names),
-                     byrow = TRUE,
-                     dimnames = list(class_names,
-                                     type_names))
-  } else if (test_type == "MET") {
-    class_names <- c("class1", "class2", "class3", "class4", "class5")
-    type_names  <- c(names(landtypes), names(vegetation),
-                     names(shade), names(slope))
-    params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  7, 19,
-                       NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
-                       NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
-                       30, NA, NA, 50, NA, NA, NA, 99, 51, 20, 99,
-                       NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
-                     nrow = length(class_names),
-                     ncol = length(type_names),
-                     byrow = TRUE,
-                     dimnames = list(class_names,
-                                     type_names))
-  }
-
+if (test_type == "WMO") {
+  class_names <- c("class1", "class2", "class3", "class4", "class5")
+  type_names  <- c(names(landtypes), names(vegetation),
+                   names(shade), names(slope))
+  params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  5, 19,
+                     NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
+                     NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
+                     30, NA, NA, 50, NA, NA, NA, 99, 99, 20, 99,
+                     NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
+                   nrow = length(class_names),
+                   ncol = length(type_names),
+                   byrow = TRUE,
+                   dimnames = list(class_names,
+                                   type_names))
+} else if (test_type == "MET") {
+  class_names <- c("class1", "class2", "class3", "class4", "class5")
+  type_names  <- c(names(landtypes), names(vegetation),
+                   names(shade), names(slope))
+  params <- matrix(c(NA, NA, NA,  1,  5, NA, 10, 51,  0,  7, 19,
+                     NA, 1,  5,  NA, NA, 10, NA, 51,  0,  7, 19,
+                     NA, 5,  NA, 10, NA, NA, NA, 99, 51,  7, 99,
+                     30, NA, NA, 50, NA, NA, NA, 99, 51, 20, 99,
+                     NA, NA, NA, NA, NA, NA, NA, 99, 99, 99, 99),
+                   nrow = length(class_names),
+                   ncol = length(type_names),
+                   byrow = TRUE,
+                   dimnames = list(class_names,
+                                   type_names))
+}
+params
 ```
