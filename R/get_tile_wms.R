@@ -67,7 +67,8 @@ get_tile_wms <- function(box = NULL,
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/norge-i-bilder-wms-ortofoto/dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f"
-  } else if (any(layer %in% c("ar5",
+  } else if (any(layer %in% c("fkb",
+                              "ar5",
                               "fkb_arealdekke",
                               "fkb_vann",
                               "vann_omrade",
