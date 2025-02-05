@@ -2,8 +2,7 @@
 #'
 #' Run plot_station_siting_context
 #'
-#' @references \url{https://community.wmo.int/en/activity-areas/
-#' imop/siting-classification#MembersTools}
+#' @references \url{https://community.wmo.int/en/activity-areas/imop/siting-classification#MembersTools}
 #'
 #' @return plots or images of the sun diagram and maps
 #'

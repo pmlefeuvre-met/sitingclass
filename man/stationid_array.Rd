@@ -17,7 +17,6 @@ plots or images of the sun diagram and maps
 Run plot_station_siting_context
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/
-imop/siting-classification#MembersTools}
+\url{https://community.wmo.int/en/activity-areas/imop/siting-classification#MembersTools}
 }
 \keyword{datasets}
