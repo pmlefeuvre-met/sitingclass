@@ -57,7 +57,9 @@ raster_to_vector <- function(raster,
   # Plot
   if (f_plot) {
     print(ggplot(data = vector) +
-            tidyterra::geom_spatvector(aes(fill = id), linewidth = 0))
+            tidyterra::geom_spatvector(aes(fill = id), linewidth = 0) +
+            theme_minimal()
+          )
   }
 
   return(vector)
