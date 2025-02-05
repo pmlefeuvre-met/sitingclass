@@ -34,6 +34,5 @@ landtype_dist <- compute_landtype_distance(stn, landtype, f_plot = TRUE)
 
 }
 \references{
-\url{https://community.wmo.int/en/activity-areas/
-imop/siting-classification}
+\url{https://community.wmo.int/en/activity-areas/imop/siting-classification}
 }

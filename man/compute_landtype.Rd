@@ -31,6 +31,5 @@ compute_landtype(stn, f_plot=TRUE)
 
 }
 \references{
-\url{https://kartkatalog.geonorge.no/metadata/fkb-wms/
-84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
+\url{https://kartkatalog.geonorge.no/metadata/fkb-wms/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a}
 }
