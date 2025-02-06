@@ -2,8 +2,7 @@
 #'
 #' Capitalise first letters of each word to match title format
 #'
-#' @references \url{https://stackoverflow.com/questions/6364783/
-#' capitalize-the-first-letter-of-both-words-in-a-two-word-string}
+#' @references \url{https://stackoverflow.com/questions/6364783/capitalize-the-first-letter-of-both-words-in-a-two-word-string}
 #'
 #' @param str A string
 #'
