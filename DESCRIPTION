@@ -1,7 +1,7 @@
 Package: sitingclass
 Type: Package
 Title: Siting classification of Norwegian weather stations
-Version: 0.1.0
+Version: 1.4.0
 Author: Pierre-Marie Lefeuvre
 Maintainer: Pierre-Marie Lefeuvre <pierre.marie.lefeuvre@met.no>
 Description: The package sitingclass evaluates the exposure of weather stations for specific sensors from digital elevation models. The package is currently designed for Met usage only, due to data restrictions.
