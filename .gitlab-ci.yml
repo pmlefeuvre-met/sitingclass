@@ -1,0 +1,13 @@
+default:
+  image: ruby:3.2
+
+deploy-pages:
+  script:
+    - gem install bundler
+    - bundle install
+    - bundle exec jekyll build -d public
+    - mv docs public
+  pages: true  # specifies that this is a Pages job
+  artifacts:
+    paths:
+      - public
