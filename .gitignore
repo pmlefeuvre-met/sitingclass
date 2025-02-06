@@ -20,3 +20,6 @@ tests/testthat/data/*
 /Meta/
 inst/doc
 #docs
+
+# Temperorary files
+*~
