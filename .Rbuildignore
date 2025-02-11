@@ -8,3 +8,5 @@
 ^pkgdown$
 ^\.gitlab-ci\.yml$
 ^ci/lib$
+^data$
+^output$
