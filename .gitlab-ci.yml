@@ -44,6 +44,8 @@ building:
     paths:
       - check
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 # For gitlab versions below 15.0,
 # in order to have the coverage percentage appear as a gitlab badge,
@@ -77,6 +79,8 @@ coverage:
     paths:
       - public
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 # To produce a code coverage report as a GitLab page see
 # https://about.gitlab.com/2016/11/03/publish-code-coverage-report-with-gitlab-pages/
@@ -107,6 +111,8 @@ integration:
     paths:
       - docs
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 integration-test:
   stage: pkgdown-move
@@ -131,6 +137,8 @@ integration-test:
     paths:
       - public
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 integration-production:
   stage: pkgdown-move
@@ -150,6 +158,8 @@ integration-production:
     paths:
       - public
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 integration-main:
   stage: pkgdown-move
@@ -170,6 +180,8 @@ integration-main:
     paths:
       - public
     expire_in: 30 days
+  tags:
+    - k8s-root
 
 pages:
   stage: deploy
@@ -183,3 +195,5 @@ pages:
     - master
     - production
     - test-ci
+  tags:
+    - k8s-root
