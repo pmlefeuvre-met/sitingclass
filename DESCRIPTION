@@ -14,6 +14,7 @@ Imports:
     httr2,
     magrittr,
     maptiles,
+    patchwork,
     png,
     rayshader (>= 0.38.11),
     rgrass,
@@ -29,8 +30,7 @@ Suggests:
     magick,
     knitr,
     testthat,
-    rmarkdown,
-    patchwork
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
