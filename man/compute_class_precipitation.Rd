@@ -2,11 +2,12 @@
 % Please edit documentation in R/compute_class_precipitation.R
 \name{compute_class_precipitation}
 \alias{compute_class_precipitation}
-\title{Compute siting class for a station measuring air temperature}
+\title{Compute siting class for a station measuring precipitation}
 \usage{
 compute_class_precipitation(
   stn = NULL,
   horizon = NULL,
+  dem = NULL,
   test_type = "MET",
   f_plot = TRUE
 )
@@ -18,6 +19,8 @@ compute_class_precipitation(
 \item{horizon}{A data.frame with horizon distribution from
 \code{"compute_horizon_max"}}
 
+\item{dem}{A SpatRaster terrain model}
+
 \item{test_type}{A string defining a type of tests to apply: "WMO" or "MET"}
 
 \item{f_plot}{A boolean whether to plot figures}
@@ -26,22 +29,25 @@ compute_class_precipitation(
 A class
 }
 \description{
-Assess the class of a station from the type of surrounding land cover, slope,
-vegetation and shadowing as potential heat sources affecting sensors and
-using the requirements set by WMO and Met
+Assess the class of a station from the type of surrounding slope,
+sheltering and obstacles as potential of reducing or increasing catching
+precipitation in a rain gauge and using the requirements set by WMO and Met
 }
 \examples{
 # Get station metadata
-stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
+# stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Compute maximum horizon
-horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+# horizon_max <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)
+
+# Load a digital elevation model
+# dem   <- download_dem_kartverket(stn, name = "dtm")
 
 # Compute class
-compute_class_precipitation(stn,
-                            horizon_max,
-                            test_type = "WMO",
-                            f_plot = TRUE)
+# compute_class_precipitation(stn,
+#                             horizon_max,
+#                             test_type = "WMO",
+#                             f_plot = TRUE)
 
 
 }
