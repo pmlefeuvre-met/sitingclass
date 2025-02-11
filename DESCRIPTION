@@ -14,6 +14,7 @@ Imports:
     httr2,
     magrittr,
     maptiles,
+    patchwork,
     png,
     rayshader (>= 0.38.11),
     rgrass,
