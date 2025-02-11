@@ -38,6 +38,7 @@
 #' plot_tile_station(stn, box, tile_name = "osm", dsm = dsm, path = "plot/map")
 #'
 #' @import ggplot2
+#' @import patchwork
 #' @importFrom terra crds project vect
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
