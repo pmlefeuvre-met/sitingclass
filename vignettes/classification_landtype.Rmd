@@ -10,7 +10,6 @@ vignette: >
   %\VignetteIndexEntry{classification_landtype}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{patchwork}
 ---
 ```{r init,echo=FALSE}
 knitr::opts_chunk$set(collapse=FALSE, #True
@@ -43,7 +42,7 @@ Running the function for a station is as follows:
 library(sitingclass)
 library(ggplot2)
 library(tidyterra)
-require(patchwork)
+#library(patchwork)
 
 # Get station metadata
 stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
@@ -97,7 +96,7 @@ g3 <- ggplot() + geom_spatraster_rgb(data = water) + theme_void()
 # Load complete/original FKB data 
 fkb  <- get_tile_wms(box, layer = "fkb", px = px)
 g0 <- ggplot() + geom_spatraster_rgb(data = fkb) + theme_void()
-(g0 + g1) / (g2 + g3)
+#patchwork::wrap_plots(g0, g1, g2, g3, ncol=2, nrow=2)
 ```
 The images are then:
 - converted from rasters to vector using `as.polygons()`, 
