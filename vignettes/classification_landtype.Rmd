@@ -10,6 +10,7 @@ vignette: >
   %\VignetteIndexEntry{classification_landtype}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{patchwork}
 ---
 ```{r init,echo=FALSE}
 knitr::opts_chunk$set(collapse=FALSE, #True
@@ -42,7 +43,7 @@ Running the function for a station is as follows:
 library(sitingclass)
 library(ggplot2)
 library(tidyterra)
-library(patchwork)
+require(patchwork)
 
 # Get station metadata
 stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
