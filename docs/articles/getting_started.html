@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting started with sitingclass • sitingclass</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -20,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sitingclass</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,12 +61,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Getting started with sitingclass</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Getting started with sitingclass</h1>
                         <h4 data-toc-skip class="author">Pierre-Marie
 Lefeuvre</h4>
             
-            <h4 data-toc-skip class="date">2025-02-06</h4>
+            <h4 data-toc-skip class="date">2025-02-07</h4>
       
       <small class="dont-index">Source: <a href="https://gitlab.met.no/pierreml/sitingclass/blob/HEAD/vignettes/getting_started.Rmd" class="external-link"><code>vignettes/getting_started.Rmd</code></a></small>
       <div class="d-none name"><code>getting_started.Rmd</code></div>
@@ -136,10 +141,10 @@ output/<em>stationid</em>)</li>
  coord. ref. : ETRS89 / UTM zone 33N (EPSG:25833) 
  names       : level parameterid sensor stationid  elev   lat   lon elev.1
  type        : &lt;int&gt;       &lt;int&gt;  &lt;int&gt;     &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;
- values      :     0        3225      0     18700    94 59.94 10.72     94
+ values      :     0        3165      0     18700    94 59.94 10.72     94
     element.name    station.name (and 16 more)
            &lt;chr&gt;           &lt;chr&gt;              
- Normal for ave~ OSLO - BLINDERN              </code></pre>
+ Precipitation ~ OSLO - BLINDERN              </code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">stn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dx"</span>,<span class="st">"resx"</span>,<span class="st">"path"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code>   dx resx         path
