@@ -7,7 +7,7 @@ testthat::test_that("compute horizon works", {
   stn_test$stationid <- 18700
   stn_test$dx <- 100
   stn_test$resx <- 1
-  stn_test$path <- "tests/testthat/data"
+  stn_test$path <- NULL #Avoid saving data
 
   # Set expected horizon
   horizon_expected <- data.frame(azimuth = c(0, 350, 340, 330, 320, 310, 300,
