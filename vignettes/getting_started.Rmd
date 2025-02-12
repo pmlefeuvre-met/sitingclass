@@ -51,6 +51,9 @@ stationid <- 18700
 
 # Get station metadata
 stn <- get_metadata_frost(stationid)
+
+# Set default path to NULL in order to print and not save plots
+stn$path <- NULL
 ```
 
 The result is a SpatVector with coordinates in UTM33 (unit: metre) and metadata: 

@@ -59,7 +59,6 @@ download_dem_kartverket <- function(stn = NULL,
   box <- make_bbox(stn, dx = dx)
 
   # Set DEM file name
-  dir.create(path, showWarnings = FALSE, recursive = TRUE)
   fname_out <- sprintf("%s/%1.0f_%s_25833_d%05.0fm_%02.1fm.tif",
                        path,
                        stationid,
@@ -68,7 +67,7 @@ download_dem_kartverket <- function(stn = NULL,
                        resx)
 
   # Load demo example for 18700
-  if (stn==18700) {
+  if (stationid == 18700) {
 
     # Set DEM filename and path
     fname <- sprintf("18700_%s_25833_d%05.0fm_%02.1fm.tif", name, dx, resx)
@@ -116,6 +115,9 @@ download_dem_kartverket <- function(stn = NULL,
 
   # Get the DEM from the URL
   dem <- terra::rast(req$url)
+
+  # Create directory and save files
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
   terra::writeRaster(dem, filename = fname_out, overwrite = TRUE)
 
   # Assign Not-A-Number values and compute MinMax of the DEM

@@ -47,6 +47,9 @@ library(tidyterra)
 # Get station metadata
 stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1, path = NULL)
 
+# Set default path to NULL in order to print and not save plots
+stn$path <- NULL
+
 # Compute land cover
 landtype_out <- compute_landtype(stn, f_plot=TRUE)
 landtype_out
