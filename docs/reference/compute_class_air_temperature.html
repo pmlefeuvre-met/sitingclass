@@ -114,23 +114,23 @@ using the requirements set by WMO and Met</p>
 <span class="r-in"><span><span class="co"># Compute land type</span></span></span>
 <span class="r-in"><span><span class="va">landtype</span> <span class="op">&lt;-</span> <span class="fu"><a href="compute_landtype.html">compute_landtype</a></span><span class="op">(</span><span class="va">stn</span>, f_plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dtm - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dom - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dom_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dom_25833_d00100m_1.0m.tif"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute land type distance to station</span></span></span>
 <span class="r-in"><span><span class="va">landtype_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="compute_landtype_distance.html">compute_landtype_distance</a></span><span class="op">(</span><span class="va">stn</span>, <span class="va">landtype</span>, f_plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dtm - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute maximum horizon</span></span></span>
 <span class="r-in"><span><span class="va">horizon_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="compute_horizon_max.html">compute_horizon_max</a></span><span class="op">(</span><span class="va">stn</span>, step <span class="op">=</span> <span class="fl">1</span>, f_plot_polygon <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dtm - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dom - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dom_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dom_25833_d00100m_1.0m.tif"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dtm - 20000/20 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dtm_25833_d20000m_20.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dtm_25833_d20000m_20.0m.tif"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Over-riding projection check</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Importing raster map &lt;elev&gt;...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    0%   3%   6%   9%  12%  15%  18%  21%  24%  27%  30%  33%  36%  39%  42%  45%  48%  51%  54%  57%  60%  63%  66%  69%  72%  75%  78%  81%  84%  87%  90%  93%  96%  99% 100%</span>
@@ -147,7 +147,7 @@ using the requirements set by WMO and Met</p>
 <span class="r-in"><span><span class="co"># Load a digital elevation model</span></span></span>
 <span class="r-in"><span><span class="va">dem</span>   <span class="op">&lt;-</span> <span class="fu"><a href="download_dem_kartverket.html">download_dem_kartverket</a></span><span class="op">(</span><span class="va">stn</span>, name <span class="op">=</span> <span class="st">"dtm"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Process: 18700 - 260966.8/6652718.0 - dtm - 100/1 - path: data/dem"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load existing file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Load demo file: data/dem/18700_dtm_25833_d00100m_1.0m.tif"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute class</span></span></span>
 <span class="r-in"><span><span class="fu">compute_class_air_temperature</span><span class="op">(</span><span class="va">stn</span>,</span></span>

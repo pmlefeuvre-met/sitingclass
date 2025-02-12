@@ -51,7 +51,7 @@ The function gets station names, locations and alternate ids.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_metadata_pagination</span><span class="op">(</span></span>
 <span>  country <span class="op">=</span> <span class="st">"norge"</span>,</span>
 <span>  paramid <span class="op">=</span> <span class="fl">211</span>,</span>
-<span>  timestamp <span class="op">=</span> <span class="st">"2000-01-01T00:00:00Z/2024-01-01T00:00:00Z"</span>,</span>
+<span>  timestamp <span class="op">=</span> <span class="st">"1000-01-01T00:00:00Z/2100-01-01T00:00:00Z"</span>,</span>
 <span>  hdrshow <span class="op">=</span></span>
 <span>    <span class="st">"{\"id\":{},\"extra\":{\"station\":{\"location\":[],\"alternateids\":[]}}}"</span>,</span>
 <span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"output/stn_%s_%i"</span>, <span class="va">country</span>, <span class="va">paramid</span><span class="op">)</span></span>
@@ -97,19 +97,14 @@ The function gets station names, locations and alternate ids.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>GDAL Message 6: dataset output/stn_norge_211/stn_norge_211.shp does not support layer creation option OVERWRITE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  class       : SpatVector </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geometry    : points </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  dimensions  : 657, 8  (geometries, attributes)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  extent      : -770349.4, 653347, -684164.7, 1286239  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  dimensions  : 1052, 8  (geometries, attributes)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  extent      : -779814.9, 653347, -684164.7, 1348857  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  coord. ref. : +proj=lcc +lat_0=63 +lon_0=15 +lat_1=63 +lat_2=63 +x_0=0 +y_0=0 +R=6371000 +units=m +no_defs </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  names       : level parameterid sensor stationid           WIGOS  elev   lat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  type        : &lt;int&gt;       &lt;int&gt;  &lt;int&gt;     &lt;int&gt;           &lt;chr&gt; &lt;num&gt; &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  values      :     0         211      0       180              NA   360 61.29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    0         211      0       210     0-578-0-210  1020 61.32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    0         211      0       700 0-20000-0-01393   672 61.89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12.19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  names       : level parameterid sensor stationid WIGOS  elev   lat   lon</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  type        : &lt;int&gt;       &lt;int&gt;  &lt;int&gt;     &lt;int&gt; &lt;chr&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  values      :     0         211      0       180    NA   360 61.29 12.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    0         211      0       190    NA   360 61.31 12.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    0         211      0       200    NA   356 61.33 12.25</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
