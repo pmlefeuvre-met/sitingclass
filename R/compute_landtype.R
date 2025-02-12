@@ -45,19 +45,36 @@ compute_landtype <- function(stn = NULL,
     print("!! Mismatched extent !!")
     print(terra::ext(dem))
     print(terra::ext(dsm))
-  # Reload DEMs
+    # Reload DEMs
     dem <- download_dem_kartverket(stn, name = "dtm", f_overwrite = TRUE)
     dsm <- download_dem_kartverket(stn, name = "dom", f_overwrite = TRUE)
-    }
+  }
 
   # Compute difference to assess vegetation
   dh  <- dsm - dem
 
   # Load FKB-AR5 tiles
   px    <- dim(dh)[1] #*4
-  building  <- get_tile_wms(box, layer = "bygning", px = px)
-  road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
-  water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
+
+  # Load demo data or get API data
+  if ((stationid == 18700) & (dx == 100)){
+    ## Get demo data files
+    fpath_b <- system.file("extdata", sprintf("18700_25833_building.tif"),
+                           package = "sitingclass", mustWork = TRUE)
+    fpath_r <- system.file("extdata", sprintf("18700_25833_road.tif"),
+                           package = "sitingclass", mustWork = TRUE)
+    fpath_w <- system.file("extdata", sprintf("18700_25833_water.tif"),
+                           package = "sitingclass", mustWork = TRUE)
+    # Load demo data
+    building  <- terra::rast(fpath_b)
+    road      <- terra::rast(fpath_r)
+    water     <- terra::rast(fpath_w)
+  }else{
+    ## Get WMS data from API
+    building  <- get_tile_wms(box, layer = "bygning", px = px)
+    road      <- get_tile_wms(box, layer = "fkb_samferdsel", px = px)
+    water     <- get_tile_wms(box, layer = "fkb_vann", px = px)
+  }
   #print("Loaded WMS tiles")
 
   # Convert raster tile to vector landcover
