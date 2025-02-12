@@ -39,12 +39,13 @@ get_metadata_frost <- function(stationid = 18700,
   }
 
   # Load demo data
-  if (stationid == 18700 & paramid == 211 & dx == 100 & path == NULL) {
+  if ((stationid == 18700) & is.null(paramid) & (dx == 100) & (is.null(path))) {
     ## Get demo data files
     fpath <- system.file("extdata", "18700_stn.gpkg",
                          package = "sitingclass", mustWork = TRUE)
     # Load demo data
     stn  <- terra::vect(fpath)
+    return(stn)
   }
 
   # Define Frost URL
