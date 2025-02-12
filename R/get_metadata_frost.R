@@ -40,15 +40,21 @@ get_metadata_frost <- function(stationid = 18700,
 
   # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
-  url <- sprintf("%sincobs=false&stationids=%i&", url, stationid)
-  if (!is.null(paramid)) {
-    url <- sprintf("%sparameterids=%i&", url, paramid)
-  }
-  url <- sprintf("%sbasicoutput=false&time=latest", url)
 
-  # Build request and authentication
-  req <- httr2::request(url) |>
-    httr2::req_retry(max_tries = 3) |>
+  # Build request with parameters
+  req <- httr2::request(url)  |>
+    httr2::req_url_query(
+      incobs = "false",
+      stationids = stationid,
+      time = "1000-01-01T00:00:00Z/2100-01-01T00:00:00Z", #latest
+      basicoutput = "false")
+  if (!is.null(paramid)) {
+    req <- req |> httr2::req_url_query(parameterids=paramid)
+  }
+
+  # Add retry query and authentication
+  req <- req |>
+    httr2::req_retry(max_tries = 5, retry_on_failure = TRUE) |>
     httr2::req_auth_basic(Sys.getenv("FROST_ID"), Sys.getenv("FROST_KEY"))
 
   # Get response as json
