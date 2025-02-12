@@ -67,7 +67,24 @@ download_dem_kartverket <- function(stn = NULL,
                        dx,
                        resx)
 
-  # Verify if file exists
+  # Load demo example for 18700
+  if (stn==18700) {
+
+    # Set DEM filename and path
+    fname <- sprintf("18700_%s_25833_d%05.0fm_%02.1fm.tif", name, dx, resx)
+    path <- system.file("extdata", fname, package = "sitingclass",
+                        mustWork = TRUE)
+
+    # Load DEM as SpatRaster
+    dem <- terra::rast(path)
+    terra::setMinMax(dem)
+
+    # Print file loading and return DEM
+    print(sprintf("Load demo file: %s", fname_out))
+    return(dem)
+  }
+
+  # Verify if Geotiff file exists
   if (file.exists(fname_out) && !f_overwrite) {
 
     # Load DEM as SpatRaster
