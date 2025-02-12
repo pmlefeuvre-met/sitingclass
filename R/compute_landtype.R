@@ -21,7 +21,7 @@
 #'# Compute land cover
 #' compute_landtype(stn, f_plot=TRUE)
 #'
-#' @importFrom terra crds vect mask erase ext
+#' @importFrom terra crds vect mask erase ext rast
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'
@@ -59,11 +59,11 @@ compute_landtype <- function(stn = NULL,
   # Load demo data or get API data
   if ((stn$stationid == 18700) & (stn$dx == 100)){
     ## Get demo data files
-    fpath_b <- system.file("extdata", sprintf("18700_25833_building.tif"),
+    fpath_b <- system.file("extdata", "18700_25833_building.tif",
                            package = "sitingclass", mustWork = TRUE)
-    fpath_r <- system.file("extdata", sprintf("18700_25833_road.tif"),
+    fpath_r <- system.file("extdata", "18700_25833_road.tif",
                            package = "sitingclass", mustWork = TRUE)
-    fpath_w <- system.file("extdata", sprintf("18700_25833_water.tif"),
+    fpath_w <- system.file("extdata", "18700_25833_water.tif",
                            package = "sitingclass", mustWork = TRUE)
     # Load demo data
     building  <- terra::rast(fpath_b)

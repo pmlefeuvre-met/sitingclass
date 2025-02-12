@@ -38,6 +38,15 @@ get_metadata_frost <- function(stationid = 18700,
     dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 
+  # Load demo data
+  if (stationid == 18700 & paramid == 211 & dx == 100 & path == NULL) {
+    ## Get demo data files
+    fpath <- system.file("extdata", "18700_stn.gpkg",
+                         package = "sitingclass", mustWork = TRUE)
+    # Load demo data
+    stn  <- terra::vect(fpath)
+  }
+
   # Define Frost URL
   url <- "https://frost-beta.met.no/api/v1/obs/met.no/filter/get?"
 

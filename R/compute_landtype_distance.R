@@ -23,7 +23,7 @@
 #' # Compute land type distance to station
 #' landtype_dist <- compute_landtype_distance(stn, landtype, f_plot = TRUE)
 #'
-#' @importFrom terra vect mask
+#' @importFrom terra vect mask rast
 #' @importFrom ggplot2 ggplot scale_fill_manual coord_sf theme_minimal
 #' @importFrom tidyterra geom_spatvector
 #'

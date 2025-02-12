@@ -39,7 +39,7 @@
 #'
 #' @import ggplot2
 #' @import patchwork
-#' @importFrom terra crds project vect
+#' @importFrom terra crds project vect rast
 #' @importFrom maptiles get_tiles
 #' @importFrom tidyterra geom_spatraster_rgb geom_spatraster_contour pull_crs
 #'
