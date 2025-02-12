@@ -45,8 +45,17 @@ compute_landtype_distance <- function(stn = NULL,
   if (f_plot) {
     # Plot ortophoto and classification (limit to areas < 500m)
     if (stn$dx < 500) {
-      # Get WMS tile and plot
-      tile <- get_tile_wms(box, layer = "ortofoto")
+      # Load demo tile for 18700 or Get WMS tile
+      if ((stn$stationid == 18700) & (stn$dx == 100)){
+        fpath <- system.file("extdata", "18700_ortophoto_25833_d00100m.tif",
+                             package = "sitingclass", mustWork = TRUE)
+        tile <- terra::rast(fpath)
+      }else{
+        # Get WMS tile and plot
+        tile <- get_tile_wms(box, layer = layer)
+      }
+
+      # Plot
       g <- ggplot() +
         tidyterra::geom_spatraster_rgb(data = tile) +
         geom_sf(data = stn, fill = NA, color = "red") +
