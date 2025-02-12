@@ -71,11 +71,11 @@ download_dem_kartverket <- function(stn = NULL,
 
     # Set DEM filename and path
     fname <- sprintf("18700_%s_25833_d%05.0fm_%02.1fm.tif", name, dx, resx)
-    path <- system.file("extdata", fname, package = "sitingclass",
+    fpath <- system.file("extdata", fname, package = "sitingclass",
                         mustWork = TRUE)
 
     # Load DEM as SpatRaster
-    dem <- terra::rast(path)
+    dem <- terra::rast(fpath)
     terra::setMinMax(dem)
 
     # Print file loading and return DEM

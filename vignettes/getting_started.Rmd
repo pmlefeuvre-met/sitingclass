@@ -50,10 +50,8 @@ library(sitingclass)
 stationid <- 18700
 
 # Get station metadata
-stn <- get_metadata_frost(stationid)
-
+stn <- get_metadata_frost(stationid, path = NULL)
 # Set default path to NULL in order to print and not save plots
-stn$path <- NULL
 ```
 
 The result is a SpatVector with coordinates in UTM33 (unit: metre) and metadata: 
@@ -67,7 +65,8 @@ The result is a SpatVector with coordinates in UTM33 (unit: metre) and metadata:
 
 ```{r}
 stn
-as.data.frame(stn[c("dx","resx","path")])
+# Reverse dataframe to show last added parameters
+rev(as.data.frame(stn))
 ```
 ## Construct a boundary box
 
@@ -110,7 +109,7 @@ The function `plot_station_grid()` adds a grid and circles to the image. The gri
 In this example, the tile name `"ortofoto"` gets aerial imagery from _Kartverket_, the Norwegian Mapping Authority. 
 ```{r, fig.cap="Grid and buffer with 'Norge i bilder' imagery."}
 # Plot tile with grid and proximity circles
-plot_station_grid(stn, tile_name = "ortofoto", grid_scale = 10)
+plot_station_grid(stn, tile_name = "ortophoto_demo", grid_scale = 10)
 ```
 
 # Plot Digital Elevation Models (DEM)

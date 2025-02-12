@@ -114,7 +114,11 @@ plot_tile_station <- function(stn = NULL,
 
   } else if (tile_name == "ortophoto_demo") {
     dx <- (range(box)-1)/2
-    fpath <- sprintf("inst/extdata/18700_ortophoto_25833_d%05.0fm.tif", dx)
+    fname <- sprintf("18700_ortophoto_25833_d%05.0fm.tif", dx)
+    print(fname)
+    fpath <- system.file("extdata", fname, package = "sitingclass",
+                        mustWork = TRUE)
+    print(fpath)
     tile <- terra::rast(fpath)
     credit <- "Ortophoto \uA9 Kartverket"
 

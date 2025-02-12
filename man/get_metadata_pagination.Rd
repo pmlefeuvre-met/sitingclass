@@ -7,7 +7,7 @@
 get_metadata_pagination(
   country = "norge",
   paramid = 211,
-  timestamp = "2000-01-01T00:00:00Z/2024-01-01T00:00:00Z",
+  timestamp = "1000-01-01T00:00:00Z/2100-01-01T00:00:00Z",
   hdrshow =
     "{\\"id\\":{},\\"extra\\":{\\"station\\":{\\"location\\":[],\\"alternateids\\":[]}}}",
   path = sprintf("output/stn_\%s_\%i", country, paramid)
