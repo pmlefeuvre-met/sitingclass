@@ -57,7 +57,7 @@ compute_landtype <- function(stn = NULL,
   px    <- dim(dh)[1] #*4
 
   # Load demo data or get API data
-  if ((stationid == 18700) & (dx == 100)){
+  if ((stn$stationid == 18700) & (stn$dx == 100)){
     ## Get demo data files
     fpath_b <- system.file("extdata", sprintf("18700_25833_building.tif"),
                            package = "sitingclass", mustWork = TRUE)
