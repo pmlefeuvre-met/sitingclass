@@ -112,7 +112,13 @@ plot_tile_station <- function(stn = NULL,
     tile <- get_tile_wms(box, layer = tile_name)
     credit <- "Ortophoto \uA9 Kartverket"
 
-  }else if (any(tile_name %in% c("ar5",
+  } else if (tile_name == "ortophoto_demo") {
+    dx <- (range(box)-1)/2
+    fpath <- sprintf("inst/extdata/18700_ortophoto_25833_d%05.0fm.tif", dx)
+    tile <- terra::rast(fpath)
+    credit <- "Ortophoto \uA9 Kartverket"
+
+    }else if (any(tile_name %in% c("ar5",
                                  "fkb_arealdekke",
                                  "fkb_vann",
                                  "vann_omrade",
