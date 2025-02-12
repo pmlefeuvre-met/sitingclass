@@ -33,11 +33,6 @@ get_metadata_frost <- function(stationid = 18700,
                                resx = 1,
                                path = sprintf("output/%i", stationid)) {
 
-  # Create output directory
-  if (!is.null(path)) {
-    dir.create(path, showWarnings = FALSE, recursive = TRUE)
-  }
-
   # Load demo data
   if ((stationid == 18700) & is.null(paramid) & (dx == 100) & (is.null(path))) {
     ## Get demo data files
@@ -46,6 +41,11 @@ get_metadata_frost <- function(stationid = 18700,
     # Load demo data
     stn  <- terra::vect(fpath)
     return(stn)
+  }
+
+  # Create output directory
+  if (!is.null(path)) {
+    dir.create(path, showWarnings = FALSE, recursive = TRUE)
   }
 
   # Define Frost URL
