@@ -66,10 +66,10 @@ compute_horizon <- function(stn = NULL,
 
   # Set GRASS path
   suppressWarnings({
-    # grasslib <- try(system("grass --config", intern = TRUE))[4]
-    grasslib <- "/home/pierreml/local/grass85"
+    grasslib <- try(system("grass --config", intern = TRUE))[4]
+    #grasslib <- "/home/pierreml/local/grass85"
   })
-  gisDbase <- "data/grassdata/"
+  gisDbase <- "/tmp/grassdata/"
 
   # Initialise GRASS and projection
   rgrass::initGRASS(gisBase = grasslib,
