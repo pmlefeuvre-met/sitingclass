@@ -29,10 +29,11 @@ building:
     - apt update
     - apt upgrade -y
     - apt install -y software-properties-common
-    - add-apt-repository ppa:ubuntugis/ppa
+    - add-apt-repository ppa:ubuntugis/ubuntugis-unstable
     - apt-get update
-    - apt-get install -y grass libgdal-dev
+    - apt-get install -y grass libgdal-dev gdal-bin
     - export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+    - echo $LD_LIBRARY_PATH
     - mkdir -p $R_LIBS_USER
     - Rscript -e 'Sys.getenv("R_LIBS_USER");dir.exists(Sys.getenv("R_LIBS_USER"))'
     - Rscript -e 'Sys.getenv("R_LIBS")'
