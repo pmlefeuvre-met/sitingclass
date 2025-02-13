@@ -27,13 +27,13 @@ building:
     - echo "Library path for packages :" $R_LIBS_USER
     - curl https://ip.met.no
     - sudo apt update
-    - sudo apt upgrade
-    - sudo apt install software-properties-common
+    - sudo apt upgrade -y
+    - sudo apt install -y software-properties-common
     - type add-apt-repository
     - sudo add-apt-repository ppa:ubuntugis/ppa
     - sudo add-apt-repository ppa:grass/grass-stable
     - sudo apt-get update
-    - sudo apt-get install grass
+    - sudo apt-get install -y grass
     - mkdir -p $R_LIBS_USER
     - Rscript -e 'Sys.getenv("R_LIBS_USER");dir.exists(Sys.getenv("R_LIBS_USER"))'
     - Rscript -e 'Sys.getenv("R_LIBS")'
