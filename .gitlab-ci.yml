@@ -31,7 +31,6 @@ building:
     - sudo apt install -y software-properties-common
     - type add-apt-repository
     - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-    - sudo add-apt-repository ppa:grass/grass-devel
     - sudo apt-get update
     - sudo apt-get install -y grass
     - mkdir -p $R_LIBS_USER
