@@ -22,7 +22,7 @@ Imports:
     sf (>= 1.0.19),
     stats,
     suntools,
-    terra,
+    terra (>= 1.8.21),
     tidyr,
     tidyterra,
     utils,
@@ -39,4 +39,5 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 Remotes:  
     tylermorganwall/rayshader,
-    r-spatial/sf
+    r-spatial/sf,
+    rspatial/terra
