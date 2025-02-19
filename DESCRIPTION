@@ -19,6 +19,7 @@ Imports:
     rayshader (>= 0.38.11),
     rgrass,
     scales,
+    sf (>= 1.0.19),
     stats,
     suntools,
     terra,
@@ -36,5 +37,6 @@ LazyData: true
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Remotes: 
-    tylermorganwall/rayshader
+Remotes:  
+    tylermorganwall/rayshader,
+    r-spatial/sf
