@@ -1,10 +1,10 @@
 Package: sitingclass
 Type: Package
-Title: Siting classification of Norwegian weather stations
+Title: Siting Classification of Norwegian Weather Stations
 Version: 1.4.0
 Author: Pierre-Marie Lefeuvre
 Maintainer: Pierre-Marie Lefeuvre <pierre.marie.lefeuvre@met.no>
-Description: The package sitingclass evaluates the exposure of weather stations for specific sensors from digital elevation models. The package is currently designed for Met usage only, due to data restrictions.
+Description: `sitingclass` evaluates the exposure of weather stations for specific sensors from digital elevation models. The package is currently designed for Met usage only, due to data restrictions.
 URL: https://gitlab.met.no/pierreml/sitingclass
 License: GPL (>= 3)
 Depends: R (>= 3.6.0)

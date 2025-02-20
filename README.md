@@ -44,7 +44,7 @@ The function `get_metadata_frost()` will fetch `FROST_ID` and `FROST_KEY` then s
 * Geospatial processing:
   + [terra](https://github.com/rspatial/terra): SpatRaster and SpatVector processing and conversion
 * Computing horizon and sun position:
-  + [rgrass](https://rsbivand.github.io/rgrass/): to compute horizon from GRASS
+  + [rgrass](https://osgeo.github.io/rgrass/): to compute horizon from GRASS
   + [suntools](https://github.com/adokter/suntools/): to compute sun position in the sky
 * Plotting:
   + [ggplot2](https://ggplot2.tidyverse.org/): plotting functions

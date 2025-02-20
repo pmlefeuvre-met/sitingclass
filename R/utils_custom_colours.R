@@ -60,8 +60,7 @@ colour_range <- list(colour = c("#E31A1C",
 
 #' Vector of CORINE land cover colors and types
 #'
-#' @references \url{https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/} and
-#' \url{https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf}
+#' @references \url{https://custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/}
 #'
 #' @examples
 #' fill_corine
