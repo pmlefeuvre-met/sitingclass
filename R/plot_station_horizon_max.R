@@ -17,7 +17,6 @@
 #' @examples
 #' # Load the station metadata and location
 #' stn <- get_metadata_frost(stationid = 18700,
-#'                           paramid = 211,
 #'                           dx = 100,
 #'                           resx = 1,
 #'                           path = "plot/horizon")
