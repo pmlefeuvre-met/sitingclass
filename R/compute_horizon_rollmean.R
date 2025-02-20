@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' # Load the station metadata including location and level
-#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
 #' # Compute maximum horizon
 #' horizon <- compute_horizon_max(stn, step = 1, f_plot_polygon = FALSE)

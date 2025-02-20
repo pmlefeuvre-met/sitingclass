@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' # Load the station metadata including location and level
-#' stn <- get_metadata_frost(stationid = 18700, paramid = 211)
+#' stn <- get_metadata_frost(stationid = 18700)
 #'
 #' # Load a digital elevation model
 #' dsm   <- download_dem_kartverket(stn, name = "dom", dx = 100, resx = 1)

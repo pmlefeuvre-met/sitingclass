@@ -17,8 +17,8 @@
 #'
 #' @examples
 #' get_metadata_frost(stationid = 18700)
-#' get_metadata_frost(stationid = 18700, paramid = 211)
-#' get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
+#' #get_metadata_frost(stationid = 18700, paramid = 211)
+#' #get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
 #'
 #' @importFrom httr2 request req_retry req_auth_basic
 #' @importFrom httr2 req_perform resp_body_json
