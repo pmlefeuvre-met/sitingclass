@@ -33,7 +33,7 @@ To handle such a large request output, a pagination protocol is used.
 The function gets station names, locations and alternate ids.
 }
 \examples{
-get_metadata_pagination(country = "norge", paramid = 211)
+#get_metadata_pagination(country = "norge", paramid = 211)
 
 }
 \references{

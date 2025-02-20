@@ -15,7 +15,7 @@
 #' @return Stations metadata
 #'
 #' @examples
-#' get_metadata_pagination(country = "norge", paramid = 211)
+#' #get_metadata_pagination(country = "norge", paramid = 211)
 #'
 #' @importFrom httr2 request req_url_query req_auth_basic
 #' @importFrom httr2 req_headers req_retry req_perform_iterative
