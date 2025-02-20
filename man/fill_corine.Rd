@@ -19,7 +19,6 @@ fill_corine
 
 }
 \references{
-\url{https:custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/} and
-\url{https://www.gofcgold.org/sites/default/files/docs/ReportSeries/GOLD_43.pdf}
+\url{https://custom-scripts.sentinel-hub.com/copernicus_services/corine/corine_land_cover/}
 }
 \keyword{datasets}

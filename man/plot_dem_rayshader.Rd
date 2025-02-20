@@ -24,13 +24,13 @@ four cardinal angles
 }
 \examples{
 # Load the station metadata and location
-stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
+# stn <- get_metadata_frost(stationid = 18700, dx = 100, resx = 1)
 
 # Load a digital elevation model
-dsm   <- download_dem_kartverket(stn, name = "dom")
+# dsm   <- download_dem_kartverket(stn, name = "dom")
 
 # Plot 3D DEM with rayshader
-plot_dem_rayshader(stn, dsm, path = 'plot/dem3D')
+# plot_dem_rayshader(stn, dsm, path = 'plot/dem3D')
 
 }
 \references{
