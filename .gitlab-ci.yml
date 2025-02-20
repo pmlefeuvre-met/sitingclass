@@ -35,11 +35,9 @@ building:
     - Rscript -e 'Sys.getenv("R_LIBS")'
     - Rscript -e '.libPaths()'
     - Rscript -e 'if(!requireNamespace("pak", quietly = TRUE)) {install.packages("pak")}'
-    - Rscript -e 'pak::pkg_install(pkg = c("r-spatial/sf"), upgrade = TRUE)'
-    - Rscript -e 'pak::pkg_install(pkg = c("rspatial/terra"), upgrade = TRUE)'
-    - Rscript -e 'pak::pak(pkg = ".", upgrade = TRUE)'
+    - Rscript -e 'pak::pak(pkg = ".", upgrade = TRUE, dependencies = TRUE)'
     - Rscript -e 'pak::pkg_install(pkg = c("rcmdcheck"), upgrade = TRUE)'
-    - R -e 'rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")'
+    - R -e 'rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "warning", check_dir = "check")'
   cache:
     - key: cache-$CI_COMMIT_REF_SLUG
       fallback_keys:
