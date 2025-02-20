@@ -34,8 +34,8 @@ exposure and performance
 }
 \examples{
 get_metadata_frost(stationid = 18700)
-get_metadata_frost(stationid = 18700, paramid = 211)
-get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
+#get_metadata_frost(stationid = 18700, paramid = 211)
+#get_metadata_frost(stationid = 18700, paramid = 211, dx = 100, resx = 1)
 
 }
 \references{
