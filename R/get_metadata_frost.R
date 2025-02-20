@@ -34,7 +34,7 @@ get_metadata_frost <- function(stationid = 18700,
                                path = sprintf("output/%i", stationid)) {
 
   # Load demo data
-  if ((stationid == 18700) & is.null(paramid) & (dx == 100) & (is.null(path))) {
+  if ((stationid == 18700) & is.null(paramid) & (dx == 100)) {
     ## Get demo data files
     fpath <- system.file("extdata", "18700_stn.gpkg",
                          package = "sitingclass", mustWork = TRUE)
