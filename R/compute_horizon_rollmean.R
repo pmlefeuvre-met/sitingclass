@@ -30,13 +30,16 @@
 compute_horizon_rollmean <- function(stn = NULL,
                                      horizon = NULL) {
 
-  # Get sun position for each hour and for summer solstice (highest sun)
+  # Get sun position for each hour
   sun <- compute_sun_position(stn, f_hour = TRUE)
+
+  # Get sun position for  summer solstice (highest sun)
+  date_21jun <- format(as.Date("2024-06-21"), "%d %b")
   sun_day <- compute_sun_position(stn)
-  sun_day <- sun_day[sun_day[, "day"] == "21 juni", 1:2]
+  sun_day <- sun_day[sun_day[, "day"] == date_21jun, 1:2]
 
   # Remove inclinations that are below horizon and above max inclination
-  # for class 4, extracting inlinations relevant for siting class.
+  # for class 4, extracting inclinations relevant for siting class.
   sun[,1:2] <- sun[, 1:2] * as.numeric(sun[, "inclination"] > 0 &
                                          sun[, "inclination"] <= 20)
 
@@ -59,9 +62,7 @@ compute_horizon_rollmean <- function(stn = NULL,
   window <- azimuth_1hour / azimuth_interval
 
   # Compute hourly rolling mean based on azimuth
-  horizon_mean <- zoo::rollmean(horizon[, "horizon_height"],
-                                window,
-                                fill = TRUE)
+  horizon_mean <- zoo::rollmean(horizon[, "horizon_height"],  window,fill = TRUE)
 
   # Approximate sun inclination to same azimuth interval than horizon array
   sun_day_approx <- stats::approx(x = sun_day[, "azimuth"],
