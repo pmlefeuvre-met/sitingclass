@@ -1,4 +1,12 @@
-image: rocker/verse:latest
+default:
+  image: rocker/verse:latest
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+      when: manual
 
 variables:
   GIT_DEPTH: 10
