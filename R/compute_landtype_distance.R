@@ -52,7 +52,7 @@ compute_landtype_distance <- function(stn = NULL,
         tile <- terra::rast(fpath)
       }else{
         # Get WMS tile and plot
-        tile <- get_tile_wms(box, layer = layer)
+        tile <- get_tile_wms(box, layer = "ortofoto")
       }
 
       # Plot

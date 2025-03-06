@@ -17,7 +17,7 @@
 #' @return A dataframe with `horizon_height` in degrees and `azimuth` angle in
 #'        degrees at which the horizon is computed in degrees
 #'
-#' @importFrom terra crds cellFromXY
+#' @importFrom terra crds cellFromXY sources
 #' @importFrom rgrass initGRASS write_RAST execGRASS
 #' @importFrom rgrass unlink_.gislock remove_GISRC
 #' @importFrom utils write.csv
@@ -111,7 +111,8 @@ compute_horizon <- function(stn = NULL,
   # Create directory and save file
   if (!is.null(stn$path)) {
     dir.create(stn$path, showWarnings = FALSE, recursive = TRUE)
-    file_horizon <- sprintf("%s/horizon_%s.csv", stn$path, names(dem))
+    dem_name <- gsub(".tif","",basename(terra::sources(dem)))
+    file_horizon <- sprintf("%s/horizon_%s_.csv", stn$path, dem_name)
     utils::write.csv(df, file_horizon, row.names = FALSE)
   }
 
