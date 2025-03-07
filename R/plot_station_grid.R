@@ -70,15 +70,16 @@ plot_station_grid <- function(stn = NULL,
       buf1 <- 3
       buf2 <- 5
     }
+    n <- (dx / nx - 2)
 
     #-----------------------------
     box <- make_bbox(centre, dx)
     g <- plot_tile_station(stn, box, tile_name, path=NULL)
 
     # Add grid and buffer. dx and nx are in metre.
-    g <- add_grid(g, box, nx = nx)
-    if (10  == gscale) {g <- add_buffer(g, box, buf1 = 10, nx = nx)}
-    g <- add_buffer(g, box, buf1 = buf1, buf2 = buf2, nx = nx)
+    g <- add_grid(g, centre, nx = nx, n = n)
+    if (gscale == 10) {g <- add_buffer(g, centre, buf1 = 10, nx = nx, n = n)}
+    g <- add_buffer(g, centre, buf1 = buf1, buf2 = buf2, nx = nx, n = n)
 
     # Remove title and axis
     g <- g + theme_void() + labs(title = NULL, subtitle = NULL)

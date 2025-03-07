@@ -3,11 +3,11 @@
 #' Add two buffers on a map to assess the area of same land cover type.
 #'
 #' @param g A ggplot objects on which to add the buffer
-#' @param box A SpatExtent to get the box extent and centre point
+#' @param centre The centre coordinates (lat, lon)
 #' @param buf1 A distance in metre representing the inner buffer radius
 #' @param buf2 A distance in metre representing the outer buffer radius
 #' @param nx A number defining the grid interval in metre for x and y
-#' @param n A number to set the border of the grid from the edge of the plot
+#' @param n A number of grid segments from one side of the centre point
 #'
 #' @return A ggplot2 object
 #'
@@ -25,7 +25,7 @@
 #' # Add grid and buffer
 #' nx <- 200
 #' n <- 2
-#' g <- add_grid(g, box, nx, n)
+#' g <- add_grid(g, centre, nx, n)
 #' g <- add_buffer(g, centre, 300, 1000, nx, n)
 #' g
 #'
@@ -34,30 +34,29 @@
 #'
 #' @export
 add_buffer <- function(g = NULL,
-                       box = NULL,
+                       centre = NULL,
                        buf1 = NULL,
                        buf2 = NULL,
                        nx = NULL,
-                       n = 2) {
+                       n = 6) {
 
-  # Convert box to SpatExtent and centre to SpatVector
-  centre <- cbind(X = mean(box[1:2]), Y = mean(box[3:4]))
+  # Create a SpatVector from centre
   v <- terra::vect(centre, crs = "epsg:25833")
 
   # Compute segment/label position
-  ybuf1 <- box[4] - nx * (n - .5)
+  ybuf1 <- centre[2] + nx * (n + .5)
   if (!is.null(buf2)) {
-    ybuf2 <- box[4] - nx * (n - 1)
+    ybuf2 <- centre[2] + nx * (n + 1)
   }
 
   # Add buffers
   bbuf1 <- terra::buffer(v, buf1)
-  g <- g + geom_sf(data = bbuf1, fill = NA, color = "black", linewidth=1)
-  g <- g + geom_sf(data = bbuf1, fill = NA, color = "white", linetype = "longdash", size=10)
+  g <- g + geom_sf(data = bbuf1, fill = NA, color = "red", linewidth = 2)
+  g <- g + geom_sf(data = bbuf1, fill = NA, color = "black", linetype = "longdash", size = 10)
   if (!is.null(buf2)) {
     bbuf2 <- terra::buffer(v, buf2)
-    g <- g + geom_sf(data = bbuf2, fill = NA, color = "black", linewidth=1)
-    g <- g + geom_sf(data = bbuf2, fill = NA, color = "white", linetype = "longdash", size=10)
+    g <- g + geom_sf(data = bbuf2, fill = NA, color = "red", linewidth = 2)
+    g <- g + geom_sf(data = bbuf2, fill = NA, color = "black", linetype = "longdash", size = 10)
   }
 
   # Add buffer legend as arrow segments
