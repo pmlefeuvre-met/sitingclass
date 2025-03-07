@@ -57,7 +57,7 @@ get_tile_wms <- function(box = NULL,
     crs     <- "CRS=EPSG:25833"
 
   } else if (layer == "toporaster") { #or topografiskraster
-    url     <- "http://openwms.statkart.no/skwms1/wms.toporaster4"
+    url     <- "https://wms.geonorge.no/skwms1/wms.topo"
     version <- "VERSION=1.3.0"
     crs     <- "CRS=EPSG:25833"
     ref     <- "https://kartkatalog.geonorge.no/metadata/toporaster-4-wms/430b65ec-8543-4387-bf45-dbb5ce4bf4c8"
