@@ -34,12 +34,19 @@ compute_landtype_horizon_class <- function(stn,
                                              f_plot = f_plot)
   # Compute maximum horizon
   horizon_max <- compute_horizon_max(stn,
-                                     step = 0.01)
+                                     step = 0.01,
+                                     f_output_all = TRUE)
+
+  # Keep only obstacles above mountains
+  horizon_obstacles <- horizon_max[c("azimuth","horizon_dsm","range_dem")]
+  horizon_obstacles["horizon_dsm"] <- horizon_obstacles["horizon_dsm"] *
+    (horizon_max$horizon_dsm > horizon_max$horizon_demkm)
+  names(horizon_obstacles) <-  c("azimuth", "horizon_height", "range")
 
   # Compute class
   class <- compute_class_air_temperature(stn,
                                          landtype_dist,
-                                         horizon_max,
+                                         horizon_obstacles,
                                          dem,
                                          test_type = "WMO",
                                          f_plot = f_plot)
