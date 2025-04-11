@@ -3,7 +3,7 @@
 local surface model and the regional digital terrain model with infos
 from the weather station."><meta property="og:description" content="Plot maximum horizon and its range based on the local terrain model, the
 local surface model and the regional digital terrain model with infos
-from the weather station."><meta property="og:image" content="/logo.png"></head><body>
+from the weather station."><meta property="og:image" content="https://pmlefeuvre-met.github.io/sitingclass/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -78,14 +78,6 @@ if path is NULL the plots are printed to the console</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load the station metadata and location</span></span></span>
 <span class="r-in"><span><span class="va">stn</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_metadata_frost.html">get_metadata_frost</a></span><span class="op">(</span>stationid <span class="op">=</span> <span class="fl">18700</span>, path <span class="op">=</span> <span class="st">"plot/horizon"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " "</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "station MET.NO: 18700 -- OSLO - BLINDERN -- Fast_IP: 10.240.10.11:6785"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "station MET.NO: 18700 -- OSLO - BLINDERN -- Fast_IP: 10.240.10.11:6785"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "station MET.NO: 18700 -- OSLO - BLINDERN -- WMO: 0-20000-0-01492"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "station MET.NO: 18700 -- OSLO - BLINDERN -- WIGOS: 0-20000-0-01492"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " "</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot sun diagram and save</span></span></span>
 <span class="r-in"><span><span class="fu">plot_station_horizon_range</span><span class="op">(</span><span class="va">stn</span><span class="op">)</span></span></span>

@@ -5,7 +5,7 @@ Version: 1.4.0
 Author: Pierre-Marie Lefeuvre
 Maintainer: Pierre-Marie Lefeuvre <pierre.marie.lefeuvre@met.no>
 Description: `sitingclass` evaluates the exposure of weather stations for specific sensors from digital elevation models. The package is currently designed for Met usage only, due to data restrictions.
-URL: https://gitlab.met.no/pierreml/sitingclass
+URL: https://gitlab.met.no/pierreml/sitingclass, https://pmlefeuvre-met.github.io/sitingclass/
 License: GPL (>= 3)
 Depends: R (>= 3.6.0)
 Imports: 
@@ -37,7 +37,7 @@ LazyData: true
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Remotes:  
+Remotes: 
     tylermorganwall/rayshader,
     r-spatial/sf,
     rspatial/terra

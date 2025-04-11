@@ -3,7 +3,7 @@
 (white for image, FALSE for mask),
 aggregate single polygons and set vector values as a single id."><meta property="og:description" content="Convert a raster to polygon, remove raster background from vector
 (white for image, FALSE for mask),
-aggregate single polygons and set vector values as a single id."><meta property="og:image" content="/logo.png"></head><body>
+aggregate single polygons and set vector values as a single id."><meta property="og:image" content="https://pmlefeuvre-met.github.io/sitingclass/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -85,14 +85,6 @@ polygons</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load station</span></span></span>
 <span class="r-in"><span><span class="va">stn</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_metadata_frost.html">get_metadata_frost</a></span><span class="op">(</span>stationid <span class="op">=</span> <span class="fl">18700</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " "</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "station MET.NO: 18700 -- OSLO - BLINDERN -- Fast_IP: 10.240.10.11:6785"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "station MET.NO: 18700 -- OSLO - BLINDERN -- Fast_IP: 10.240.10.11:6785"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "station MET.NO: 18700 -- OSLO - BLINDERN -- WMO: 0-20000-0-01492"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "station MET.NO: 18700 -- OSLO - BLINDERN -- WIGOS: 0-20000-0-01492"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " "</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Construct box with 200 m radius to extract WMS tile</span></span></span>
 <span class="r-in"><span><span class="va">box</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_bbox.html">make_bbox</a></span><span class="op">(</span><span class="va">stn</span>, dx <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>

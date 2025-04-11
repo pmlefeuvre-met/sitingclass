@@ -10,3 +10,4 @@
 ^ci/lib$
 ^data$
 ^output$
+^\.github$
