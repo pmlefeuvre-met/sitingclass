@@ -36,6 +36,13 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
+      - name: Update GRASS
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt-get update
+          sudo apt-get install -y grass-dev
+          
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
@@ -47,3 +54,4 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
+          
