@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  classification_landtype: classification_landtype.html
+  getting_started: getting_started.html
+last_built: 2025-04-22T11:08Z
+urls:
+  reference: https://pmlefeuvre-met.github.io/sitingclass/reference
+  article: https://pmlefeuvre-met.github.io/sitingclass/articles
